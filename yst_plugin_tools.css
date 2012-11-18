@@ -1,0 +1,26 @@
+small {
+	font-weight:normal;
+	color:#777;	
+}
+
+div.inside ul {
+	margin-left: 20px;
+}
+
+div.inside ul li {
+	list-style: square;
+	line-height:16px;
+}
+
+div.inside ul li.rss {
+	list-style-image: url(/wp-includes/images/rss.png);
+}
+
+div.inside ul li.email {
+	list-style-image: url(http://netdna.yoast.com/email_sub.png);
+}
+
+.icon32 {
+	height: 50px !important;
+	width: 50px !important;
+}
