@@ -276,6 +276,9 @@ if ( ! class_exists( 'Salesforce_Admin' ) ) {
 .w2llabel.checkbox{
   clear:both;
 }
+.w2limg{ 
+display: block; clear: both; 
+}
 #salesforce {
   margin: 3px 0 0 0;
   color: #aaa;
@@ -612,6 +615,7 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 		.w2linput.submit { float:none; margin: 10px 0 0 0; clear:both;}
 		.w2linput.checkbox{ vertical-align: middle;}
 		.w2llabel.checkbox{ clear:both; }
+		.w2limg{ display: block; clear: both; }
 		#salesforce{ margin:3px 0 0 0; color:#aaa; }
 		#salesforce a{ color:#999; }
 		</style>';
