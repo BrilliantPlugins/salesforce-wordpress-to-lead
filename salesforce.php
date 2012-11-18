@@ -720,6 +720,13 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 }
 
 function submit_salesforce_form($post, $options) {
+
+	//don't submit multiple forms
+	global $salesforce_wp2l_submitted;
+	
+	if( $salesforce_wp2l_submitted )
+		return true;
+	
 	global $wp_version;
 	if (!isset($options['org_id']) || empty($options['org_id']))
 		return false;
@@ -747,15 +754,18 @@ function submit_salesforce_form($post, $options) {
 	
 	$result = wp_remote_post('https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8', $args);
 
+	//set flag to not submit other forms
+	$salesforce_wp2l_submitted = true;
+	
 	if( is_wp_error($result) )
 		return false;
 	
 	if ($result['response']['code'] == 200){
 
-		if( $_POST['w2lcc'] == 1 )
+		if( isset( $_POST['w2lcc'] ) && $_POST['w2lcc'] == 1 )
 			salesforce_cc_user($post, $options);
 
-		if( $options['ccadmin'] )
+		if( isset( $options['ccadmin'] ) && $options['ccadmin'] )
 			salesforce_cc_admin($post, $options);
 		
 		return true;
@@ -827,6 +837,10 @@ function salesforce_form_shortcode($atts) {
 		'sidebar' => false,
 	), $atts ) );
 	
+	$emailerror = '';
+	$captchaerror = '';
+	$content = '';
+	
 	$form = (int) $form;
 	$sidebar = (bool) $sidebar;
 	
@@ -840,7 +854,7 @@ function salesforce_form_shortcode($atts) {
 		
 		foreach ($options['forms'][$form]['inputs'] as $id => $input) {
 			if ($input['required'] && empty($_POST[$id])) {
-				$options['forms'][$form_id]['inputs'][$id]['error'] = true;
+				$options['forms'][$form]['inputs'][$id]['error'] = true;
 				$error = true;
 			} else if ($id == 'email' && $input['required'] && !is_email($_POST[$id]) ) {
 				$error = true;
@@ -868,6 +882,7 @@ function salesforce_form_shortcode($atts) {
 			//if(!$result) echo 'false';
 			
 			if (!$result){
+				
 				$content = '<strong>'.esc_html(stripslashes($options['sferrormsg'])).'</strong>';			
 			}else{
 			
