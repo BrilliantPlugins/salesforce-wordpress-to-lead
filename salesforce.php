@@ -637,6 +637,9 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 		$sidebar = ' sidebar';
 		
 	$content .= "\n".'<form id="salesforce_w2l_lead'.str_replace(' ','_',$sidebar).'" class="w2llead'.$sidebar.'" method="post">'."\n";
+
+	$content .= '<input type="hidden" name="submitted_form_id" value="'.intval( $form_id ).'">'."\n";
+	
 	foreach ($options['forms'][$form_id]['inputs'] as $id => $input) {
 		if (!$input['show'])
 			continue;
@@ -722,10 +725,10 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 function submit_salesforce_form($post, $options) {
 
 	//don't submit multiple forms
-	global $salesforce_wp2l_submitted;
+	//global $salesforce_wp2l_submitted;
 	
-	if( $salesforce_wp2l_submitted )
-		return true;
+	//if( $salesforce_wp2l_submitted )
+		//return true;
 	
 	global $wp_version;
 	if (!isset($options['org_id']) || empty($options['org_id']))
@@ -737,7 +740,7 @@ function submit_salesforce_form($post, $options) {
 
 	//print_r($_POST); //DEBUG
 	
-	$form_id = (int) $_POST['form_id'];
+	$form_id = intval( $_POST['form_id'] );
 
 	$post['oid'] 			= $options['org_id'];
 	$post['lead_source']	= str_replace('%URL%','['.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'].']',$options['forms'][$form_id]['source']);
@@ -755,7 +758,7 @@ function submit_salesforce_form($post, $options) {
 	$result = wp_remote_post('https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8', $args);
 
 	//set flag to not submit other forms
-	$salesforce_wp2l_submitted = true;
+	//$salesforce_wp2l_submitted = true;
 	
 	if( is_wp_error($result) )
 		return false;
@@ -763,10 +766,10 @@ function submit_salesforce_form($post, $options) {
 	if ($result['response']['code'] == 200){
 
 		if( isset( $_POST['w2lcc'] ) && $_POST['w2lcc'] == 1 )
-			salesforce_cc_user($post, $options);
+			salesforce_cc_user($post, $options, $form_id);
 
 		if( isset( $options['ccadmin'] ) && $options['ccadmin'] )
-			salesforce_cc_admin($post, $options);
+			salesforce_cc_admin($post, $options, $form_id);
 		
 		return true;
 	}else{
@@ -796,6 +799,10 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 	unset($post['debug']);
 	
 	$message = '';
+
+	$message .= print_r( $post , true);
+	$message .= print_r( $options['forms'][$form_id]['inputs'] , true);
+
 	
 	//format message
 	foreach($post as $name=>$value){
