@@ -50,9 +50,9 @@ if ( ! class_exists( 'Salesforce_Admin' ) ) {
 				
 				//die('<pre>'.print_r($_POST,true)); //DEBUG
 
-				$form_id = (int) $_POST['form_id'];
+				if( isset( $_POST['mode'] ) && $_POST['mode'] == 'editform' ){
 
-				if($_POST['mode'] == 'editform'){
+					$form_id = (int) $_POST['form_id'];
 					
 					if(!isset($options['forms'][$form_id]))
 						$options['forms'][$form_id] = salesforce_default_form();
@@ -116,7 +116,7 @@ if ( ! class_exists( 'Salesforce_Admin' ) ) {
 					
 					//End Save Form Data
 				
-				}elseif($_POST['mode'] == 'delete'){
+				}elseif( isset( $_POST['mode'] ) && $_POST['mode'] == 'delete'){
 				
 					if( isset( $_POST['form_id'] ) && $_POST['form_id'] != 1 )
 						unset( $options['forms'][$_POST['form_id']] );
@@ -631,9 +631,11 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 		</style>';
 	}
 	$sidebar = '';
-	if ($is_sidebar)
+	
+	if ( $is_sidebar )
 		$sidebar = ' sidebar';
-	$content .= "\n".'<form class="w2llead'.$sidebar.'" method="post">'."\n";
+		
+	$content .= "\n".'<form id="salesforce_w2l_lead'.str_replace(' ','_',$sidebar).'" class="w2llead'.$sidebar.'" method="post">'."\n";
 	foreach ($options['forms'][$form_id]['inputs'] as $id => $input) {
 		if (!$input['show'])
 			continue;
@@ -710,6 +712,9 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 	if (!empty($reqtext))
 		$content .= '<p id="requiredfieldsmsg"><sup>*</sup>'.esc_html($reqtext).'</p>';
 	$content .= '<div id="salesforce"><small>'.__('Powered by','salesforce').' <a href="http://www.salesforce.com/">Salesforce CRM</a></small></div>';
+	
+	$content = apply_filters('salesforce_w2l_form_html', $content);
+	
 	return $content;
 }
 
@@ -761,7 +766,10 @@ function submit_salesforce_form($post, $options) {
 
 function salesforce_cc_user($post, $options, $form_id = 1){
 	
-	$headers = 'From: '.get_bloginfo('name').' <' . get_option('admin_email') . ">\r\n";
+	$from_name = apply_filters('salesforce_w2l_from_name_user', get_bloginfo('name'));
+	$from_email = apply_filters('salesforce_w2l_from_email_user', get_option('admin_email'));
+	
+	$headers = 'From: '.$from_name.' <' . $from_email . ">\r\n";
 
 	$subject = str_replace('%BLOG_NAME%', get_bloginfo('name'), $options['subject']);
 	if( empty($subject) ) $subject = __('Thank you for contacting','salesforce').' '.get_bloginfo('name');
@@ -789,8 +797,11 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 }
 
 function salesforce_cc_admin($post, $options, $form_id = 1){
+
+	$from_name = apply_filters('salesforce_w2l_from_name_admin', get_bloginfo('name'));
+	$from_email = apply_filters('salesforce_w2l_from_email_admin', get_option('admin_email'));
 	
-	$headers = 'From: '.get_bloginfo('name').' <' . get_option('admin_email') . ">\r\n";
+	$headers = 'From: '.$from_name.' <' . $from_email . ">\r\n";
 
 	$subject = __('Salesforce WP to Lead Submission','salesforce');
 
@@ -887,8 +898,10 @@ function salesforce_form_shortcode($atts) {
 	} else {
 		$content = salesforce_form($options, $sidebar, null, $form);
 	}
+	
 	return $content;
 }
+
 add_shortcode('salesforce', 'salesforce_form_shortcode');	
 
 class Salesforce_WordPress_to_Lead_Widgets extends WP_Widget {
