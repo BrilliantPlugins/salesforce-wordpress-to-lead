@@ -637,7 +637,7 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 	if ( $is_sidebar )
 		$sidebar = ' sidebar';
 		
-	$content .= "\n".'<form id="salesforce_w2l_lead'.str_replace(' ','_',$sidebar).'" class="w2llead'.$sidebar.'" method="post">'."\n";
+	$content .= "\n".'<form id="salesforce_w2l_lead_'.$form_id.str_replace(' ','_',$sidebar).'" class="w2llead'.$sidebar.'" method="post">'."\n";
 
 	foreach ($options['forms'][$form_id]['inputs'] as $id => $input) {
 		if (!$input['show'])
