@@ -603,6 +603,7 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 	
 	if (!empty($content))
 		$content = wpautop('<strong>'.$content.'</strong>');
+		
 	if ($options['usecss'] && !$is_sidebar) {
 		$content .= '<style type="text/css">
 		form.w2llead{text-align:left;clear:both;}
@@ -617,7 +618,7 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 		#salesforce{margin:3px 0 0 0;color:#aaa;}
 		#salesforce a{color:#999;}
 		</style>';
-	} else if ($is_sidebar && $options['usecss']) {
+	} elseif ($is_sidebar && $options['usecss']) {
 		$content .= '<style type="text/css">
 		.sidebar form.w2llead{clear:none;text-align:left;}
 		.sidebar .w2linput, #sidebar .w2llabel{float:none; display:inline;}
@@ -823,7 +824,7 @@ function salesforce_form_shortcode($atts) {
 
 	extract( shortcode_atts( array(
 		'form' => '1',
-		'sidebar' => 'false',
+		'sidebar' => false,
 	), $atts ) );
 	
 	$form = (int) $form;
