@@ -638,8 +638,6 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 		
 	$content .= "\n".'<form id="salesforce_w2l_lead'.str_replace(' ','_',$sidebar).'" class="w2llead'.$sidebar.'" method="post">'."\n";
 
-	$content .= '<input type="hidden" name="submitted_form_id" value="'.intval( $form_id ).'">'."\n";
-	
 	foreach ($options['forms'][$form_id]['inputs'] as $id => $input) {
 		if (!$input['show'])
 			continue;
@@ -697,7 +695,7 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 	if( $options['showccuser'] ){
 		$label = $options['ccusermsg'];
 		if( empty($label) ) $label = __('Send me a copy','salesforce');
-		$content .= "\t\n\t".'<input type="checkbox" name="w2lcc" class="w2linput checkbox" value="1"/><label class="w2llabel checkbox">'.esc_html($label)."</label><br>\n";
+		$content .= "\t\n\t".'<p><label class="w2llabel checkbox"><input type="checkbox" name="w2lcc" class="w2linput checkbox" value="1"/>'.esc_html($label)."</label><p>\n";
 	}
 	
 	//spam honeypot
@@ -723,12 +721,6 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 }
 
 function submit_salesforce_form($post, $options) {
-
-	//don't submit multiple forms
-	//global $salesforce_wp2l_submitted;
-	
-	//if( $salesforce_wp2l_submitted )
-		//return true;
 	
 	global $wp_version;
 	if (!isset($options['org_id']) || empty($options['org_id']))
@@ -756,9 +748,6 @@ function submit_salesforce_form($post, $options) {
 	);
 	
 	$result = wp_remote_post('https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8', $args);
-
-	//set flag to not submit other forms
-	//$salesforce_wp2l_submitted = true;
 	
 	if( is_wp_error($result) )
 		return false;
@@ -800,8 +789,8 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 	
 	$message = '';
 
-	$message .= print_r( $post , true);
-	$message .= print_r( $options['forms'][$form_id]['inputs'] , true);
+	//$message .= print_r( $post , true);
+	//$message .= print_r( $options['forms'][$form_id]['inputs'] , true);
 
 	
 	//format message
@@ -855,6 +844,16 @@ function salesforce_form_shortcode($atts) {
 	if (!is_array($options))
 		$options = salesforce_default_settings();
 
+	//don't submit unless we're in the right shortcode
+	$form_id = intval( $_POST['form_id'] );
+	
+	if( $form_id != $form ){
+		$content = salesforce_form($options, $sidebar, null, $form);
+		return $content;
+		
+	}
+
+	//this is the right form, continue
 	if (isset($_POST['w2lsubmit'])) {
 		$error = false;
 		$post = array();
@@ -882,12 +881,12 @@ function salesforce_form_shortcode($atts) {
 		}
 		
 		if (!$error) {
-			$result = submit_salesforce_form($post, $options);
+			$result = submit_salesforce_form($post, $options, $form);
 			
 			//echo 'RESULT='.$result;
 			//if($result) echo 'true';
 			//if(!$result) echo 'false';
-			
+						
 			if (!$result){
 				
 				$content = '<strong>'.esc_html(stripslashes($options['sferrormsg'])).'</strong>';			
