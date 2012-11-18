@@ -122,8 +122,12 @@ if( !function_exists('captcha') ){
 		}
 		
 		// Generate image src
+/*
 		$image_src = substr(__FILE__, strlen($_SERVER['DOCUMENT_ROOT'])) . '?_CAPTCHA&amp;t=' . urlencode(microtime());
 		$image_src = '/' . ltrim(preg_replace('/\\\\/', '/', $image_src), '/');
+*/
+		
+		$image_src = plugins_url( 'captcha.php', __FILE__ ) . '?_CAPTCHA&amp;t=' . urlencode(microtime());
 		
 		//$_SESSION['_CAPTCHA']['config'] = serialize($captcha_config);
 		

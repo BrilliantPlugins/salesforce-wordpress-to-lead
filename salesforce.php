@@ -846,12 +846,14 @@ function salesforce_form_shortcode($atts) {
 		$options = salesforce_default_settings();
 
 	//don't submit unless we're in the right shortcode
-	$form_id = intval( $_POST['form_id'] );
-	
-	if( $form_id != $form ){
-		$content = salesforce_form($options, $sidebar, null, $form);
-		return $content;
+	if( isset( $_POST['form_id'] ) ){
+		$form_id = intval( $_POST['form_id'] );
 		
+		if( $form_id != $form ){
+			$content = salesforce_form($options, $sidebar, null, $form);
+			return $content;
+			
+		}
 	}
 
 	//this is the right form, continue
