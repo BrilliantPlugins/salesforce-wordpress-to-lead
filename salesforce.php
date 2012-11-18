@@ -30,12 +30,16 @@ if ( ! class_exists( 'Salesforce_Admin' ) ) {
 			add_action('admin_print_scripts', array(&$this,'config_page_scripts'));
 			add_action('admin_print_styles', array(&$this,'config_page_styles'));	
 			add_action('admin_footer', array(&$this,'warning'));
+
 		}
 				
 		function warning() {
 			$options  = get_option($this->optionname);
 			if (!isset($options['org_id']) || empty($options['org_id']))
 				echo "<div id='message' class='error'><p><strong>".__('Your WordPress-to-Lead settings are not complete.','salesforce')."</strong> ".__('You must enter your Salesforce.com Organisation ID for it to work.','salesforce')." <a href='".$this->plugin_options_url()."'>".__('Settings','salesforce')."</a></p></div>";
+				
+				//echo 'ERROR= '.get_option('plugin_error');
+				
 		}
 		
 		function config_page() {
@@ -516,6 +520,7 @@ function salesforce_default_settings() {
 	$options['forms'][1] = salesforce_default_form();
 	
 	update_option('salesforce2', $options);
+	
 	return $options;
 }
 
@@ -559,6 +564,12 @@ function salesforce_back_link($url){
  * Taken from: http://php.net/manual/en/function.ksort.php
  */
 function w2l_sksort(&$array, $subkey="id", $sort_ascending=false) {
+
+	if( !is_array( $array ) )
+		return $array;
+		
+	$temp_array = array();
+
     if (count($array))
         $temp_array[key($array)] = array_shift($array);
 
@@ -963,7 +974,7 @@ function salesforce_activate(){
 
 	//echo 'VER'.$options['version'];
 
-	if( $options['version'] != '2.0' ){
+	if( !empty($oldoptions) && isset( $oldoptions['version'] ) && $oldoptions['version'] != '2.0' ){
 
 		$options = salesforce_default_settings();
 		
@@ -1006,5 +1017,13 @@ function salesforce_activate(){
 	}
 
 }
+
+/*
+//Save Activation Error to DB for review
+add_action('activated_plugin','save_error');
+function save_error(){
+    update_option('plugin_error',  ob_get_contents());
+}
+*/
 
 register_activation_hook( __FILE__, 'salesforce_activate' );
