@@ -1074,11 +1074,4 @@ function save_error(){
 }
 */
 
-add_filter('salesforce_w2l_cc_admin_email_list','salesforce_add_emails');
-
-function salesforce_add_emails( $emails ){
-$emails[]='info@nickciske.com';
-return $emails;
-}
-
 register_activation_hook( __FILE__, 'salesforce_activate' );
