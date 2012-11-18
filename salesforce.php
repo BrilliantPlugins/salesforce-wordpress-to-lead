@@ -770,8 +770,8 @@ function submit_salesforce_form($post, $options) {
 
 function salesforce_cc_user($post, $options, $form_id = 1){
 	
-	$from_name = apply_filters('salesforce_w2l_from_name_user', get_bloginfo('name'));
-	$from_email = apply_filters('salesforce_w2l_from_email_user', get_option('admin_email'));
+	$from_name = apply_filters('salesforce_w2l_cc_user_from_name', get_bloginfo('name'));
+	$from_email = apply_filters('salesforce_w2l_cc_user_from_email', get_option('admin_email'));
 	
 	$headers = 'From: '.$from_name.' <' . $from_email . ">\r\n";
 
@@ -806,12 +806,14 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 
 function salesforce_cc_admin($post, $options, $form_id = 1){
 
-	$from_name = apply_filters('salesforce_w2l_from_name_admin', get_bloginfo('name'));
-	$from_email = apply_filters('salesforce_w2l_from_email_admin', get_option('admin_email'));
+	$from_name = apply_filters('salesforce_w2l_cc_admin_from_name', get_bloginfo('name'));
+	$from_email = apply_filters('salesforce_w2l_cc_admin_from_email', get_option('admin_email'));
 	
 	$headers = 'From: '.$from_name.' <' . $from_email . ">\r\n";
 
 	$subject = __('Salesforce WP to Lead Submission','salesforce');
+
+	$message = '';
 
 	unset($post['oid']);
 	unset($post['lead_source']);
@@ -823,7 +825,15 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 			$message .= $options['forms'][$form_id]['inputs'][$name]['label'].': '.$value."\r\n";
 	}
 
-	wp_mail( get_option('admin_email'), $subject, $message, $headers );
+	$emails = array( get_option('admin_email') );
+
+	$emails = apply_filters( 'salesforce_w2l_cc_admin_email_list', $emails );
+	
+	//print_r( $emails );
+	
+	foreach( $emails as $email ){
+		wp_mail( $email, $subject, $message, $headers );
+	}
 
 }
 
@@ -1063,5 +1073,12 @@ function save_error(){
     update_option('plugin_error',  ob_get_contents());
 }
 */
+
+add_filter('salesforce_w2l_cc_admin_email_list','salesforce_add_emails');
+
+function salesforce_add_emails( $emails ){
+$emails[]='info@nickciske.com';
+return $emails;
+}
 
 register_activation_hook( __FILE__, 'salesforce_activate' );
