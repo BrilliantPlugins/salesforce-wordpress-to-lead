@@ -15,5 +15,5 @@ You can fully configure all the different settings for the form, and then use a 
 
 Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hnMzkxPUIyc) to get a full grasp of the power this plugin holds, and visit the [Salesforce WordPress page]( http://www.salesforce.com/form/signup/wordpress-to-lead.jsp?d=70130000000F4Mw). Check out this page to learn more about [CRM for Small Business](http://www.salesforce.com/smallbusinesscenter/).
 
-## Screenshots ##
+## More Information ##
 See readme.txt for changelog and other info
