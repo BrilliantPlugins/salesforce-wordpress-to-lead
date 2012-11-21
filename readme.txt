@@ -3,7 +3,7 @@ Contributors: joostdevalk, nickciske, moderntribe
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 2.8
 Tested up to: 3.4.2
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 
 WordPress-to-Lead for Salesforce CRM creates a solid integration between your WordPress install(s) and your Salesforce.com account!
 
@@ -72,6 +72,9 @@ No, as long as it's a valid URL it will work. However it should be an absolute U
 e.g. http://yoursite.com/thanks/ not just /thanks/
 
 == Changelog ==
+
+= 2.0.2 =
+* Small formatting fixes (checkbox spacing and submit button CSS)
 
 = 2.0.1 =
 * Fixed issue with captcha URL being broken on some installs
