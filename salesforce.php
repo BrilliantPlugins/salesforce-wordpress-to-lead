@@ -4,7 +4,7 @@ Plugin Name: WordPress-to-Lead for Salesforce CRM
 Plugin URI: http://www.salesforce.com/form/signup/wordpress-to-lead.jsp?d=70130000000F4Mw
 Description: Easily embed a contactform into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM!
 Author: Joost de Valk, Nick Ciske, Modern Tribe Inc.
-Version: 2.0.1
+Version: 2.0.2
 Author URI: http://tri.be/
 */
 
@@ -612,6 +612,7 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 		.w2llabel { clear:left; margin:4px 0; width:50%; }
 		.w2linput.text{ width:50%; height:18px; margin:4px 0; }
 		.w2linput.textarea { clear:both; width:100%; height:75px; margin:10px 0;}
+		.w2lsubmit{ float:none; clear:both; }
 		.w2linput.submit { float:none; margin: 10px 0 0 0; clear:both;}
 		.w2linput.checkbox{ vertical-align: middle;}
 		.w2llabel.checkbox{ clear:both; }
@@ -627,6 +628,7 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 		.sidebar .w2llabel { margin:4px 0; float:none; display:inline; }
 		.sidebar .w2linput.text{ width:95%; height:18px; margin:4px 0;}
 		.sidebar .w2linput.textarea {width:95%; height:50px; margin:10px 0;}
+		.sidebar .w2lsubmit{ float:none; clear:both; }
 		.sidebar .w2linput.submit { margin:10px 0 0 0; }
 		#salesforce{ margin:3px 0 0 0; color:#aaa; }
 		#salesforce a{ color:#999; }
@@ -696,7 +698,7 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 	if( $options['showccuser'] ){
 		$label = $options['ccusermsg'];
 		if( empty($label) ) $label = __('Send me a copy','salesforce');
-		$content .= "\t\n\t".'<p><label class="w2llabel checkbox"><input type="checkbox" name="w2lcc" class="w2linput checkbox" value="1"/>'.esc_html($label)."</label><p>\n";
+		$content .= "\t\n\t".'<p><label class="w2llabel checkbox"><input type="checkbox" name="w2lcc" class="w2linput checkbox" value="1"/> '.esc_html($label)."</label><p>\n";
 	}
 	
 	//spam honeypot
@@ -708,7 +710,7 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 	$submit = stripslashes($options['submitbutton']);
 	if (empty($submit))
 		$submit = "Submit";
-	$content .= "\t".'<input type="submit" name="w2lsubmit" class="w2linput submit" value="'.esc_attr($submit).'"/>'."\n";
+	$content .= "\t".'<div class="w2lsubmit"><input type="submit" name="w2lsubmit" class="w2linput submit" value="'.esc_attr($submit).'"/></div>'."\n";
 	$content .= '</form>'."\n";
 
 	$reqtext = stripslashes($options['requiredfieldstext']);
