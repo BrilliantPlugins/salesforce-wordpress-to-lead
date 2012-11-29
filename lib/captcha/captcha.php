@@ -127,7 +127,11 @@ if( !function_exists('captcha') ){
 		$image_src = '/' . ltrim(preg_replace('/\\\\/', '/', $image_src), '/');
 */
 		
-		$image_src = plugins_url( 'captcha.php', __FILE__ ) . '?_CAPTCHA&amp;t=' . urlencode(microtime());
+		$image_src = admin_url('admin-ajax.php') . '?action=sfw2l_get_captcha&_CAPTCHA=true&amp;t='.urlencode(microtime());
+		//plugins_url( 'captcha.php', __FILE__ ) . '?_CAPTCHA&amp;t=' . urlencode(microtime());
+		
+		// direct access version, requires wp-load
+		//$image_src = plugins_url( 'captcha.php', __FILE__ ) . '?_CAPTCHA&amp;t=' . urlencode(microtime());
 		
 		//$_SESSION['_CAPTCHA']['config'] = serialize($captcha_config);
 		
@@ -164,7 +168,7 @@ if( !function_exists('captcha') ){
 	if( isset($_GET['_CAPTCHA']) ) {
 		
 		//session_start();
-		include($_SERVER['DOCUMENT_ROOT'] . '/wp-load.php');
+		//include($_SERVER['DOCUMENT_ROOT'] . '/wp-load.php');
 		
 		$captcha_config = captcha_config();
 		
