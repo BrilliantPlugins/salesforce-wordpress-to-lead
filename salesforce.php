@@ -4,7 +4,11 @@ Plugin Name: WordPress-to-Lead for Salesforce CRM
 Plugin URI: http://www.salesforce.com/form/signup/wordpress-to-lead.jsp?d=70130000000F4Mw
 Description: Easily embed a contactform into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM!
 Author: Joost de Valk, Nick Ciske, Modern Tribe Inc.
+<<<<<<< HEAD
 Version: 2.0.2
+=======
+Version: 2.0.3
+>>>>>>> 2b7dbc73de8b13a3c512f4a48cc8137f55c38205
 Author URI: http://tri.be/
 */
 
@@ -30,6 +34,9 @@ if ( ! class_exists( 'Salesforce_Admin' ) ) {
 			add_action('admin_print_scripts', array(&$this,'config_page_scripts'));
 			add_action('admin_print_styles', array(&$this,'config_page_styles'));	
 			add_action('admin_footer', array(&$this,'warning'));
+			
+			add_action('wp_ajax_sfw2l_get_captcha', 'salesforce_captcha');
+			add_action('wp_ajax_nopriv_sfw2l_get_captcha', 'salesforce_captcha');
 
 		}
 				
@@ -595,6 +602,11 @@ function w2l_sksort(&$array, $subkey="id", $sort_ascending=false) {
     else $array = $temp_array;
 }
 
+
+function salesforce_captcha(){
+	include("lib/captcha/captcha.php");
+	die();
+}
 
 function salesforce_form($options, $is_sidebar = false, $content = '', $form_id = 1) {
 	

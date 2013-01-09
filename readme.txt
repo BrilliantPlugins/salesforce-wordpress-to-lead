@@ -3,7 +3,11 @@ Contributors: joostdevalk, nickciske, moderntribe
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 2.8
 Tested up to: 3.4.2
+<<<<<<< HEAD
 Stable tag: 2.0.2
+=======
+Stable tag: 2.0.3
+>>>>>>> 2b7dbc73de8b13a3c512f4a48cc8137f55c38205
 
 WordPress-to-Lead for Salesforce CRM creates a solid integration between your WordPress install(s) and your Salesforce.com account!
 
