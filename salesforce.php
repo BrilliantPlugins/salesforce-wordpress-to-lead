@@ -216,7 +216,7 @@ if ( ! class_exists( 'Salesforce_Admin' ) ) {
 									$content .= $this->textinput('requiredfieldstext',__('Required fields text', 'salesforce') );
 									$content .= $this->checkbox('usecss',__('Use Form CSS?', 'salesforce') );
 									$content .= $this->checkbox('wpcf7css',__('Use WPCF7 CSS integration?', 'salesforce') );
-									$content .= $this->checkbox('hide_salesforce_link',__('Hide salesforce link on form?', 'salesforce') );
+									$content .= $this->checkbox('hide_salesforce_link',__('Hide "Powered by Salesforce CRM" on form?', 'salesforce') );
 									$content .= '<br/><small><a href="'.$this->plugin_options_url().'&amp;tab=css">'.__('Read how to copy the CSS to your own CSS file').'</a></small><br><br>';
 
 									$content .= $this->checkbox('captcha',__('Use CAPTCHA?', 'salesforce') );
