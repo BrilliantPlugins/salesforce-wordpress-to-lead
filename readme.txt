@@ -74,15 +74,15 @@ e.g. http://yoursite.com/thanks/ not just /thanks/
 == Changelog ==
 
 = 2.0.4 =
-* Add drop down field type
-* Improve form HTML
-* Add from and reply to options for emails
-* Add delete checkbox to form editor
-* Add HTML field type
-* Add current date field type
-* Add simple checkbox field
-* Add ability to duplicate forms
-* Add WPCF7 CSS integration option
+* Add drop down field type (thanks jbuchbinder)
+* Improve form HTML (thanks jbuchbinder)
+* Add from and reply to options for emails (thanks jbuchbinder)
+* Add delete checkbox to form editor (thanks jbuchbinder)
+* Add HTML field type (thanks jbuchbinder)
+* Add current date field type (thanks jbuchbinder)
+* Add simple checkbox field (thanks jbuchbinder)
+* Add ability to duplicate forms (thanks jbuchbinder)
+* Add WPCF7 CSS integration option (thanks jbuchbinder)
 
 = 2.0.3 =
 * Captcha image now works on subfolder installs (e.g. /wordpress/)
