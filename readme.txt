@@ -29,6 +29,10 @@ Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hn
 1. Upload the `plugin` folder to the `/wp-content/plugins/` directory or install via the Add New Plugin menu
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Enter your Salesforce.com Organisation ID on the WordPress-to-Lead plugin configuration page.
+1. Go to Salesforce.com and login
+1. Click your name, top right and choose "Setup" from the dropdown
+1. Click "Customize" from the left hand menu, then "Leads", then "Web-to-Lead"
+1. Click "Edit", then check "Web-to-Lead enabled"
 
 == Frequently Asked Questions ==
 
