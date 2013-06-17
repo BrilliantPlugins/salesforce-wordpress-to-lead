@@ -824,7 +824,6 @@ function salesforce_process_comment( $comment_id ) {
 		'URL' => $comment->comment_author_url,
 		'description' => $comment->comment_content,
 	);
-	error_log( "SW: Post lead data " . print_r( $lead_data , true ) );
 	
 	if ( submit_salesforce_form( $lead_data, $options ) )
 		add_comment_meta( $comment_id, 'salesforce_lead_submitted', 1 );
