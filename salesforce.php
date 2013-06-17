@@ -734,12 +734,16 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 function submit_salesforce_form($post, $options) {
 	
 	global $wp_version;
-	if (!isset($options['org_id']) || empty($options['org_id']))
+	if (!isset($options['org_id']) || empty($options['org_id'])) {
+		error_log( "Salesforce: No organisation ID set." );
 		return false;
+	}
 
 	//spam honeypot
-	if( !empty($_POST['message']) )
+	if( !empty($_POST['message']) ) {
+		error_log( "Salesforce: No message set." );
 		return false;
+	}
 
 	//print_r($_POST); //DEBUG
 	
@@ -759,9 +763,11 @@ function submit_salesforce_form($post, $options) {
 	);
 	
 	$result = wp_remote_post('https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8', $args);
-	
-	if( is_wp_error($result) )
+
+	if( is_wp_error($result) ) {
+		error_log( "Salesforce HTTP error: " . print_r( $result, true ) );
 		return false;
+	}
 	
 	if ($result['response']['code'] == 200){
 
@@ -773,7 +779,7 @@ function submit_salesforce_form($post, $options) {
 		
 		return true;
 	}else{
-
+		error_log( "Salesforce response error: " . print_r( $result, true ) );
 		return false;
 	}
 }
