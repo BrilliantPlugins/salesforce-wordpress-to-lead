@@ -820,6 +820,7 @@ function salesforce_process_comment( $comment_id ) {
 	$lead_data = array( 
 		'first_name' => $first_name,
 		'last_name' => $last_name,
+		'email' => $comment->comment_author_email,
 		'lead_source' => 'Web comment, ' . get_site_url(),
 		'URL' => $comment->comment_author_url,
 		'description' => $comment->comment_content,
