@@ -873,14 +873,6 @@ add_action( 'wp_set_comment_status', 'salesforce_wp_set_comment_status', 10, 2 )
  * @return array An array of default settings for the comments form
  **/
 function salesforce_comment_form_defaults( $defaults ) {
-	$array = array( 'thing' );
-
-	if ( empty( $array[ 'no_thing' ] ) )
-		echo 'Yip';
-
-	if ( $array[ 'no_thing' ] )
-		echo 'Yop';
-
 	$options = get_option( 'salesforce2' );
 	if ( ! $options[ 'commentstoleads' ] || ! $options[ 'commentsnamefields' ] )
 		return $defaults;
