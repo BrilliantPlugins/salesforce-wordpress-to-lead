@@ -886,10 +886,15 @@ function salesforce_comment_form_defaults( $defaults ) {
 	unset( $defaults[ 'fields' ][ 'author' ] );
 	$req = get_option( 'require_name_email' );
 	$aria_req = ( $req ? " aria-required='true'" : '' );
-	$defaults[ 'fields' ][ 'author_first_name' ] = '<p class="comment-form-author comment-form-author-first-name">' . '<label for="author_first_name">' . __( 'First Name', 'salesforce' ) . ( $req ? ' <span class="required">*</span>' : '' ) . '</label> ' .
-		            '<input id="author_first_name" name="author_first_name" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30"' . $aria_req . ' /></p>';
-	$defaults[ 'fields' ][ 'author_last_name' ] = '<p class="comment-form-author comment-form-author-last-name">' . '<label for="author_last_name">' . __( 'Last Name', 'salesforce' ) . ( $req ? ' <span class="required">*</span>' : '' ) . '</label> ' .
-		            '<input id="author_last_name" name="author_last_name" type="text" value="" size="30"' . $aria_req . ' /></p>';
+	$additions = array(
+		'author_first_name' => '<p class="comment-form-author comment-form-author-first-name">' . '<label for="author_first_name">' . __( 'First Name', 'salesforce' ) . ( $req ? ' <span class="required">*</span>' : '' ) . '</label> ' .
+			'<input id="author_first_name" name="author_first_name" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30"' . $aria_req . ' /></p>',
+		'author_last_name' => '<p class="comment-form-author comment-form-author-last-name">' . '<label for="author_last_name">' . __( 'Last Name', 'salesforce' ) . ( $req ? ' <span class="required">*</span>' : '' ) . '</label> ' .
+			'<input id="author_last_name" name="author_last_name" type="text" value="" size="30"' . $aria_req . ' /></p>',
+	);
+	// Make sure the new elements are at the start of the array
+	$defaults[ 'fields' ] = $additions + $defaults[ 'fields' ];
+
 	// var_dump( $defaults ); exit;
 	return $defaults;
 }
