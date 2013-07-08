@@ -14,7 +14,7 @@ if ( ! class_exists( 'Salesforce_Admin' ) ) {
 	
 	class Salesforce_Admin extends OV_Plugin_Admin {
 
-		var $hook 		= 'salesforce-wordpress-to-lead';
+		var $hook 	= 'salesforce-wordpress-to-lead';
 		var $filename	= 'salesforce/salesforce.php';
 		var $longname	= 'WordPress-to-Lead for Salesforce CRM Configuration';
 		var $shortname	= 'Salesforce.com';
