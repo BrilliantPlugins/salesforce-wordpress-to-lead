@@ -912,7 +912,7 @@ function salesforce_form_shortcode($atts) {
 						
 			if (!$result){
 				
-				$content = '<strong>'.esc_html(stripslashes($options['sferrormsg'])).'</strong>';			
+				$content = '<div id="salesforce_w2l_lead_'.$form_id.str_replace(' ','_',$sidebar).'" class="w2llead error"><p><strong>'.esc_html(stripslashes($options['sferrormsg'])).'</strong></p></div>';			
 			}else{
 			
 				if( !empty($options['forms'][$form]['returl']) ){
@@ -928,7 +928,7 @@ function salesforce_form_shortcode($atts) {
 					<?php
 				}
 			
-				$content = '<strong>'.esc_html(stripslashes($options['successmsg'])).'</strong>';
+				$content = '<div id="salesforce_w2l_lead_'.$form_id.str_replace(' ','_',$sidebar).'" class="w2llead success"><p><strong>'.esc_html(stripslashes($options['successmsg'])).'</strong></p></div>';
 			}
 		} else {
 			$errormsg = esc_html( stripslashes($options['errormsg']) ) ;
