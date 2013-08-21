@@ -1,8 +1,8 @@
 === WordPress-to-lead for Salesforce CRM ===
-Contributors: joostdevalk, nickciske, moderntribe
+Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 2.8
-Tested up to: 3.4.2
+Tested up to: 3.5.2
 Stable tag: 2.0.3
 
 WordPress-to-Lead for Salesforce CRM creates a solid integration between your WordPress install(s) and your Salesforce.com account!
@@ -17,6 +17,10 @@ WordPress-to-Lead for Salesforce CRM creates a solid integration between your Wo
 You can fully configure all the different settings for the form, and then use a shortcode to insert the form into your posts or pages, or you can use the widget that comes with the plugin and insert the form into your sidebar!
 
 Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hnMzkxPUIyc) to get a full grasp of the power this plugin holds, and visit the [Salesforce WordPress page]( http://www.salesforce.com/form/signup/wordpress-to-lead.jsp?d=70130000000F4Mw). Check out this page to learn more about [CRM for Small Business](http://www.salesforce.com/smallbusinesscenter/).
+
+#### Previous contributors:
+* Joost de Valk (http://profiles.wordpress.org/joostdevalk/)
+* ModernTribe (http://profiles.wordpress.org/moderntribe/)
 
 == Screenshots ==
 
@@ -100,7 +104,7 @@ e.g. http://yoursite.com/thanks/ not just /thanks/
 * Hidden fields can now be used
 * Campaign_ID can now be set per form
 * Widget now hides description text upon submission
-* Admins can recieve an email of submissions
+* Admins can receive an email of submissions
 * Users can request a copy of their submission (if enabled)
 * Custom return/thanks URL can be defined per form
 * Country field added
@@ -109,7 +113,7 @@ e.g. http://yoursite.com/thanks/ not just /thanks/
 * Fix in backend security, preventing XSS hack in the backend.
 
 = 1.0.4 =
-* CSS fix for when sidebar widget and contactform are on the same page.
+* CSS fix for when sidebar widget and contact form are on the same page.
 
 = 1.0.3 =
 * Fix in email verification.
