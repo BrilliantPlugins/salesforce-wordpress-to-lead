@@ -1,8 +1,8 @@
 === WordPress-to-lead for Salesforce CRM ===
-Contributors: joostdevalk, nickciske, moderntribe
+Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 2.8
-Tested up to: 3.4.2
+Tested up to: 3.5.2
 Stable tag: 2.0.3
 
 WordPress-to-Lead for Salesforce CRM creates a solid integration between your WordPress install(s) and your Salesforce.com account!
@@ -18,6 +18,10 @@ You can fully configure all the different settings for the form, and then use a 
 
 Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hnMzkxPUIyc) to get a full grasp of the power this plugin holds, and visit the [Salesforce WordPress page]( http://www.salesforce.com/form/signup/wordpress-to-lead.jsp?d=70130000000F4Mw). Check out this page to learn more about [CRM for Small Business](http://www.salesforce.com/smallbusinesscenter/).
 
+#### Previous contributors:
+* Joost de Valk (http://profiles.wordpress.org/joostdevalk/)
+* ModernTribe (http://profiles.wordpress.org/moderntribe/)
+
 == Screenshots ==
 
 1. An example form generated with WordPress-to-Lead for Salesforce CRM (with optional CAPTCHA) -- both post and widget forms are shown in the TwentyEleven theme
@@ -29,10 +33,6 @@ Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hn
 1. Upload the `plugin` folder to the `/wp-content/plugins/` directory or install via the Add New Plugin menu
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Enter your Salesforce.com Organisation ID on the WordPress-to-Lead plugin configuration page.
-1. Go to Salesforce.com and login
-1. Click your name, top right and choose "Setup" from the dropdown
-1. Click "Customize" from the left hand menu, then "Leads", then "Web-to-Lead"
-1. Click "Edit", then check "Web-to-Lead enabled"
 
 == Frequently Asked Questions ==
 
@@ -77,6 +77,7 @@ e.g. http://yoursite.com/thanks/ not just /thanks/
 
 == Changelog ==
 
+<<<<<<< HEAD
 = 2.1 =
 * Add drop down field type (thanks jbuchbinder)
 * Improve form HTML (thanks jbuchbinder)
@@ -92,6 +93,8 @@ e.g. http://yoursite.com/thanks/ not just /thanks/
 * Make required field indicator consistent with message
 * Comments to lead (thanks simonwheatley)
 
+=======
+>>>>>>> d985cd0bcfdf90d9004a4f9a9ab8c77756a5b18b
 = 2.0.3 =
 * Captcha image now works on subfolder installs (e.g. /wordpress/)
 * Removed captcha dependence on including wp-load.php
@@ -119,7 +122,7 @@ e.g. http://yoursite.com/thanks/ not just /thanks/
 * Hidden fields can now be used
 * Campaign_ID can now be set per form
 * Widget now hides description text upon submission
-* Admins can recieve an email of submissions
+* Admins can receive an email of submissions
 * Users can request a copy of their submission (if enabled)
 * Custom return/thanks URL can be defined per form
 * Country field added
@@ -128,7 +131,7 @@ e.g. http://yoursite.com/thanks/ not just /thanks/
 * Fix in backend security, preventing XSS hack in the backend.
 
 = 1.0.4 =
-* CSS fix for when sidebar widget and contactform are on the same page.
+* CSS fix for when sidebar widget and contact form are on the same page.
 
 = 1.0.3 =
 * Fix in email verification.
