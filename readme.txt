@@ -77,7 +77,7 @@ e.g. http://yoursite.com/thanks/ not just /thanks/
 
 == Changelog ==
 
-= 2.0.4 =
+= 2.1 =
 * Add drop down field type (thanks jbuchbinder)
 * Improve form HTML (thanks jbuchbinder)
 * Add from and reply to options for emails (thanks jbuchbinder)
@@ -87,6 +87,10 @@ e.g. http://yoursite.com/thanks/ not just /thanks/
 * Add simple checkbox field (thanks jbuchbinder)
 * Add ability to duplicate forms (thanks jbuchbinder)
 * Add WPCF7 CSS integration option (thanks jbuchbinder)
+* Add wrapper divs with class names to visible fields
+* Remove Powered by SF
+* Make required field indicator consistent with message
+* Comments to lead (thanks simonwheatley)
 
 = 2.0.3 =
 * Captcha image now works on subfolder installs (e.g. /wordpress/)

@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: WordPress-to-Lead for Salesforce CRM
-Plugin URI: http://www.salesforce.com/form/signup/wordpress-to-lead.jsp?d=70130000000F4Mw
+Plugin URI: http://bit.ly/1d56aqB
 Description: Easily embed a contactform into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM!
-Author: Joost de Valk, Nick Ciske, Modern Tribe Inc.
+Author: Nick Ciske, Daddy Analytics, Modern Tribe Inc., Joost de Valk
 Version: 2.0.4
-Author URI: http://tri.be/
+Author URI: http://bit.ly/1d56aqB
 */
 
 if ( ! class_exists( 'Salesforce_Admin' ) ) {
@@ -17,9 +17,9 @@ if ( ! class_exists( 'Salesforce_Admin' ) ) {
 		var $hook 		= 'salesforce-wordpress-to-lead';
 		var $filename	= 'salesforce/salesforce.php';
 		var $longname	= 'WordPress-to-Lead for Salesforce CRM Configuration';
-		var $shortname	= 'Salesforce.com';
+		var $shortname	= 'Salesforce';
 		var $optionname = 'salesforce2';
-		var $homepage	= 'http://www.salesforce.com/wordpress/';
+		var $homepage	= 'http://bit.ly/1d56aqB';
 		var $ozhicon	= 'salesforce-16x16.png';
 		
 		function Salesforce_Admin() {
@@ -216,7 +216,7 @@ if ( ! class_exists( 'Salesforce_Admin' ) ) {
 									$content .= $this->textinput('requiredfieldstext',__('Required fields text', 'salesforce') );
 									$content .= $this->checkbox('usecss',__('Use Form CSS?', 'salesforce') );
 									$content .= $this->checkbox('wpcf7css',__('Use WPCF7 CSS integration?', 'salesforce') );
-									$content .= $this->checkbox('hide_salesforce_link',__('Hide "Powered by Salesforce CRM" on form?', 'salesforce') );
+									//$content .= $this->checkbox('hide_salesforce_link',__('Hide "Powered by Salesforce CRM" on form?', 'salesforce') );
 									$content .= '<br/><small><a href="'.$this->plugin_options_url().'&amp;tab=css">'.__('Read how to copy the CSS to your own CSS file').'</a></small><br><br>';
 
 									$content .= $this->checkbox('captcha',__('Use CAPTCHA?', 'salesforce') );
@@ -725,7 +725,7 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 		}
 
 		if($input['type'] != 'hidden' && $input['type'] != 'current_date') {
-			$content .= '<div>';
+			$content .= '<div class="sf_field sf_field_'.$id.' sf_type_'.$input['type'].'">';
 		}
 
 		$error 	= ' ';
@@ -747,7 +747,7 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 		}
 		
 		if ($input['required'] && $input['type'] != 'hidden' && $input['type'] != 'current_date')
-			$content .= ' <span class="required">*</span>';
+			$content .= ' <sup><span class="required">*</span></sup>';
 		
 		if($input['type'] != 'hidden' && $input['type'] != 'current_date') {
 			$content .= '</label>'."\n";
@@ -853,10 +853,12 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 
 	$reqtext = stripslashes($options['requiredfieldstext']);
 	if (!empty($reqtext))
-		$content .= '<p id="requiredfieldsmsg"><sup>*</sup>'.esc_html($reqtext).'</p>';
+		$content .= '<p class="sf_required_fields_msg" id="requiredfieldsmsg"><sup><span class="required">*</span></sup> '.esc_html($reqtext).'</p>';
+/*
 	if (!$options['hide_salesforce_link']) {
 		$content .= '<div id="salesforce"><small>'.__('Powered by','salesforce').' <a href="http://www.salesforce.com/">Salesforce CRM</a></small></div>';
 	}
+*/
 	
 	if ( $options['wpcf7css'] ) {
 		$content .= '</section>';
