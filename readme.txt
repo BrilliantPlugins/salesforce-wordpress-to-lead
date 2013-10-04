@@ -77,7 +77,6 @@ e.g. http://yoursite.com/thanks/ not just /thanks/
 
 == Changelog ==
 
-<<<<<<< HEAD
 = 2.1 =
 * Add drop down field type (thanks jbuchbinder)
 * Improve form HTML (thanks jbuchbinder)
@@ -93,8 +92,6 @@ e.g. http://yoursite.com/thanks/ not just /thanks/
 * Make required field indicator consistent with message
 * Comments to lead (thanks simonwheatley)
 
-=======
->>>>>>> d985cd0bcfdf90d9004a4f9a9ab8c77756a5b18b
 = 2.0.3 =
 * Captcha image now works on subfolder installs (e.g. /wordpress/)
 * Removed captcha dependence on including wp-load.php
