@@ -22,7 +22,57 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		add_action('wp_ajax_nopriv_sfw2l_get_captcha', 'salesforce_captcha');
 
 	}
+
+	function get_ad_link( $content, $term, $medium, $source = 'ThoughtRefinery', $campaign = 'WP-SF-Plugin', $url = 'http://daddyanalytics.com/' ){
+	
+	
+	
+		$link = $url . '?utm_source=%s&utm_medium=%s&utm_campaign=%s&utm_term=%s&utm_content=%s';
+	
+		return sprintf( $link, $source, $medium, $campaign, $term, $content  );
+		
+	}
+	
+	function get_ad_code( $type, $id = null ){
+		
+		$ads = array(
+			'banner-side' => array(
+				array( 'id' => 'da01', 'url' => '', 'content' => 'assets/ads/side_Analytics-track-form-submission-keyword.png' ),
+				array( 'id' => 'da02', 'url' => '', 'content' => 'assets/ads/side_analytics-marketing-roi-offer.png' ),
+				array( 'id' => 'da03', 'url' => '', 'content' => 'assets/ads/side_analytics-track-lead-location.png' ),
+			),
+
+			'banner-main' => array(
+				array( 'id' => 'da04', 'url' => '', 'content' => 'assets/ads/main_analytics-lead-management.png' ),
+				array( 'id' => 'da05', 'url' => '', 'content' => 'assets/ads/main_analytics-track-affiliate-ppc.png' ),
+				array( 'id' => 'da06', 'url' => '', 'content' => 'assets/ads/main_analytics-track-lead-source-offer.png' ),
+			),
+
+			'text' => array(
+				array( 'id' => 'da07', 'url' => '', 'content' => 'Daddy Analytics allows you to... TODO1'),
+				array( 'id' => 'da08', 'url' => '', 'content' => 'Daddy Analytics allows you to... TODO2'),
+				array( 'id' => 'da09', 'url' => '', 'content' => 'Daddy Analytics allows you to... TODO3'),
+			),
+
+		);
+		
+		if( $id ){
+		
+			foreach( $ads[ $type ] as $ad ){
+				if( $ad['id'] == $id )
+					return $ad;
+			}
 			
+		}
+		
+		if( !$num )
+			$num = mt_rand( 1, count( $ads[ $type ] ) ) - 1;
+		
+		//echo $num;
+		
+		return $ads[ $type ][ $num ];
+	}
+	
 	function warning() {
 		$options  = get_option($this->optionname);
 		if (!isset($options['org_id']) || empty($options['org_id']))
@@ -432,9 +482,9 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 										$content .= '<option '.selected($input['type'],'text',false).'>text</option>';
 										$content .= '<option '.selected($input['type'],'textarea',false).'>textarea</option>';
 										$content .= '<option '.selected($input['type'],'hidden',false).'>hidden</option>';
-										$content .= '<option '.selected($input['type'],'select',false).'>select</option>';
+										$content .= '<option '.selected($input['type'],'select',false).'>select (picklist)</option>';
 										$content .= '<option '.selected($input['type'],'checkbox',false).'>checkbox</option>';
-										$content .= '<option '.selected($input['type'],'current_date',false).'>current_date</option>';
+										//$content .= '<option '.selected($input['type'],'current_date',false).'>current_date</option>';
 										$content .= '<option '.selected($input['type'],'html',false).'>html</option>';
 										$content .= '</select></td>';
 										$content .= '<td><input size="10" name="inputs['.$field.'_label]" type="text" value="'.esc_html(stripslashes($input['label'])).'"/></td>';
@@ -469,7 +519,7 @@ row += '<td><select name="add_inputs['+i+'][type]">'
 	+ '<option>hidden</option>'
 	+ '<option>select</option>'
 	+ '<option>checkbox</option>'
-	+ '<option>current_date</option>'
+	//+ '<option>current_date</option>'
 	+ '<option>html</option>'
 	+ '</select></td>';
 row += '<td><input size="10" type="text" name="add_inputs['+i+'][label]"></td>';
@@ -541,25 +591,34 @@ i++;
 				<div class="metabox-holder">	
 					<div class="meta-box-sortables">
 						<?php
-
-							$this->postbox('usesalesforce',__('Plugin Sponsor','salesforce'),__('<p>Daddy Analytics</p>','salesforce'));
 						
-							$fid = 'X';
-							
 							if( isset( $_GET['id'] ) && $_GET['id'] ){
 							
 								$fid = absint( $_GET['id'] );
+								
+								$term = 'form';
 							
 								$this->postbox('usesalesforce',__('How to Use This Form','salesforce'),__('<p>To embed this form, copy the following shortcode into a post or page:</p><p> [salesforce form="'.$fid.'"] </p>','salesforce'));
 
 							}else{
-
+								$term = 'settings';
+								
 								$this->postbox('usesalesforce',__('How to Use This Plugin','salesforce'),__('<p>To embed a form, copy the following shortcode into a post or page:</p><p> [salesforce form="X"] </p><p>Replace X with the form number for the form you want to show.</p><p>Make sure you have entered all the correct settings on the left, including your Organisation ID.</p>','salesforce'));
 								
 							}
 
 							$this->plugin_like(false);
 							$this->plugin_support();
+
+							$loc = 'banner-side';
+
+							$ad = $this->get_ad_code( $loc );		
+
+							$link =$this->get_ad_link( $ad['id'], $term, $loc );
+							
+							$this->postbox('usesalesforce',__('Plugin Sponsor: Daddy Analytics','salesforce'),__('<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>','salesforce'));
+
+
 							// $this->news(); 
 						?>
 					</div>

@@ -15,7 +15,7 @@ require_once('lib/ov_plugin_tools.php');
 if ( ! class_exists( 'Salesforce_Admin' ) ) {
 	require_once('lib/salesforce_admin.class.php');
 }
-$salesforce = new Salesforce_Admin();
+$salesforce = new Salesforce_Admin();	
 
 // Widget Class
 if ( ! class_exists( 'Salesforce_WordPress_to_Lead_Widgets' ) ) {
