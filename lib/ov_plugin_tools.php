@@ -138,8 +138,8 @@ if (!class_exists('OV_Plugin_Admin')) {
 		function plugin_like() {
 			$content = '<p>'.__('Why not do any or all of the following:','ystplugin').'</p>';
 			$content .= '<ul>';
-			$content .= '<li><a href="'.$this->homepage.'">'.__('Link to it so other folks can find out about it.','ystplugin').'</a></li>';
-			$content .= '<li><a href="http://wordpress.org/extend/plugins/'.$this->hook.'/">'.__('Give it a good rating on WordPress.org.','ystplugin').'</a></li>';
+			$content .= '<li><a href="'.$this->homepage.'">'.__('Link to it so other folks can find out about it','ystplugin').'</a></li>';
+			$content .= '<li><a href="http://wordpress.org/support/view/plugin-reviews/salesforce-wordpress-to-lead">'.__('Give it a good review on WordPress.org','ystplugin').'</a></li>';
 			$content .= '</ul>';
 			$this->postbox($this->hook.'like', 'Like this plugin?', $content);
 		}	
