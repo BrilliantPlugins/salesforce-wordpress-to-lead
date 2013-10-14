@@ -144,13 +144,14 @@ function salesforce_da_js(  ){
 		$da_url = $options['da_url'];
 		$da_site = $options['da_site'];
 		
-		echo '<script src="//cdn.daddyanalytics.com/w2/daddy.js" type="text/javascript"></script>
+		echo "\n\n".'<!-- Begin Daddy Analytics code provided by Salesforce to Lead Plugin-->
+		<script src="//cdn.daddyanalytics.com/w2/daddy.js" type="text/javascript"></script>
 		<script type="text/javascript">
-		var da_data =daddy_init(\'{ "da_token" : '.$da_token.', "da_url" : '.$da_url.' }\');
+		var da_data = daddy_init(\'{ "da_token" : "'.$da_token.'", "da_url" : "'.$da_url.'" }\');
 		var clicky_custom = {session: {DaddyAnalytics: da_data}};
 		</script>
 		<script src="//hello.staticstuff.net/w/__stats.js" type="text/javascript"></script>
-		<script type="text/javascript">try{ clicky.init( '.$da_site.' ); }catch(e){}</script>';
+		<script type="text/javascript">try{ clicky.init( "'.$da_site.'" ); }catch(e){}</script>'."<!-- End Daddy Analytics code provided by Salesforce to Lead Plugin-->\n\n";
 	
 	}
 	
