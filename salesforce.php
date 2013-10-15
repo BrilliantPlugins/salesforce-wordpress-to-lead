@@ -147,11 +147,11 @@ function salesforce_da_js(  ){
 		echo "\n\n".'<!-- Begin Daddy Analytics code provided by Salesforce to Lead Plugin-->
 		<script src="//cdn.daddyanalytics.com/w2/daddy.js" type="text/javascript"></script>
 		<script type="text/javascript">
-		var da_data = daddy_init(\'{ "da_token" : "'.$da_token.'", "da_url" : "'.$da_url.'" }\');
+		var da_data = daddy_init(\'{ "da_token" : "'.esc_attr($da_token).'", "da_url" : "'.esc_attr($da_url).'" }\');
 		var clicky_custom = {session: {DaddyAnalytics: da_data}};
 		</script>
 		<script src="//hello.staticstuff.net/w/__stats.js" type="text/javascript"></script>
-		<script type="text/javascript">try{ clicky.init( "'.$da_site.'" ); }catch(e){}</script>'."<!-- End Daddy Analytics code provided by Salesforce to Lead Plugin-->\n\n";
+		<script type="text/javascript">try{ clicky.init( "'.esc_attr($da_site).'" ); }catch(e){}</script>'."<!-- End Daddy Analytics code provided by Salesforce to Lead Plugin-->\n\n";
 	
 	}
 	
@@ -325,6 +325,16 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 
 	//form id
 	$content .= "\t".'<input type="hidden" name="form_id" class="w2linput" value="'.$form_id.'" />'."\n";
+
+	//daddy analytics
+	if( isset( $options['da_token'] ) && isset( $options['da_url'] ) ){
+	
+		$da_token = $options['da_token'];
+		$da_url = $options['da_url'];
+
+		$content .= "\t".'<input type="hidden" id="Daddy_Analytics_Token" name="'.esc_attr($da_token).'" class="w2linput" value="" style="display: none;"/>'."\n";
+		$content .= "\t".'<input type="hidden" id="Daddy_Analytics_WebForm_URL" name="'.esc_attr($da_url).'" class="w2linput" value="" style="display: none;"/>'."\n";
+	}
 
 	$submit = stripslashes($options['submitbutton']);
 	if (empty($submit))
