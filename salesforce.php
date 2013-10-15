@@ -393,13 +393,13 @@ function submit_salesforce_form($post, $options) {
 
 	//print_r($_POST); //DEBUG
 	
-	$form_id = intval( $_POST['form_id'] );
+	$form_id = absint( $_POST['form_id'] );
 
-	$post['oid'] 			= $options['org_id'];
+	$post['oid'] 	= $options['org_id'];
 	if (!empty($options['forms'][$form_id]['source'])) {
 		$post['lead_source']	= str_replace('%URL%','['.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'].']',$options['forms'][$form_id]['source']);
 	}
-	$post['debug']			= 0;
+	$post['debug']	= 0;
 
 	// Set SSL verify to false because of server issues.
 	$args = array( 	
@@ -553,6 +553,17 @@ function salesforce_form_shortcode($atts) {
 			} else {
 				if( isset($_POST[$id]) ) $post[$id] = trim(strip_tags(stripslashes($_POST[$id])));
 			}
+		}
+
+		//pass daddy analytics fields
+		if( isset( $options['da_token'] ) && isset( $options['da_url'] ) ){
+		
+			$da_token = $options['da_token'];
+			$da_url = $options['da_url'];
+	
+			$post[$da_token] = $_POST[$da_token];
+			$post[$da_url] = $_POST[$da_url];
+
 		}
 		
 		//check captcha if enabled
