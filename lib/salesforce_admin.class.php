@@ -34,6 +34,11 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	}
 	
 	function get_ad_code( $type, $id = null ){
+	
+		$options  = get_option($this->optionname);
+
+		if( isset( $options['da_token'] ) && isset( $options['da_url'] ) && isset( $options['da_site'] ) && $options['da_token'] && $options['da_url'] && $options['da_site'] )
+			return false;
 		
 		$ads = array(
 			'banner-side' => array(
@@ -49,9 +54,9 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 			),
 
 			'text' => array(
-				array( 'id' => 'da07', 'url' => '', 'content' => 'Daddy Analytics allows you to... TODO1'),
-				array( 'id' => 'da08', 'url' => '', 'content' => 'Daddy Analytics allows you to... TODO2'),
-				array( 'id' => 'da09', 'url' => '', 'content' => 'Daddy Analytics allows you to... TODO3'),
+				array( 'id' => 'da07', 'cta' => 'Sign up Today', 'content' => 'Daddy Analytics allows you to... TODO1'),
+				array( 'id' => 'da08', 'cta' => 'Sign up Now', 'content' => 'Daddy Analytics allows you to... TODO2'),
+				array( 'id' => 'da09', 'cta' => 'Sign up Soon!', 'content' => 'Daddy Analytics allows you to... TODO3'),
 			),
 
 		);
@@ -230,17 +235,36 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 							<input type="hidden" value="<?php echo $options['version']; ?>" name="version"/>
 							<?php
 							
+								if( $options['org_id'] )
+									$class='closed';
 								
 								$content = $this->textinput('org_id',__('Your Salesforce.com organisation ID','salesforce'));
 								$content .= '<small>'.__('To find your Organisation ID, in your Salesforce.com account, go to Setup &raquo; Company Profile &raquo; Company Information','salesforce').'</small><br/>';
-								$this->postbox('sfsettings',__('Salesforce.com Settings', 'salesforce'),$content); 
+								$this->postbox('sfsettings',__('Salesforce.com Settings', 'salesforce'),$content, $class); 
 
-								$content = __('Daddy Analytics allows you to... TODO','salesforce').'<br/><br/>';
 
+							$loc = 'banner-main';
+							$ad = $this->get_ad_code( $loc );		
+							if( $ad ){
+								$link = $this->get_ad_link( $ad['id'], $term, $loc );
+								echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
+							}
+							$loc = 'text';
+							$ad = $this->get_ad_code( $loc );		
+							if( $ad ){
+								$link = $this->get_ad_link( $ad['id'], $term, $loc );
+
+								$content = $ad['content'].' <a class="button-secondary" href="'.$link.'" target="_blank">'.__($ad['cta'],'salesforce').'</a><br/><br/>';
+								$class = '';
+							}else{
+								$class = 'closed';
+								$content = 'Thank you for using <a href="hattp://daddyanalytics.com/" target="_blank">Daddy Analytics</a>!<br/><br/>';
+							}
+							
 								$content .= $this->textinput('da_token',__('Daddy Analytics Token','salesforce'));
 								$content .= $this->textinput('da_url',__('Daddy Analytics Webform URL','salesforce'));
 								$content .= $this->textinput('da_site',__('Daddy Analytics Site ID','salesforce'));
-								$this->postbox('sfsettings',__('Daddy Analytics Settings', 'salesforce'),$content); 
+								$this->postbox('sfsettings',__('Daddy Analytics Settings', 'salesforce'), $content, $class); 
 							
 								$content = $this->textinput('successmsg',__('Success message after sending message', 'salesforce') );
 								$content .= $this->textinput('errormsg',__('Error message when not all form fields are filled', 'salesforce') );
@@ -425,13 +449,13 @@ row += '<td><select name="add_inputs['+i+'][type]">'
 	+ '<option>text</option>'
 	+ '<option>textarea</option>'
 	+ '<option>hidden</option>'
-	+ '<option>select</option>'
+	+ '<option>select (picklist)</option>'
 	+ '<option>checkbox</option>'
 	//+ '<option>current_date</option>'
 	+ '<option>html</option>'
 	+ '</select></td>';
-row += '<td><input size="10" type="text" name="add_inputs['+i+'][label]"></td>';
-row += '<td><input size="14" type="text" name="add_inputs['+i+'][value]"></td>';
+row += '<td><small>Label:</small><input size="10" type="text" name="add_inputs['+i+'][label]">';
+row += '<small>Value:</small><input size="14" type="text" name="add_inputs['+i+'][value]"></td>';
 row += '<td><input type="text" name="add_inputs['+i+'][opts]"></td>';
 row += '<td><input type="text" size="2" name="add_inputs['+i+'][pos]" value="'+pos+'"></td>';
 row += '</tr>';
@@ -511,20 +535,32 @@ i++;
 							}else{
 								$term = 'settings';
 								
-								$this->postbox('usesalesforce',__('How to Use This Plugin','salesforce'),__('<p>To embed a form, copy the following shortcode into a post or page:</p><p> [salesforce form="X"] </p><p>Replace X with the form number for the form you want to show.</p><p>Make sure you have entered all the correct settings on the left, including your Organisation ID.</p>','salesforce'));
+								$this->postbox('usesalesforce',__('How to Use This Plugin','salesforce'),__('<p>To embed a form, copy the following shortcode into a post or page:</p><p> [salesforce form="X"] </p><p>Replace X with the form number for the form you want to show.</p><p><i>Make sure you have entered all the correct settings on the left, including your Organisation ID.</i></p>','salesforce'));
 								
 							}
 
 							$this->plugin_like(false);
-							$this->plugin_support();
+
+
+							$content = '<p>'.__('<b>Community</b><br>If you have any problems with this plugin, ideas for improvements, or  feature requests, please talk about them in the community support forum.<p><i>Be sure to read the <a href="">support guidelines</a> before posting.</i></p>','ystplugin').'</p><p><a class="button-secondary" href="http://wordpress.org/tags/'.$this->hook.'">'.__("Community Support",'ystplugin').'</a></p>';
+
+							$content .= '<p>'.__('<b>Premium</b><br>Need guaranteed support, customization help, or want to sponsor a feature addition?','ystplugin').'</p><p> <a class="button-secondary" href="http://thoughtrefinery/support/plugin/'.$this->hook.'">'.__("Request Premium Support",'ystplugin').'</a></p>';
+
+							
+							$this->postbox($this->hook.'support', 'Need support?', $content);
 
 							$loc = 'banner-side';
 
 							$ad = $this->get_ad_code( $loc );		
 
-							$link =$this->get_ad_link( $ad['id'], $term, $loc );
+							if( $ad ){
+	
+								$link =$this->get_ad_link( $ad['id'], $term, $loc );
+								
+								$this->postbox('usesalesforce',__('Plugin Sponsor: Daddy Analytics','salesforce'),__('<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>','salesforce'));
+							}
 							
-							$this->postbox('usesalesforce',__('Plugin Sponsor: Daddy Analytics','salesforce'),__('<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>','salesforce'));
+							$this->postbox('usesalesforce',__('Want to contribute?','salesforce'),__('<p>Pull requests welcome!</p>','salesforce'));
 
 
 							// $this->news(); 
