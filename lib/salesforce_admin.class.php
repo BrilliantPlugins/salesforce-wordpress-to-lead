@@ -83,6 +83,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	}
 	
 	function config_page() {
+
+		wp_enqueue_style( 'sfwp2lcssadmin', plugins_url('assets/css/sfwp2l-admin.css', dirname(__FILE__) ) );
 		
 		$options = get_option($this->optionname);
 		
@@ -257,10 +259,10 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 								$content = $this->textinput('submitbutton',__('Submit button text', 'salesforce') );
 								$content .= $this->textinput('requiredfieldstext',__('Required fields text', 'salesforce') );
-								$content .= $this->checkbox('usecss',__('Use Form CSS?', 'salesforce') );
+								$content .= $this->checkbox('usecss',__('Use Default CSS?', 'salesforce') );
 								$content .= $this->checkbox('wpcf7css',__('Use WPCF7 CSS integration?', 'salesforce') );
 								//$content .= $this->checkbox('hide_salesforce_link',__('Hide "Powered by Salesforce CRM" on form?', 'salesforce') );
-								$content .= '<br/><small><a href="'.$this->plugin_options_url().'&amp;tab=css">'.__('Read how to copy the CSS to your own CSS file').'</a></small><br><br>';
+								$content .= '<br/><small><a href="'.$this->plugin_options_url().'&amp;tab=css">'.__('Read how to override the default CSS with your own CSS file').'</a></small><br><br>';
 
 								$content .= $this->checkbox('captcha',__('Use CAPTCHA?', 'salesforce') );
 								$content .= '<br/><small><a href="http://en.wikipedia.org/wiki/CAPTCHA" target="_blank">'.__('Learn more about CAPTCHAs at Wikipedia').'</a></small>';
@@ -396,10 +398,8 @@ color: #999;
 }</pre>
 </div></div></div>
 
-						<?php } else if ($_GET['tab'] == 'form') { ?>
+						<?php } else if ($_GET['tab'] == 'form') {
 
-
-<?php
 if(isset($_POST['mode']) && $_POST['mode'] == 'delete' && $form_id != 1 ){
 
 echo '<div id="message" class="updated"><p>' . __('Deleted Form #','salesforce') . $form_id . '</p></div>';
@@ -446,17 +446,16 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 									$content .= '</p>';
 									
 									$this->postbox('sfformtitle',__('Form Name', 'salesforce'),$content);
-
-									$content = '<style type="text/css">th{text-align:left;}</style>';
+									
 									$content .= '<table id="salesforce_form_editor" class="wp-list-table widefat fixed">';
 									$content .= '<tr>'
 									.'<th width="10%">'.__('Field','salesforce').'</th>'
 									.'<th width="15%">'.__('Operations','salesforce').'</th>'
 									.'<th width="12%">'.__('Type','salesforce').'</th>'
-									.'<th width="13%">'.__('Label','salesforce').'</th>'
-									.'<th width="15%">'.__('Value','salesforce').'</th>'
+									.'<th width="13%">'.__('Label/Value','salesforce').'</th>'
+									//.'<th width="15%">'.__('Value','salesforce').'</th>'
 									.'<th width="20%">'.__('Options','salesforce').'</th>'
-									.'<th width="8%">'.__('Position','salesforce').'</th>'
+									.'<th width="8%">'.__('Order','salesforce').'</th>'
 									.'</tr>';
 									$i = 1;
 									foreach ($options['forms'][$form_id]['inputs'] as $field => $input) {
@@ -487,12 +486,12 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 										//$content .= '<option '.selected($input['type'],'current_date',false).'>current_date</option>';
 										$content .= '<option '.selected($input['type'],'html',false).'>html</option>';
 										$content .= '</select></td>';
-										$content .= '<td><input size="10" name="inputs['.$field.'_label]" type="text" value="'.esc_html(stripslashes($input['label'])).'"/></td>';
+										$content .= '<td><small>Label:</small> <input size="10" name="inputs['.$field.'_label]" type="text" value="'.esc_html(stripslashes($input['label'])).'"/>'; //</td>'.'<td>';
 										
-										$content .= '<td><input size="14" name="inputs['.$field.'_value]" type="text" value="';
+										$content .= '<small>Value:</small> <input size="14" name="inputs['.$field.'_value]" type="text" value="';
 										if( isset($input['value']) ) $content .= esc_html(stripslashes($input['value']));
 										$content .= '"/></td>';
-										$content .= '<td><input name="inputs['.$field.'_opts]" type="text" value="'.esc_html(stripslashes($input['opts'])).'"/></td>';
+										$content .= '<td><textarea rows="4" name="inputs['.$field.'_opts]"  >'.esc_textarea(stripslashes($input['opts'])).'</textarea></td>';
 										$content .= '<td><input size="2" name="inputs['.$field.'_pos]" type="text" value="'.esc_html($input['pos']).'"/></td>';
 										$content .= '</tr>';
 										$i++;

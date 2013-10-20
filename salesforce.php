@@ -170,38 +170,10 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 	if (!empty($content))
 		$content = wpautop('<strong>'.$content.'</strong>');
 		
-	if ($options['usecss'] && !$is_sidebar) {
-		$content .= '<style type="text/css">
-		form.w2llead{ text-align:left; clear:both;}
-		.w2llabel, .w2linput { display:block; float:left; }
-		.w2llabel.error { color:#f00; }
-		.w2llabel { clear:left; margin:4px 0; width:50%; }
-		.w2linput.text{ width:50%; height:18px; margin:4px 0; }
-		.w2linput.textarea { clear:both; width:100%; height:75px; margin:10px 0;}
-		.w2lsubmit{ float:none; clear:both; }
-		.w2linput.submit { float:none; margin: 10px 0 0 0; clear:both;}
-		.w2linput.checkbox{ vertical-align: middle;}
-		.w2llabel.checkbox{ clear:both; }
-		.w2limg{ display: block; clear: both; }
-		#salesforce{ margin:3px 0 0 0; color:#aaa; }
-		#salesforce a{ color:#999; }
-		SPAN.required { font-weight: bold; }
-		</style>';
-	} elseif ($is_sidebar && $options['usecss']) {
-		$content .= '<style type="text/css">
-		.sidebar form.w2llead{ clear:none; text-align:left; }
-		.sidebar .w2linput, #sidebar .w2llabel{ float:none; display:inline; }
-		.sidebar .w2llabel.error { color:#f00; }
-		.sidebar .w2llabel { margin:4px 0; float:none; display:inline; }
-		.sidebar .w2linput.text{ width:95%; height:18px; margin:4px 0;}
-		.sidebar .w2linput.textarea {width:95%; height:50px; margin:10px 0;}
-		.sidebar .w2lsubmit{ float:none; clear:both; }
-		.sidebar .w2linput.submit { margin:10px 0 0 0; }
-		#salesforce{ margin:3px 0 0 0; color:#aaa; }
-		#salesforce a{ color:#999; }
-		SPAN.required { font-weight: bold; }
-		</style>';
+	if ($options['usecss']) {
+		wp_enqueue_style( 'sfwp2lcss', plugins_url('/assets/css/sfwp2l.css', __FILE__) );
 	}
+	
 	$sidebar = '';
 	
 	if ( $is_sidebar )
