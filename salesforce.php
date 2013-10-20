@@ -173,7 +173,12 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 	if ($options['usecss']) {
 		wp_enqueue_style( 'sfwp2lcss', plugins_url('/assets/css/sfwp2l.css', __FILE__) );
 	}
+
+	$custom_css = '/salesforce-wordpress-to-lead/custom.css';
 	
+	if( file_exists( get_stylesheet_directory() . $custom_css ) )
+		wp_enqueue_style( 'sfwp2lcsscustom', get_stylesheet_directory_uri() . $custom_css );
+
 	$sidebar = '';
 	
 	if ( $is_sidebar )
@@ -187,9 +192,9 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 	foreach ($options['forms'][$form_id]['inputs'] as $id => $input) {
 		if (!$input['show'])
 			continue;
-		$val 	= '';
+		$val = '';
 		if (isset($_POST[$id])){
-			$val	= esc_attr(strip_tags(stripslashes($_POST[$id])));
+			$val = esc_attr(strip_tags(stripslashes($_POST[$id])));
 		}else{
 			if( isset($input['value']) ) $val	= esc_attr(strip_tags(stripslashes($input['value'])));
 		}

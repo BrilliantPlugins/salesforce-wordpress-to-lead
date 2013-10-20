@@ -1,4 +1,4 @@
-/* SalesForce WP to lead CSS */
+/* SalesForce WordPress to Lead Default CSS */
 
 form.w2llead{ text-align:left; clear:both;}
 .w2llabel, .w2linput { display:block; float:left; }
@@ -13,7 +13,7 @@ form.w2llead{ text-align:left; clear:both;}
 .w2limg{ display: block; clear: both; }
 #salesforce{ margin:3px 0 0 0; color:#aaa; }
 #salesforce a{ color:#999; }
-SPAN.required { font-weight: bold; }
+span.required { font-weight: bold; }
 
 .sidebar .w2linput, #sidebar .w2llabel{ float:none; display:inline; }
 .sidebar .w2llabel.error { color:#f00; }

@@ -294,112 +294,21 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 							?>
 							
 						</form>
-						<?php } else if ($_GET['tab'] == 'css') { ?>
-						<?php echo '<p>'.salesforce_back_link($this->plugin_options_url()).'</p>'; ?>
-						<p><?php echo __("If you don't want the inline styling this plugins uses, but add the CSS for the form to your own theme's CSS, you can start by just copying the proper CSS below into your CSS file. Just copy the correct text, and then you can usually find &amp; edit your CSS file",'salesforce'); ?> <a href="<?php echo admin_url('theme-editor.php'); ?>?file=<?php echo str_replace(WP_CONTENT_DIR,'',get_stylesheet_directory()); ?>/style.css&amp;theme=<?php echo urlencode(get_current_theme()); ?>&amp;dir=style"><?php echo __('here','salesforce');?></a>.</p>
-						<div style="width:260px;margin:0 10px 0 0;float:left;">
-							<div id="normalcss" class="postbox">
-								<div class="handlediv" title="<?php echo __('Click to toggle','salesforce'); ?>"><br /></div>
-								<h3 class="hndle"><span><?php echo __('CSS for the normal form','salesforce'); ?></span></h3>
-								<div class="inside">
-<pre>form.w2llead {
-text-align: left;
-clear: both;
-}
-.w2llabel, .w2linput {
-display: block;
-width: 120px;
-float: left;
-}
-.w2llabel.error {
-color: #f00;
-}
-.w2llabel {
-clear: left;
-margin: 4px 0;
-}
-.w2linput.text {
-width: 200px;
-height: 18px;
-margin: 4px 0;
-}
-.w2linput.textarea {
-clear: both;
-width: 320px;
-height: 75px;
-margin: 10px 0;
-}
-.w2linput.submit {
-float: none;
-margin: 10px 0 0 0;
-clear: both;
-width: 150px;
-}
-.w2linput.checkbox{
-vertical-align: middle;
-}
-.w2llabel.checkbox{
-clear:both;
-}
-.w2linput.select{
-clear:both;
-}
-.w2limg{ 
-display: block; clear: both; 
-}
-#salesforce {
-margin: 3px 0 0 0;
-color: #aaa;
-}
-#salesforce a {
-color: #999;
-}</pre>
-</div>
-</div></div>
-<div style="width:260px;float:left;">
-<div id="widgetcss" class="postbox">
-	<div class="handlediv" title="<?php echo __('Click to toggle','salesforce'); ?>"><br /></div>
-	<h3 class="hndle"><span><?php echo __('CSS for the sidebar widget form','salesforce'); ?></span></h3>
-	<div class="inside">
-<pre>.sidebar form.w2llead {
-clear: none;
-text-align: left;
-}
-.sidebar .w2linput, 
-.sidebar .w2llabel {
-float: none;
-display: inline;
-}
-.sidebar .w2llabel.error {
-color: #f00;
-}
-.sidebar .w2llabel {
-margin: 4px 0;
-}
-.sidebar .w2linput.text {
-width: 160px;
-height: 18px;
-margin: 4px 0;
-}
-.sidebar .w2linput.textarea {
-width: 160px;
-height: 50px;
-margin: 10px 0;
-}
-.sidebar .w2linput.submit {
-margin: 10px 0 0 0;
-}
-#salesforce {
-margin: 3px 0 0 0;
-color: #aaa;
-}
-#salesforce a {
-color: #999;
-}</pre>
-</div></div></div>
+						<?php } else if ($_GET['tab'] == 'css') { 
+						echo '<p>'.salesforce_back_link($this->plugin_options_url()).'</p>'; ?>
+						<p>
+						<?php echo __("<p>If you don't want the default styling this plugins uses, but add the CSS for the form to your own theme, create a folder named <i>salesforce-wordpress-to-lead</i> in your theme folder, then create a file called <i>custom.css</i> within that.</p>
+							
+							<p>".get_stylesheet_directory()."/<b>salesforce-wordpress-to-lead</b>/<b>custom.css</b></p>
+							
+							<p>If found, that file will be enqueued after the default CSS, or by itself if the default CSS is disabled on the main options screen.</p>
+							");
+						
+						echo '<pre>'.file_get_contents( dirname(plugin_dir_path(__FILE__)) . '/assets/css/sfwp2l.css' ).'<pre>';
+						
+						?>
 
 						<?php } else if ($_GET['tab'] == 'form') {
-
 if(isset($_POST['mode']) && $_POST['mode'] == 'delete' && $form_id != 1 ){
 
 echo '<div id="message" class="updated"><p>' . __('Deleted Form #','salesforce') . $form_id . '</p></div>';
