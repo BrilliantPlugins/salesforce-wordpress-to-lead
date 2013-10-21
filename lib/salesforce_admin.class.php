@@ -22,10 +22,30 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		add_action('wp_ajax_nopriv_sfw2l_get_captcha', 'salesforce_captcha');
 
 	}
+	
+	function using_da(){
+		if( isset( $options['da_token'] ) && isset( $options['da_url'] ) && isset( $options['da_site'] ) && $options['da_token'] && $options['da_url'] && $options['da_site'] )
+			return true;
+		
+		return false;
+	}
+	
+	function get_ad_term(){
+		
+		if( isset( $_GET['id'] ) && $_GET['id'] ){
+			$term = 'form';
+		}else{
+			$term = 'settings';
+		}
+		
+		return $term;
+		
+	}
 
-	function get_ad_link( $content, $term, $medium, $source = 'ThoughtRefinery', $campaign = 'WP-SF-Plugin', $url = 'http://daddyanalytics.com/' ){
+	function get_ad_link( $content, $medium, $term='', $url = 'http://daddyanalytics.com/', $source = 'ThoughtRefinery', $campaign = 'WP-SF-Plugin' ){
 	
-	
+		if( !$term )
+			$term = $this->get_ad_term();
 	
 		$link = $url . '?utm_source=%s&utm_medium=%s&utm_campaign=%s&utm_term=%s&utm_content=%s';
 	
@@ -37,8 +57,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	
 		$options  = get_option($this->optionname);
 
-		if( isset( $options['da_token'] ) && isset( $options['da_url'] ) && isset( $options['da_site'] ) && $options['da_token'] && $options['da_url'] && $options['da_site'] )
-			return false;
+		if( $this->using_da() || defined( SFWP2L_HIDE_ADS )  )
+			return '';
 		
 		$ads = array(
 			'banner-side' => array(
@@ -54,9 +74,9 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 			),
 
 			'text' => array(
-				array( 'id' => 'da07', 'cta' => 'Sign up Today', 'content' => 'Daddy Analytics allows you to... TODO1'),
-				array( 'id' => 'da08', 'cta' => 'Sign up Now', 'content' => 'Daddy Analytics allows you to... TODO2'),
-				array( 'id' => 'da09', 'cta' => 'Sign up Soon!', 'content' => 'Daddy Analytics allows you to... TODO3'),
+				array( 'id' => 'da07', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a class="button-secondary" href="%link1%" target="_blank">Watch a video of Daddy Analytics</a> or <a class="button-secondary" href="%link2%" target="_blank">Sign up for a free trial of Daddy Analytics.</a>'),
+				array( 'id' => 'da08', 'cta' => 'Sign up Now', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a href="%link1%" target="_blank">Watch a video of Daddy Analytics</a> or <a href="%link2%" target="_blank">Sign up for a free trial of Daddy Analytics.</a>'),
+				//array( 'id' => 'da09', 'cta' => 'Sign up Soon!', 'content' => 'Daddy Analytics allows you to... TODO3'),
 			),
 
 		);
@@ -246,15 +266,15 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 							$loc = 'banner-main';
 							$ad = $this->get_ad_code( $loc );		
 							if( $ad ){
-								$link = $this->get_ad_link( $ad['id'], $term, $loc );
+								$link = $this->get_ad_link( $ad['id'], $loc );
 								echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
 							}
 							$loc = 'text';
 							$ad = $this->get_ad_code( $loc );		
 							if( $ad ){
-								$link = $this->get_ad_link( $ad['id'], $term, $loc );
+								$link = $this->get_ad_link( $ad['id'], $loc );
 
-								$content = $ad['content'].' <a class="button-secondary" href="'.$link.'" target="_blank">'.__($ad['cta'],'salesforce').'</a><br/><br/>';
+								$content = $ad['content'].'<br/><br/>';
 								$class = '';
 							}else{
 								$class = 'closed';
@@ -528,12 +548,9 @@ i++;
 							
 								$fid = absint( $_GET['id'] );
 								
-								$term = 'form';
-							
 								$this->postbox('usesalesforce',__('How to Use This Form','salesforce'),__('<p>To embed this form, copy the following shortcode into a post or page:</p><p> [salesforce form="'.$fid.'"] </p>','salesforce'));
 
 							}else{
-								$term = 'settings';
 								
 								$this->postbox('usesalesforce',__('How to Use This Plugin','salesforce'),__('<p>To embed a form, copy the following shortcode into a post or page:</p><p> [salesforce form="X"] </p><p>Replace X with the form number for the form you want to show.</p><p><i>Make sure you have entered all the correct settings on the left, including your Organisation ID.</i></p>','salesforce'));
 								
@@ -542,7 +559,7 @@ i++;
 							$this->plugin_like(false);
 
 
-							$content = '<p>'.__('<b>Community</b><br>If you have any problems with this plugin, ideas for improvements, or  feature requests, please talk about them in the community support forum.<p><i>Be sure to read the <a href="">support guidelines</a> before posting.</i></p>','ystplugin').'</p><p><a class="button-secondary" href="http://wordpress.org/tags/'.$this->hook.'">'.__("Community Support",'ystplugin').'</a></p>';
+							$content = '<p>'.__('<b>Community</b><br>If you have any problems with this plugin, ideas for improvements, or  feature requests, please talk about them in the community support forum.<p><i>Be sure to read the <a href="">support guidelines</a> before posting.</i></p>','ystplugin').'</p><p><a class="button-secondary" href="http://wordpress.org/tags/'.$this->hook.'">'.__("Get Community Support",'ystplugin').'</a></p>';
 
 							$content .= '<p>'.__('<b>Premium</b><br>Need guaranteed support, customization help, or want to sponsor a feature addition?','ystplugin').'</p><p> <a class="button-secondary" href="http://thoughtrefinery/support/plugin/'.$this->hook.'">'.__("Request Premium Support",'ystplugin').'</a></p>';
 
@@ -555,12 +572,21 @@ i++;
 
 							if( $ad ){
 	
-								$link =$this->get_ad_link( $ad['id'], $term, $loc );
+								$link =$this->get_ad_link( $ad['id'], $loc );
 								
 								$this->postbox('usesalesforce',__('Plugin Sponsor: Daddy Analytics','salesforce'),__('<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>','salesforce'));
 							}
 							
-							$this->postbox('usesalesforce',__('Want to contribute?','salesforce'),__('<p>Pull requests welcome!</p>','salesforce'));
+							$this->postbox('usesalesforce',__('Want to contribute?','salesforce'),__('<p class="aligncenter">Pull requests welcome!<br><br>
+							
+							<a class="button-secondary" href="https://github.com/nciske/salesforce-wordpress-to-lead" target="_blank">Fork me on GitHub</a><br><br>
+
+							<a class="button-secondary" href="https://github.com/nciske/salesforce-wordpress-to-lead/issues" target="_blank">Submit an issue</a>
+
+							
+							
+							
+							</p>','salesforce'));
 
 
 							// $this->news(); 
