@@ -42,7 +42,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		
 	}
 
-	function get_ad_link( $content, $medium, $term='', $url = 'http://daddyanalytics.com/', $source = 'ThoughtRefinery', $campaign = 'WP-SF-Plugin' ){
+	function get_ad_link( $content, $medium, $url = 'http://daddyanalytics.com/', $term='', $source = 'ThoughtRefinery', $campaign = 'WP-SF-Plugin' ){
 	
 		if( !$term )
 			$term = $this->get_ad_term();
@@ -272,8 +272,11 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 							$loc = 'text';
 							$ad = $this->get_ad_code( $loc );		
 							if( $ad ){
-								$link = $this->get_ad_link( $ad['id'], $loc );
-
+								$link1 = $this->get_ad_link( $ad['id'], $loc );
+								$link2 = $this->get_ad_link( $ad['id'], $loc, 'https://daddyanalytics.com/start-free-trial/' );
+								
+								$ad['content'] = str_replace( array('%link1%','%link2%'), array($link1,$link2), $ad['content'] );
+								
 								$content = $ad['content'].'<br/><br/>';
 								$class = '';
 							}else{
