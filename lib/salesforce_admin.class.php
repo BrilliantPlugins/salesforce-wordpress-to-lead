@@ -256,7 +256,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				if (!current_user_can('manage_options')) die(__('You cannot edit the WordPress-to-Lead options.', 'salesforce'));
 				check_admin_referer('salesforce-udpatesettings');
 				
-				foreach (array('usecss','showccuser','ccadmin','captcha','wpcf7css','hide_salesforce_link') as $option_name) {
+				foreach (array('usecss','showccuser','ccadmin','captcha','wpcf7css','hide_salesforce_link', 'commentstoleads', 'commentsnamefields') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options[$option_name] = true;
 					} else {
@@ -365,6 +365,11 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 								$this->postbox('formsettings',__('Form Settings', 'salesforce'),$content); 
 								
+								$content = $this->checkbox('commentstoleads',__('Create a lead when an approved comment is published', 'salesforce') );
+								$content .= $this->checkbox('commentsnamefields',__('Replace the "Name" field on the comment form with "First Name" and "Last Name"', 'salesforce') );
+								$content .= sprintf( '<p class="description">%s</p>', __( '<small>Using first and last name fields allows for cleaner Salesforce leads, otherwise the "first name" on the lead will contain the full name, but it may create issues with some WordPress themes.</small>', 'salesforce' ) );
+								
+								$this->postbox('commentsettings',__('Comment Settings', 'salesforce'),$content);								
 								
 								?>
 								<div class="submit"><input type="submit" class="button-primary" name="submit" value="<?php _e("Save WordPress-to-Lead Settings", 'salesforce'); ?>" /></div>

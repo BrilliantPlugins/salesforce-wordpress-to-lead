@@ -17,6 +17,9 @@ if ( ! class_exists( 'Salesforce_Admin' ) ) {
 }
 $salesforce = new Salesforce_Admin();	
 
+// Comment to lead functions
+require_once('lib/salesforce_comment_to_lead.php');
+
 // Widget Class
 if ( ! class_exists( 'Salesforce_WordPress_to_Lead_Widgets' ) ) {
 	require_once('lib/salesforce_widget.class.php');
@@ -48,6 +51,9 @@ function salesforce_default_settings() {
 	$options['da_token']			= '';
 	$options['da_url']				= '';
 	$options['da_site']				= '';
+
+	$options['commentstoleads']    = false;
+	$options['commentsnamefields']  = false;
 
 	$options['usecss']				= true;
 	$options['wpcf7css']			= false;
