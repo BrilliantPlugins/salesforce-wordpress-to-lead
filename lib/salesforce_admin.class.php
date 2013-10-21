@@ -1,15 +1,26 @@
 <?php
 class Salesforce_Admin extends OV_Plugin_Admin {
 
-	var $hook 		= 'salesforce-wordpress-to-lead';
-	var $filename	= 'salesforce/salesforce.php';
-	var $longname	= 'WordPress-to-Lead for Salesforce CRM Configuration';
-	var $shortname	= 'Salesforce';
-	var $optionname = 'salesforce2';
-	var $homepage	= 'http://bit.ly/1d56aqB';
-	var $ozhicon	= 'salesforce-16x16.png';
+	public $optionname;
 	
+	public $hook;
+	public $filename;
+	public $longname;
+	public $shortname;
+	public $homepage;
+	public $ozhicon;
+
 	function Salesforce_Admin() {
+	
+		$this->optionname = 'salesforce2';	
+
+		$this->hook 		= 'salesforce-wordpress-to-lead';
+		$this->filename		= 'salesforce/salesforce.php';
+		$this->longname		= 'WordPress-to-Lead for Salesforce CRM Configuration';
+		$this->shortname	= 'Salesforce';
+		$this->homepage		= 'http://bit.ly/1d56aqB';
+		$this->ozhicon		= 'salesforce-16x16.png';
+	
 		add_action( 'admin_menu', array(&$this, 'register_settings_page') );
 		add_filter( 'plugin_action_links', array(&$this, 'add_action_link'), 10, 2 );
 		add_filter( 'ozh_adminmenu_icon', array(&$this, 'add_ozh_adminmenu_icon' ) );				
@@ -22,8 +33,46 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		add_action('wp_ajax_nopriv_sfw2l_get_captcha', 'salesforce_captcha');
 
 	}
+
+	public static function default_form() {
+	
+		$dform = array();
+		
+		$dform['form_name'] = 'My Lead Form '.date('Y-m-d h:i:s');
+		
+		if( self::using_da() ){
+			$dform['source'] = '';
+		}else{
+			$dform['source'] = __('Lead form on ','salesforce').get_bloginfo('name');
+		}
+		
+		$dform['returl'] = '';
+		
+		$dform['inputs'] = array(
+				'first_name' 	=> array('type' => 'text', 'label' => 'First name', 'show' => true, 'required' => true),
+				'first_name' 	=> array('type' => 'text', 'label' => 'First name', 'show' => true, 'required' => true),
+				'last_name' 	=> array('type' => 'text', 'label' => 'Last name', 'show' => true, 'required' => true),
+				'email' 		=> array('type' => 'text', 'label' => 'Email', 'show' => true, 'required' => true),
+				'phone' 		=> array('type' => 'text', 'label' => 'Phone', 'show' => true, 'required' => false),
+				'description' 	=> array('type' => 'textarea', 'label' => 'Message', 'show' => true, 'required' => true),
+				'title' 		=> array('type' => 'text', 'label' => 'Title', 'show' => false, 'required' => false),
+				'company' 		=> array('type' => 'text', 'label' => 'Company', 'show' => false, 'required' => false),
+				'street' 		=> array('type' => 'text', 'label' => 'Street', 'show' => false, 'required' => false),
+				'city'	 		=> array('type' => 'text', 'label' => 'City', 'show' => false, 'required' => false),
+				'state'	 		=> array('type' => 'text', 'label' => 'State', 'show' => false, 'required' => false),
+				'zip'	 		=> array('type' => 'text', 'label' => 'ZIP', 'show' => false, 'required' => false),
+				'country'	 	=> array('type' => 'text', 'label' => 'Country', 'show' => false, 'required' => false),
+				'Campaign_ID'	=> array('type' => 'hidden', 'label' => 'Campaign ID', 'show' => false, 'required' => false),
+			);
+		
+		return $dform;
+	
+	}
 	
 	function using_da(){
+		
+		$options = get_option( 'salesforce2' );
+		
 		if( isset( $options['da_token'] ) && isset( $options['da_url'] ) && isset( $options['da_site'] ) && $options['da_token'] && $options['da_url'] && $options['da_site'] )
 			return true;
 		
@@ -122,7 +171,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				$form_id = (int) $_POST['form_id'];
 				
 				if(!isset($options['forms'][$form_id]))
-					$options['forms'][$form_id] = salesforce_default_form();
+					$options['forms'][$form_id] = $this->default_form();
 
 				//Begin Save Form Data
 				$newinputs = array();
@@ -376,7 +425,7 @@ if( !isset($form_id) || $form_id == 0 ){
 	//generate a new default form
 	end( $options['forms'] );
 	$form_id = key( $options['forms'] ) + 1;
-	$options['forms'][$form_id] = salesforce_default_form();
+	$options['forms'][$form_id] = $this->default_form();
 }
 
 //check for deleted forms
@@ -501,7 +550,12 @@ i++;
 									$content = '<p>';
 									$content .= '<label>'.__('Lead Source:','salesforce').'</label><br/>';
 									$content .= '<input type="text" name="source" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['source']).'">';
-									$content .= '<br/><small>'.__('Lead Source to display in Salesforce.com, use %URL% to include the URL of the page containing the form').'</small>';
+
+									$content .= '<br/><small>'.__('Lead Source (up to 40 characters) to display in Salesforce.com, use %URL% to include the URL of the page containing the form.').'</small>';
+
+									if( !defined('SFWP2L_HIDE_ADS') )
+										$content .= '<br/><br/><small>'.__('<b>Daddy Analytics</b> will populate the Lead Source field with the web source of the Lead (such as Organic - Google, Paid - Bing, or Google Adwords). Daddy Analytics will also populate the Salesforce Address field with the estimated GeoLocation of your Leads. <br><i>Leave the Lead Source field blank if you have a subscription to <a href="'.$this->get_ad_link( 'da_ls', 'text' ).'">Daddy Analytics.</a></i>').'</small>';
+									
 									$content .= '</p>';
 									
 									$content .= '<p>';

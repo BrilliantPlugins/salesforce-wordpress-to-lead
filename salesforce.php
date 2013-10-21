@@ -53,40 +53,11 @@ function salesforce_default_settings() {
 	$options['wpcf7css']			= false;
 	//$options['hide_salesforce_link']= true;
 
-	$options['forms'][1] = salesforce_default_form();
+	$options['forms'][1] = Salesforce_Admin::default_form();
 	
 	update_option('salesforce2', $options);
 	
 	return $options;
-}
-
-function salesforce_default_form() {
-
-	$dform = array();
-	
-	$dform['form_name'] = 'My Lead Form '.date('Y-m-d h:i:s');
-	$dform['source'] = __('Lead form on ','salesforce').get_bloginfo('name');
-	$dform['returl'] = '';
-	
-	$dform['inputs'] = array(
-			'first_name' 	=> array('type' => 'text', 'label' => 'First name', 'show' => true, 'required' => true),
-			'first_name' 	=> array('type' => 'text', 'label' => 'First name', 'show' => true, 'required' => true),
-			'last_name' 	=> array('type' => 'text', 'label' => 'Last name', 'show' => true, 'required' => true),
-			'email' 		=> array('type' => 'text', 'label' => 'Email', 'show' => true, 'required' => true),
-			'phone' 		=> array('type' => 'text', 'label' => 'Phone', 'show' => true, 'required' => false),
-			'description' 	=> array('type' => 'textarea', 'label' => 'Message', 'show' => true, 'required' => true),
-			'title' 		=> array('type' => 'text', 'label' => 'Title', 'show' => false, 'required' => false),
-			'company' 		=> array('type' => 'text', 'label' => 'Company', 'show' => false, 'required' => false),
-			'street' 		=> array('type' => 'text', 'label' => 'Street', 'show' => false, 'required' => false),
-			'city'	 		=> array('type' => 'text', 'label' => 'City', 'show' => false, 'required' => false),
-			'state'	 		=> array('type' => 'text', 'label' => 'State', 'show' => false, 'required' => false),
-			'zip'	 		=> array('type' => 'text', 'label' => 'ZIP', 'show' => false, 'required' => false),
-			'country'	 	=> array('type' => 'text', 'label' => 'Country', 'show' => false, 'required' => false),
-			'Campaign_ID'	=> array('type' => 'hidden', 'label' => 'Campaign ID', 'show' => false, 'required' => false),
-		);
-	
-	return $dform;
-
 }
 
 function salesforce_back_link($url){
