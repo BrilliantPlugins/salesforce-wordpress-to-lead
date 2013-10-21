@@ -416,8 +416,11 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 	
 	//format message
 	foreach($post as $name=>$value){
-		if( !empty($value) )
-			$message .= $options['forms'][$form_id]['inputs'][$name]['label'].': '.$value."\r\n";
+		if( !empty($name) && !empty($value) )
+			$label = $options['forms'][$form_id]['inputs'][$name]['label'];
+			
+			if( trim( $label ) != '' ) 
+				$message .= $label.': '.$value."\r\n";
 	}
 
 	wp_mail( $_POST['email'], $subject, $message, $headers );
@@ -447,8 +450,13 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 	
 	//format message
 	foreach($post as $name=>$value){
-		if( !empty($value) )
-			$message .= $options['forms'][$form_id]['inputs'][$name]['label'].': '.$value."\r\n";
+		if( !empty($value) ){
+		
+			$label = $options['forms'][$form_id]['inputs'][$name]['label'];
+			
+			if( trim( $label ) != '' ) 
+				$message .= $label.': '.$value."\r\n";
+		}
 	}
 
 	$emails = array( get_option('admin_email') );
