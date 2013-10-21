@@ -350,7 +350,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								$content .= '<small>'.__('Use %BLOG_NAME% to auto-insert the blog title into the subject','salesforce').'</small><br/><br/><br/>';
 
 								$content .= $this->checkbox('ccadmin',__('Send blog admin an email notification', 'salesforce') );
-								$content .= $this->checkbox('email_sender',__('Use this sender', 'salesforce') );
+								//$content .= $this->checkbox('email_sender',__('Use this sender', 'salesforce') );
 								$this->postbox('sfsettings',__('Email Settings', 'salesforce'),$content); 
 
 								$content = $this->textinput('submitbutton',__('Submit button text', 'salesforce') );
