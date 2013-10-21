@@ -8,8 +8,11 @@ form.w2llead{ text-align:left; clear:both;}
 .w2linput.textarea { clear:both; width:100%; height:75px; margin:10px 0;}
 .w2lsubmit{ float:none; clear:both; }
 .w2linput.submit { float:none; margin: 10px 0 0 0; clear:both;}
-.w2linput.checkbox{ vertical-align: middle;}
-.w2llabel.checkbox{ clear:both; }
+
+.w2llabel.checkbox, .w2linput.checkbox{ display: inline-block; float: none; }
+.sf_field, .sf_type_checkbox{ clear: both; }
+.w2llabel.checkbox{ clear: none; margin: 0; }
+
 .w2limg{ display: block; clear: both; }
 #salesforce{ margin:3px 0 0 0; color:#aaa; }
 #salesforce a{ color:#999; }
