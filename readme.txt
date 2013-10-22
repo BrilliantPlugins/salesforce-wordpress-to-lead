@@ -4,6 +4,8 @@ Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesf
 Requires at least: 2.8
 Tested up to: 3.5.2
 Stable tag: 2.0.3
+License: GPLv2
+Donate link: http://thoughtrefinery.com/donate/
 
 WordPress-to-Lead for Salesforce CRM creates a solid integration between your WordPress install(s) and your Salesforce.com account!
 
@@ -75,6 +77,49 @@ In this example, 621U000000IJat is the Campaign_ID -- make sure you use the ID f
 No, as long as it's a valid URL it will work. However it should be an absolute URL regardless of where it is located.
 e.g. http://yoursite.com/thanks/ not just /thanks/
 
+== Other Notes ==
+
+= Filters =
+
+salesforce_w2l_form_html
+HTML of the form before it's returned to WordPress for display
+
+**salesforce_w2l_cc_user_from_name**
+
+Change from name (user confirmation)
+
+**salesforce_w2l_cc_user_from_email**
+
+Change from email (user confirmation)
+
+**salesforce_w2l_cc_admin_from_name**
+
+Change from name (admin notification)
+
+**salesforce_w2l_cc_admin_from_email**
+
+Change from email (admin notification)
+
+**salesforce_w2l_cc_admin_email_list**
+
+Adding this code to your functions.php file will add 3 emails to the list. You can add as many as you want and each will get an admin notification email.
+
+`
+add_filter('salesforce_w2l_cc_admin_email_list','salesforce_add_emails');
+
+function salesforce_add_emails( $emails ){
+
+//uncomment line below to remove site admin
+//unset($emails[0]);
+
+$emails[]='email@domain.com';
+$emails[]='email2@domain.com';
+$emails[]='email3@domain.com';
+
+return $emails;
+}
+`
+
 == Changelog ==
 
 = 2.1 =
@@ -83,14 +128,19 @@ e.g. http://yoursite.com/thanks/ not just /thanks/
 * Add from and reply to options for emails (thanks jbuchbinder)
 * Add delete checkbox to form editor (thanks jbuchbinder)
 * Add HTML field type (thanks jbuchbinder)
-* Add current date field type (thanks jbuchbinder)
 * Add simple checkbox field (thanks jbuchbinder)
 * Add ability to duplicate forms (thanks jbuchbinder)
 * Add WPCF7 CSS integration option (thanks jbuchbinder)
 * Add wrapper divs with class names to visible fields
-* Remove Powered by SF
+* Remove Powered by SF for all forms
 * Make required field indicator consistent with message
-* Comments to lead (thanks simonwheatley)
+* Comments to lead option (thanks simonwheatley)
+* Global DaddyAnalytics settings make integration easy
+* Added filters to aid in extending the plugin
+* Hide fields with no label in admin and user email
+* Fixed checkbox/label alignment
+* Readme improvements
+* Removed contributors no longer involved in plugin development
 
 = 2.0.3 =
 * Captcha image now works on subfolder installs (e.g. /wordpress/)
