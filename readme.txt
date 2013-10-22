@@ -85,6 +85,14 @@ e.g. http://yoursite.com/thanks/ not just /thanks/
 
 Change the API url the plugin posts data to
 
+`
+add_filter( 'salesforce_w2l_api_url', 'my_w2l_api_url' );
+
+function my_w2l_api_url( $url ){
+	return 'https://my.custom-api-url.com/something/';
+}
+`
+
 **salesforce_w2l_form_html**
 
 HTML of the form before it's returned to WordPress for display
