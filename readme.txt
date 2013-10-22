@@ -81,7 +81,12 @@ e.g. http://yoursite.com/thanks/ not just /thanks/
 
 = Filters =
 
-salesforce_w2l_form_html
+**salesforce_w2l_api_url**
+
+Change the API url the plugin posts data to
+
+**salesforce_w2l_form_html**
+
 HTML of the form before it's returned to WordPress for display
 
 **salesforce_w2l_cc_user_from_name**

@@ -364,7 +364,10 @@ function submit_salesforce_form($post, $options) {
 		'sslverify'	=> false,  
 	);
 	
-	$result = wp_remote_post('https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8', $args);
+	$url = 'https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
+	$url = apply_filters( 'salesforce_w2l_api_url', $url );
+	
+	$result = wp_remote_post( $url, $args );
 
 	if( is_wp_error($result) ) {
 		error_log( "Salesforce HTTP error: " . print_r( $result, true ) );
