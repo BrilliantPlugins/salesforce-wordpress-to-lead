@@ -38,11 +38,18 @@ Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hn
 
 == Frequently Asked Questions ==
 
+= How do I setup Web to Lead/Case for my SalesForce Account? =
+
+[Setting Up Web-to-Lead](http://login.salesforce.com/help/doc/en/setting_up_web-to-lead.htm)
+
+[Setting Up Web-to-Case](http://login.salesforce.com/help/doc/en/setting_up_web-to-case.htm)
+
 = Where do I find my Salesforce organisation ID? =
 To find your Organisation ID, do the following steps:
-* log in to your SalesForce.com account
-* go to Setup &raquo; Company Profile &raquo; Company Information
-* you'll find the Organisation ID in the lower right hand corner of your screen
+
+1. Log in to your SalesForce.com account
+2. Go to Setup &raquo; Company Profile &raquo; Company Information
+3. You'll find the Organisation ID in the lower right hand corner of your screen
 
 = How do I change the order of input fields? =
 Right now, the only way of ordering input fields is by changing the position numbers on the right hand side of the input fields table in the admin settings. Drag and drop re-ordering is on the roadmap.
