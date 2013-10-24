@@ -77,6 +77,13 @@ In this example, 621U000000IJat is the Campaign_ID -- make sure you use the ID f
 No, as long as it's a valid URL it will work. However it should be an absolute URL regardless of where it is located.
 e.g. http://yoursite.com/thanks/ not just /thanks/
 
+= Is there a limit to how many leads can be caotured? =
+While the plugin has no limits, SalesForce does limit API calls per day:
+
+_The daily limit for Web-to-Lead requests is 500. If your organization exceeds its daily Web-to-Lead limit, the Default Lead Creator (specified in the Web-to-Lead setup page) receives an email containing the additional lead information._ 
+
+See also: [How many leads can we capture from our website?](https://help.salesforce.com/apex/HTViewHelpDoc?id=faq_leads_how_many_leads.htm&language=en_US#faq_leads_how_many_leads)
+
 == Other Notes ==
 
 = Filters =
@@ -148,12 +155,16 @@ return $emails;
 * Remove Powered by SF for all forms
 * Make required field indicator consistent with message
 * Comments to lead option (thanks simonwheatley)
-* Global DaddyAnalytics settings make integration easy
+* Global DaddyAnalytics settings added to make integration easier
 * Added filters to aid in extending the plugin
 * Hide fields with no label in admin and user email
+* Required fields now trim whitespace from the value before validation (e.g. a space or tab is no longer a valid value)
 * Fixed checkbox/label alignment
 * Readme improvements
-* Removed contributors no longer involved in plugin development
+* Added daily limit info to FAQ
+* Removed previous contributors no longer involved in plugin development, added credit to readme
+* Refactored and cleaned up codebase
+* Added filters to allow code based overrides of select features (see Other Notes for details)
 
 = 2.0.3 =
 * Captcha image now works on subfolder installs (e.g. /wordpress/)
@@ -206,6 +217,9 @@ return $emails;
 * Initial release.
 
 == Upgrade Notice ==
+
+= 2.1 =
+This version includes most of the functionality in the "jbuchbinder" GitHub fork many users installed. Most users should not experience any issues upgrading. However, the "current date" field is not included in this release.
 
 = 2.0 =
 This version fixes a bug that caused the plugin to appear broken, despite sending leads to SalesForce.com.
