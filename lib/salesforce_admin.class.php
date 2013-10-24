@@ -48,6 +48,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		
 		$dform['returl'] = '';
 		
+		$dform['type'] = 'lead';
+		
 		$dform['inputs'] = array(
 				'first_name' 	=> array('type' => 'text', 'label' => 'First name', 'show' => true, 'required' => true),
 				'first_name' 	=> array('type' => 'text', 'label' => 'First name', 'show' => true, 'required' => true),
@@ -228,7 +230,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				w2l_sksort($newinputs,'pos',true);
 				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
 				
-				foreach (array('form_name','source','returl') as $option_name) {
+				foreach (array('form_name','source','returl','type') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options['forms'][$form_id][$option_name] = $_POST[$option_name];
 					}
@@ -354,15 +356,18 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 								$content = $this->textinput('submitbutton',__('Submit button text', 'salesforce') );
 								$content .= $this->textinput('requiredfieldstext',__('Required fields text', 'salesforce') );
-								$content .= $this->checkbox('usecss',__('Use Default CSS?', 'salesforce') );
-								$content .= $this->checkbox('wpcf7css',__('Use WPCF7 CSS integration?', 'salesforce') );
-								//$content .= $this->checkbox('hide_salesforce_link',__('Hide "Powered by Salesforce CRM" on form?', 'salesforce') );
-								$content .= '<br/><small><a href="'.$this->plugin_options_url().'&amp;tab=css">'.__('Read how to override the default CSS with your own CSS file').'</a></small><br><br>';
 
 								$content .= $this->checkbox('captcha',__('Use CAPTCHA?', 'salesforce') );
 								$content .= '<br/><small><a href="http://en.wikipedia.org/wiki/CAPTCHA" target="_blank">'.__('Learn more about CAPTCHAs at Wikipedia').'</a></small>';
 
 								$this->postbox('formsettings',__('Form Settings', 'salesforce'),$content); 
+
+								$content = $this->checkbox('usecss',__('Use Default CSS?', 'salesforce') );
+								$content .= $this->checkbox('wpcf7css',__('Use WPCF7 CSS integration?', 'salesforce') );
+								//$content .= $this->checkbox('hide_salesforce_link',__('Hide "Powered by Salesforce CRM" on form?', 'salesforce') );
+								$content .= '<br/><small><a href="'.$this->plugin_options_url().'&amp;tab=css">'.__('Read how to override the default CSS with your own CSS file').'</a></small><br><br>';
+
+								$this->postbox('csssettings',__('Style Settings', 'salesforce'),$content); 
 								
 								$content = $this->checkbox('commentstoleads',__('Create a lead when an approved comment is published', 'salesforce') );
 								$content .= $this->checkbox('commentsnamefields',__('Replace the "Name" field on the comment form with "First Name" and "Last Name"', 'salesforce') );
@@ -415,7 +420,7 @@ echo '<div id="message" class="updated"><p>' . __('Deleted Form #','salesforce')
 
 } else if(isset($_POST['mode']) && $_POST['mode'] == 'clone' && $form_id != 1 ) {
 
-echo '<div id="message" class="updated"><p>' . __('Cloned Form #','salesforce') . $form_id . '</p></div>';
+echo '<div id="message" class="updated"><p>' . __('Duplicated Form #','salesforce') . $form_id . '</p></div>';
 
 }else{
 
@@ -456,7 +461,7 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 									
 									$this->postbox('sfformtitle',__('Form Name', 'salesforce'),$content);
 									
-									$content .= '<table id="salesforce_form_editor" class="wp-list-table widefat fixed">';
+									$content = '<table id="salesforce_form_editor" class="wp-list-table widefat fixed">';
 									$content .= '<tr>'
 									.'<th width="10%">'.__('Field','salesforce').'</th>'
 									.'<th width="15%">'.__('Operations','salesforce').'</th>'
@@ -551,7 +556,19 @@ i++;
 									// $this->postbox('sffields',__('Form Fields', 'salesforce'),$content);
 									echo $content;
 									
-									$content = '<p>';
+									$content = '';
+									
+									if( $options['forms'][$form_id]['type'] == '' )
+										$options['forms'][$form_id]['type'] = 'lead';
+									
+									$content .= '<p>';
+									$content .= '<label>'.__('Form Type:','salesforce').'</label><br/>';
+									$content .= '<input type="radio" name="type" value="lead" '.checked($options['forms'][$form_id]['type'],'lead',false).'> Web to Lead <br>';
+									$content .= '<input type="radio" name="type" value="case"'.checked($options['forms'][$form_id]['type'],'case',false).'> Web to Case';
+									$content .= '</p>';
+
+									
+									$content .= '<p>';
 									$content .= '<label>'.__('Lead Source:','salesforce').'</label><br/>';
 									$content .= '<input type="text" name="source" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['source']).'">';
 
@@ -588,7 +605,7 @@ i++;
 							<?php if (function_exists('wp_nonce_field')) { wp_nonce_field('salesforce-udpatesettings'); } ?>
 								<input type="hidden" value="clone" name="mode"/>
 								<input type="hidden" value="<?php echo $form_id; ?>" name="form_id"/>
-								<input type="submit" name="submit" class="button-secondary" value="Clone this form">
+								<input type="submit" name="submit" class="button-secondary" value="Duplicate this form">
 							</form>
 							<?php } ?>
 <?php } ?>
