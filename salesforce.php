@@ -350,7 +350,9 @@ function submit_salesforce_form($post, $options) {
 	
 	$form_id = absint( $_POST['form_id'] );
 
-	$post['oid'] 	= $options['org_id'];
+	$post['oid'] 	= $options['org_id']; // web to lead
+	$post['orgid'] 	= $options['org_id']; // web to case
+	
 	if (!empty($options['forms'][$form_id]['source'])) {
 		$post['lead_source']	= str_replace('%URL%','['.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'].']',$options['forms'][$form_id]['source']);
 	}
@@ -365,7 +367,12 @@ function submit_salesforce_form($post, $options) {
 		'sslverify'	=> false,  
 	);
 	
-	$url = 'https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
+	if( $options['forms'][$form_id]['type'] == 'case' ){
+		$url = 'https://www.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8';
+	}else{
+		$url = 'https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
+	}
+	
 	$url = apply_filters( 'salesforce_w2l_api_url', $url );
 	
 	$result = wp_remote_post( $url, $args );
@@ -442,7 +449,11 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 	}
 	$headers .= 'Reply-to: '.$from_name.' <' . $from_email . ">\r\n";
 
-	$subject = __('Salesforce WP to Lead Submission','salesforce');
+	if( $options['forms'][$form_id]['type'] == 'case' ){
+		$subject = __('Salesforce Web to Case Submission','salesforce');
+	}else{
+		$subject = __('Salesforce Web to Lead Submission','salesforce');
+	}
 
 	$message = '';
 
