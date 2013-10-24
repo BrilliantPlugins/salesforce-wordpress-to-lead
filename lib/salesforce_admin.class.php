@@ -487,13 +487,13 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 										$content .= '</table>';
 										$content .= '</td>';
 										$content .= '<td><select name="inputs['.$field.'_type]">';
-										$content .= '<option '.selected($input['type'],'text',false).'>text</option>';
-										$content .= '<option '.selected($input['type'],'textarea',false).'>textarea</option>';
-										$content .= '<option '.selected($input['type'],'hidden',false).'>hidden</option>';
-										$content .= '<option '.selected($input['type'],'select',false).'>select (picklist)</option>';
+										$content .= '<option value="text" '.selected($input['type'],'text',false).'>text</option>';
+										$content .= '<option value="textarea" '.selected($input['type'],'textarea',false).'>textarea</option>';
+										$content .= '<option value="hidden" '.selected($input['type'],'hidden',false).'>hidden</option>';
+										$content .= '<option value="select" '.selected($input['type'],'select',false).'>select (picklist)</option>';
 										$content .= '<option '.selected($input['type'],'checkbox',false).'>checkbox</option>';
 										//$content .= '<option '.selected($input['type'],'current_date',false).'>current_date</option>';
-										$content .= '<option '.selected($input['type'],'html',false).'>html</option>';
+										$content .= '<option value="html" '.selected($input['type'],'html',false).'>html</option>';
 										$content .= '</select></td>';
 										$content .= '<td><small>Label:</small> <input size="10" name="inputs['.$field.'_label]" type="text" value="'.esc_html(stripslashes($input['label'])).'"/>'; //</td>'.'<td>';
 										
