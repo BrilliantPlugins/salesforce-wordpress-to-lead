@@ -45,22 +45,22 @@ To find your Organisation ID, do the following steps:
 * you'll find the Organisation ID in the lower right hand corner of your screen
 
 = How do I change the order of input fields? =
-Right now, the only way of ordering input fields is by changing the position numbers on the right hand side of the input fields table in the admin settings.
+Right now, the only way of ordering input fields is by changing the position numbers on the right hand side of the input fields table in the admin settings. Drag and drop re-ordering is on the roadmap.
 
 = How do I apply my own styling to the form? =
 Instructions for disabling or overriding the CSS are included on the plugin settings screen (see Style Settings).
 
 = Is it possible to make multiple forms with this plugin? =
-Yes, version 2.0 introduces this feature.
+Yes, version 2.0 introduces this feature. Version 2.1 allows you to duplicate forms to reduce re-entering data.
 
 = How do I change the Lead Source that shows up in Salesforce? =
-You can easily change this by going into the WordPress-to-Lead admin panel and, under form settings, changing the Lead Source for that form.
+You can easily change this by going into the WordPress-to-Lead admin panel and, under form settings, changing the Lead Source for that form. Daddy Analytics uers can set this to blank to have it automatically filled.
 
 = Can I change the submit button? =
 Of course you can! Go into the WordPress-to-Lead admin panel and, under Form Settings, change the text from the default "Submit" to whatever you'd like it to be!
 
-= Will I lose data if I upgrade? Do I need to change anything? =
-No, the plugin will migrate your existing data to the new format. Your existing form will become Form 1 and be output by the [salesforce] shortcode).
+= Will I lose data if I upgrade to 2.0? Do I need to change anything? =
+Nope! The plugin will migrate your existing data to the new format. Your existing form will become Form 1 and be output by the [salesforce] shortcode).
 
 = How do I show my other forms? =
 Just use `[salesforce form="X"]` (X is the form number).
@@ -77,7 +77,7 @@ In this example, 621U000000IJat is the Campaign_ID -- make sure you use the ID f
 No, as long as it's a valid URL it will work. However it should be an absolute URL regardless of where it is located.
 e.g. http://yoursite.com/thanks/ not just /thanks/
 
-= Is there a limit to how many leads can be caotured? =
+= Is there a limit to how many leads can be captured? =
 While the plugin has no limits, SalesForce does limit API calls per day:
 
 _The daily limit for Web-to-Lead requests is 500. If your organization exceeds its daily Web-to-Lead limit, the Default Lead Creator (specified in the Web-to-Lead setup page) receives an email containing the additional lead information._ 
