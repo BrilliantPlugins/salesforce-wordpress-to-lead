@@ -11,7 +11,7 @@ WordPress-to-Lead for Salesforce CRM creates a solid integration between your Wo
 
 == Description ==
 
-WordPress-to-Lead for Salesforce CRM creates a solid integration between your WordPress install(s) and your [Salesforce CRM](http://www.salesforce.com) account! People can enter a contact form on your site, and the lead goes straight into Salesforce CRM: no more copy pasting lead info, no more missing leads: each and every one of them is in Salesforce.com for you to follow up.
+WordPress-to-Lead for Salesforce CRM creates a solid integration between your WordPress install(s) and your [Salesforce CRM](http://www.salesforce.com) account! People can enter a contact form on your site, and the lead (or case) goes straight into Salesforce CRM: no more copy pasting lead info, no more missing leads: each and every one of them is in Salesforce.com for you to follow up.
 
 ### Check out the screencast
 [youtube http://www.youtube.com/watch?v=hnMzkxPUIyc]
@@ -48,7 +48,7 @@ To find your Organisation ID, do the following steps:
 Right now, the only way of ordering input fields is by changing the position numbers on the right hand side of the input fields table in the admin settings.
 
 = How do I apply my own styling to the form? =
-Disable the "Use Form CSS" checkbox, and copy the form css to your own css file, then start modifying it!
+Instructions for disabling or overriding the CSS are included on the plugin settings screen (see Style Settings).
 
 = Is it possible to make multiple forms with this plugin? =
 Yes, version 2.0 introduces this feature.
@@ -165,6 +165,7 @@ return $emails;
 * Removed previous contributors no longer involved in plugin development, added credit to readme
 * Refactored and cleaned up codebase
 * Added filters to allow code based overrides of select features (see Other Notes for details)
+* Added Web to Case option (per form setting)
 
 = 2.0.3 =
 * Captcha image now works on subfolder installs (e.g. /wordpress/)
