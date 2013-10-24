@@ -510,7 +510,10 @@ function salesforce_form_shortcode($atts) {
 		$post = array();
 		
 		foreach ($options['forms'][$form]['inputs'] as $id => $input) {
-			if ($input['required'] && empty($_POST[$id])) {
+		
+			$val = trim( $_POST[$id] );
+		
+			if ($input['required'] && !$val ) {
 				$options['forms'][$form]['inputs'][$id]['error'] = true;
 				$error = true;
 			} else if ($id == 'email' && $input['required'] && !is_email($_POST[$id]) ) {
