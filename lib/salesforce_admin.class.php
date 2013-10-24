@@ -263,8 +263,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 						$options[$option_name] = false;
 					}
 				}
-				
-				
+
 		        foreach (array('successmsg','errormsg','sferrormsg','org_id','submitbutton','subject','ccusermsg','requiredfieldstext', 'da_token', 'da_url', 'da_site') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options[$option_name] = $_POST[$option_name];
@@ -305,7 +304,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 							<?php
 							
 								if( $options['org_id'] )
-									$class='closed';
+									//$class='closed';
 								
 								$content = $this->textinput('org_id',__('Your Salesforce.com organisation ID','salesforce'));
 								$content .= '<small>'.__('To find your Organisation ID, in your Salesforce.com account, go to Setup &raquo; Company Profile &raquo; Company Information','salesforce').'</small><br/>';
@@ -329,8 +328,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								$content = $ad['content'].'<br/><br/>';
 								$class = '';
 							}else{
-								$class = 'closed';
-								$content = 'Thank you for using <a href="hattp://daddyanalytics.com/" target="_blank">Daddy Analytics</a>!<br/><br/>';
+								//$class = 'closed';
+								$content = 'Thank you for using <a href="http://daddyanalytics.com/" target="_blank">Daddy Analytics</a>!<br/><br/>';
 							}
 							
 								$content .= $this->textinput('da_token',__('Daddy Analytics Token','salesforce'));
@@ -621,9 +620,9 @@ i++;
 							$this->plugin_like(false);
 
 
-							$content = '<p>'.__('<b>Community</b><br>If you have any problems with this plugin, ideas for improvements, or  feature requests, please talk about them in the community support forum.<p><i>Be sure to read the <a href="">support guidelines</a> before posting.</i></p>','ystplugin').'</p><p><a class="button-secondary" href="http://wordpress.org/tags/'.$this->hook.'">'.__("Get Community Support",'ystplugin').'</a></p>';
+							$content = '<p>'.__('<b>Community</b><br>If you have any problems with this plugin, ideas for improvements, or  feature requests, please talk about them in the community support forum.<p><i>Be sure to read the <a target="_blank" href="http://wordpress.org/support/topic/support-guidelines/">support guidelines</a> before posting.</i></p>','ystplugin').'</p><p><a target="_blank" class="button-secondary" href="http://wordpress.org/support/plugin/'.$this->hook.'">'.__("Get Community Support",'ystplugin').'</a></p>';
 
-							$content .= '<p>'.__('<b>Premium</b><br>Need guaranteed support, customization help, or want to sponsor a feature addition?','ystplugin').'</p><p> <a class="button-secondary" href="http://thoughtrefinery/support/plugin/'.$this->hook.'">'.__("Request Premium Support",'ystplugin').'</a></p>';
+							$content .= '<p>'.__('<b>Premium</b><br>Need guaranteed support, customization help, or want to sponsor a feature addition?','ystplugin').'</p><p> <a target="_blank" class="button-secondary" href="http://thoughtrefinery.com/plugins/support/?plugin='.$this->hook.'">'.__("Request Premium Support",'ystplugin').'</a></p>';
 
 							
 							$this->postbox($this->hook.'support', 'Need support?', $content);

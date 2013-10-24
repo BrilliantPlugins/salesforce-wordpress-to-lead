@@ -5,7 +5,7 @@ Requires at least: 2.8
 Tested up to: 3.5.2
 Stable tag: 2.0.3
 License: GPLv2
-Donate link: http://thoughtrefinery.com/donate/
+Donate link: http://thoughtrefinery.com/donate/?item=salesforce
 
 WordPress-to-Lead for Salesforce CRM creates a solid integration between your WordPress install(s) and your Salesforce.com account!
 
