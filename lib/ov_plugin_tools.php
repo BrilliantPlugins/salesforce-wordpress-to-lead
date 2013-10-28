@@ -99,9 +99,9 @@ if (!class_exists('OV_Plugin_Admin')) {
 		/**
 		 * Create a potbox widget
 		 */
-		function postbox($id, $title, $content) {
+		function postbox($id, $title, $content, $class='') {
 		?>
-			<div id="<?php echo $id; ?>" class="postbox">
+			<div id="<?php echo $id; ?>" class="postbox<?php if($class) echo ' '.$class; ?>">
 				<div class="handlediv" title="Click to toggle"><br /></div>
 				<h3 class="hndle"><span><?php echo $title; ?></span></h3>
 				<div class="inside">
@@ -138,8 +138,8 @@ if (!class_exists('OV_Plugin_Admin')) {
 		function plugin_like() {
 			$content = '<p>'.__('Why not do any or all of the following:','ystplugin').'</p>';
 			$content .= '<ul>';
-			$content .= '<li><a href="'.$this->homepage.'">'.__('Link to it so other folks can find out about it.','ystplugin').'</a></li>';
-			$content .= '<li><a href="http://wordpress.org/extend/plugins/'.$this->hook.'/">'.__('Give it a good rating on WordPress.org.','ystplugin').'</a></li>';
+			$content .= '<li><a target="_blank" href="'.$this->homepage.'">'.__('Link to it so other folks can find out about it','ystplugin').'</a></li>';
+			$content .= '<li><a target="_blank" href="http://wordpress.org/support/view/plugin-reviews/'.$this->hook.'">'.__('Give it a good review on WordPress.org','ystplugin').'</a></li>';
 			$content .= '</ul>';
 			$this->postbox($this->hook.'like', 'Like this plugin?', $content);
 		}	
@@ -148,7 +148,7 @@ if (!class_exists('OV_Plugin_Admin')) {
 		 * Info box with link to the support forums.
 		 */
 		function plugin_support() {
-			$content = '<p>'.__('If you have any problems with this plugin or good ideas for improvements or new features, please talk about them in the','ystplugin').' <a href="http://wordpress.org/tags/'.$this->hook.'">'.__("Support forums",'ystplugin').'</a>.</p>';
+			$content = '<p>'.__('If you have any problems with this plugin, ideas for improvements, or  feature requests, please talk about them in the','ystplugin').' <a href="http://wordpress.org/tags/'.$this->hook.'">'.__("Support forums",'ystplugin').'</a>.</p>';
 			$this->postbox($this->hook.'support', 'Need support?', $content);
 		}
 
