@@ -81,7 +81,7 @@ _Note: Leading & trailing whitespace is trimmed when names and values are displa
 1. Optionally enter a label (field will display full width if not label is entered.
 2. Enter HTML code in the options box.
 
-_Note: You cannot use the HTML box to enter a custom field, as only "known" fields are submitted to salesforce. Be careful to avoid the `<form>` or `</form>` tags in an HTML field as they will likely break your form._
+_Note: You cannot use the HTML box to enter a custom field, as only "known" fields are submitted to salesforce and HTML field are not submitted (just displayed). Be careful to avoid the `<form>` or `</form>` tags in an HTML field as they will likely break your form._
 
 = How do I change the order of input fields? =
 Right now, the only way of ordering input fields is by changing the position numbers on the right hand side of the input fields table in the admin settings. Drag and drop re-ordering is on the roadmap.
@@ -205,6 +205,8 @@ return $emails;
 * Refactored and cleaned up codebase
 * Added filters to allow code based overrides of select features (see Other Notes for details)
 * Added Web to Case option (per form setting)
+* Fixed first field being added having a duplicate position to last field
+* Select fields can have a default value set
 
 = 2.0.3 =
 * Captcha image now works on subfolder installs (e.g. /wordpress/)
