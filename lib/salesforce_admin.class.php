@@ -537,7 +537,7 @@ row += '<td><select name="add_inputs['+i+'][type]">'
 	+ '</select></td>';
 row += '<td><small>Label:</small><input size="10" type="text" name="add_inputs['+i+'][label]">';
 row += '<small>Value:</small><input size="14" type="text" name="add_inputs['+i+'][value]"></td>';
-row += '<td><input type="text" name="add_inputs['+i+'][opts]"></td>';
+row += '<td><textarea rows="4" name="add_inputs['+i+'][opts]"></textarea></td>';
 row += '<td><input type="text" size="2" name="add_inputs['+i+'][pos]" value="'+pos+'"></td>';
 row += '</tr>';
 
