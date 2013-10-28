@@ -78,10 +78,10 @@ name1:value1 | name2:value2
 _Note: Leading & trailing whitespace is trimmed when names and values are displayed, so feel free to use spaces to make things more readable._
 
 = How do I use the HTML field? =
-1. Optionally enter a label (field will display full width if not label is entered.
+1. Optionally enter a label (field will display full width if a label is not entered.
 2. Enter HTML code in the options box.
 
-_Note: You cannot use the HTML box to enter a custom field, as only "known" fields are submitted to salesforce and HTML field are not submitted (just displayed). Be careful to avoid the `<form>` or `</form>` tags in an HTML field as they will likely break your form._
+_Note: You cannot use the HTML box to enter a custom field, as only "known" fields are submitted to salesforce and HTML fields are not submitted (just displayed). Be careful to avoid the `<form>` or `</form>` tags in an HTML field as they will likely break your form._
 
 = How do I change the order of input fields? =
 Right now, the only way of ordering input fields is by changing the position numbers on the right hand side of the input fields table in the admin settings. Drag and drop re-ordering is on the roadmap.
