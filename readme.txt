@@ -44,6 +44,9 @@ Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hn
 
 [Setting Up Web-to-Case](http://login.salesforce.com/help/doc/en/setting_up_web-to-case.htm)
 
+= How do I setup a Web to Case form? =
+Choose _Web to Case_ in the **Form Settings** (bottom of the form editor page).
+
 = Where do I find my Salesforce organisation ID? =
 To find your Organisation ID, do the following steps:
 

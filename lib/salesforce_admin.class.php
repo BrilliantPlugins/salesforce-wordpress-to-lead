@@ -565,6 +565,7 @@ i++;
 									$content .= '<label>'.__('Form Type:','salesforce').'</label><br/>';
 									$content .= '<input type="radio" name="type" value="lead" '.checked($options['forms'][$form_id]['type'],'lead',false).'> Web to Lead <br>';
 									$content .= '<input type="radio" name="type" value="case"'.checked($options['forms'][$form_id]['type'],'case',false).'> Web to Case';
+									$content .= '<br/><small>'.__('<b>Note:</b> Daddy Analytics does not support cases at this time.').'</small>';
 									$content .= '</p>';
 
 									
