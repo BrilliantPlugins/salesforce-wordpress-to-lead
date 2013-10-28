@@ -519,6 +519,7 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 var pos = <?php echo $i; ?>;
 var i = 1;
 function salesforce_add_field(){
+pos++;
 
 var row = '<tr>';
 row += '<td><input type="text" size="10" name="add_inputs['+i+'][field_name]"></td>';
@@ -527,13 +528,13 @@ row += '<tr><td><label for="add_inputs['+i+'][show]">Enabled</label></td><td><in
 row += '<tr><td><label for="add_inputs['+i+'][required]">Required</label></td><td><input type="checkbox" name="add_inputs['+i+'][required]"></td></tr>';
 row += '</table></td>';
 row += '<td><select name="add_inputs['+i+'][type]">'
-	+ '<option>text</option>'
-	+ '<option>textarea</option>'
-	+ '<option>hidden</option>'
-	+ '<option>select (picklist)</option>'
-	+ '<option>checkbox</option>'
-	//+ '<option>current_date</option>'
-	+ '<option>html</option>'
+	+ '<option value="text">Text</option>'
+	+ '<option value="textarea">Textarea</option>'
+	+ '<option valur="hidden">Hidden</option>'
+	+ '<option value="select">Select (picklist)</option>'
+	+ '<option value="checkbox">Checkbox</option>'
+	//+ '<option value="current_date">current_date</option>'
+	+ '<option value="html">HTML</option>'
 	+ '</select></td>';
 row += '<td><small>Label:</small><input size="10" type="text" name="add_inputs['+i+'][label]">';
 row += '<small>Value:</small><input size="14" type="text" name="add_inputs['+i+'][value]"></td>';
@@ -543,7 +544,6 @@ row += '</tr>';
 
 jQuery('#salesforce_form_editor > tbody').append(row);
 
-pos++;
 i++;
 
 }
