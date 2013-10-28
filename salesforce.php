@@ -272,7 +272,7 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 	if( $options['showccuser'] ){
 		$label = $options['ccusermsg'];
 		if( empty($label) ) $label = __('Send me a copy','salesforce');
-		$content .= "\t\n\t".'<p><label class="w2llabel checkbox w2llabel-checkbox-label"><input type="checkbox" name="w2lcc" class="w2linput checkbox" value="1"/> '.esc_html($label)."</label><p>\n";
+		$content .= "\t\n\t".'<div class="sf_field sf_field_cb sf_type_checkbox"><label class="w2llabel checkbox w2llabel-checkbox-label"><input type="checkbox" name="w2lcc" class="w2linput checkbox" value="1"/> '.esc_html($label)."</label></div>\n";
 	}
 	
 	//spam honeypot
