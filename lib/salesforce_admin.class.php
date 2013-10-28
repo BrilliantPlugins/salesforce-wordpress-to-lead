@@ -393,7 +393,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 									$this->postbox('sfforms',__('Forms', 'salesforce'),$content); 
 
 								if( WP_DEBUG )
-									$this->postbox('options','DEBUG: Options','<small>This dump of the plugin options is only shown when WP_DEBUG is enabled.</small><br><br>'.'<pre>'.print_r($options,true).'</pre>'); //DEBUG
+									$this->postbox('options','DEBUG: Options','<small>This dump of the plugin options is only shown when WP_DEBUG is enabled.</small><br><br>'.'<pre>'.print_r($options,true).'</pre>', 'closed'); //DEBUG
 
 
 							?>
