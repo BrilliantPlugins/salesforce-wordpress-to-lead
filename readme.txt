@@ -51,6 +51,35 @@ To find your Organisation ID, do the following steps:
 2. Go to Setup &raquo; Company Profile &raquo; Company Information
 3. You'll find the Organisation ID in the lower right hand corner of your screen
 
+= How do I use the checkbox field? =
+Like any other field. Note that it is a single checkbox, not a checkbox list.
+
+_Checkbox lists and radio buttons will be in a future update._
+
+= How do I use the select (picklist) field? =
+Use it like any other field -- however you'll need to specify the options (and optional values) for each field using the options box (far right).
+
+The value box for a select list is the default value (the one selected on a fresh form).
+
+`
+//Use same data for display and value passed to SF
+one|two|three
+
+//Use different data for display and value passed to SF, require user to select something (assuming field is required)
+Select One: | name1:value1 | name2:value2
+
+//Use different data for display and value passed to SF
+name1:value1 | name2:value2
+`
+
+_Note: Leading & trailing whitespace is trimmed when names and values are displayed, so feel free to use spaces to make things more readable._
+
+= How do I use the HTML field? =
+1. Optionally enter a label (field will display full width if not label is entered.
+2. Enter HTML code in the options box.
+
+_Note: You cannot use the HTML box to enter a custom field, as only "known" fields are submitted to salesforce. Be careful to avoid the `<form>` or `</form>` tags in an HTML field as they will likely break your form._
+
 = How do I change the order of input fields? =
 Right now, the only way of ordering input fields is by changing the position numbers on the right hand side of the input fields table in the admin settings. Drag and drop re-ordering is on the roadmap.
 
