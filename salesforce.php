@@ -116,7 +116,7 @@ function salesforce_da_js(  ){
 	
 	$options = get_option("salesforce2");
 	
-	if( isset( $options['da_token'] ) && isset( $options['da_url'] ) && isset( $options['da_site'] ) ){
+	if( isset( $options['da_token'] ) && $options['da_token'] && isset( $options['da_url'] ) && $options['da_url'] && isset( $options['da_site'] ) && $options['da_site'] ){
 	
 		$da_token = $options['da_token'];
 		$da_url = $options['da_url'];
@@ -292,7 +292,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 	$content .= "\t".'<input type="hidden" name="form_id" class="w2linput" value="'.$form_id.'" />'."\n";
 
 	//daddy analytics
-	if( isset( $options['da_token'] ) && isset( $options['da_url'] ) ){
+	if( isset( $options['da_token'] ) && $options['da_token'] && isset( $options['da_url'] ) && $options['da_url'] ){
 	
 		$da_token = $options['da_token'];
 		$da_url = $options['da_url'];
