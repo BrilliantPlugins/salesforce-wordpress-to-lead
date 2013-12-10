@@ -277,12 +277,21 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		$sf_hash = sha1($captcha['code'].NONCE_SALT);
 	
 		set_transient( $sf_hash, $captcha['code'], 60*15 );
-	
+		
+		$content .= '<div class="sf_field sf_field_captcha sf_type_captcha">';
+		
 		$content .=  '<label class="w2llabel">'.__('Type the text shown: *','salesforce').'</label><br>
 			<img class="w2limg" src="' . $captcha['image_src'] . '&hash=' . $sf_hash . '" alt="CAPTCHA image" /><br>';
 
-		$content .=  '<input type="text" class="w2linput text" name="captcha_text" value=""><br>';
+		$content .=  '<input type="text" class="w2linput text" name="captcha_text" value="">';
+
+		if( $errors && !$errors['captcha']['valid'] ){
+			$content .=  "<span class=\"error_message\">".$errors['captcha']['message'].'</span>';
+		}
+
 		$content .=  '<input type="hidden" class="w2linput hidden" name="captcha_hash" value="'. $sf_hash .'">';
+		
+		$content .= '</div>';
 	
 	}
 	
@@ -596,7 +605,9 @@ function salesforce_form_shortcode($atts) {
 			
 			if( $_POST['captcha_hash'] != sha1( $_POST['captcha_text'].NONCE_SALT )){
 				$has_error = true;
-				$captchaerror = true;
+				
+				$errors['captcha']['valid'] = false;
+				$errors['captcha']['message'] = __('The text you entered did not match the image.','salesforce');
 			}
 			
 		}
@@ -652,8 +663,6 @@ function salesforce_form_shortcode($atts) {
 			}
 */
 			
-			if ($captchaerror)
-				$errormsg .= '<br/>'.__('The text you entered did not match the image.','salesforce');
 			
 			$content .= salesforce_form($options, $sidebar, $errors, $form);
 		}
