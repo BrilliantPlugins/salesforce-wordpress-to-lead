@@ -670,7 +670,7 @@ function salesforce_form_shortcode($atts) {
 		$content = salesforce_form($options, $sidebar, null, $form);
 	}
 	
-	return $content;
+	return '<div class="salesforce_w2l_lead">'.$content.'</div>';
 }
 
 add_shortcode('salesforce', 'salesforce_form_shortcode');	
