@@ -196,12 +196,11 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		if (isset($input['error']) && $input['error']) {
 			$error 	= ' error ';
 		}
-		
 			
 		if($input['type'] != 'hidden' && $input['type'] != 'current_date') {
 			if ($options['wpcf7css']) { $content .= '<p>'; }
 			if ($input['type'] == 'checkbox') {
-				$content .= "\t\n\t".'<input type="checkbox" id="sf_'.$id.'" class="w2linput checkbox" name="'.$id.'" value="'.$val.'" />'."\n\n";
+				$content .= "\t\n\t".'<input type="checkbox" id="sf_'.$id.'" class="w2linput checkbox" name="'.$id.'" value="'.$val.'" '.checked( $_POST[$id] , $val, false ).'/>'."\n\n";
 			}
 			if (!empty($input['label'])) {
 				$content .= "\t".'<label class="w2llabel'.$error.$input['type'].($input['type'] == 'checkbox' ? ' w2llabel-checkbox-label' : '').'" for="sf_'.$id.'">'.( $input['opts'] == 'html' && $input['type'] == 'checkbox' ? stripslashes($input['label']) : esc_html(stripslashes($input['label'])));
