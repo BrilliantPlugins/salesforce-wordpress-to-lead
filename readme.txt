@@ -190,8 +190,12 @@ return $emails;
 
 == Changelog ==
 
-= 2.1.2 =
-* Add per field validation filter and error output (thanks )
+= 2.2 =
+* Bug: Fixed checkboxes not retaining checked state after submit
+* Bug: Only output DA JS when token has been entered
+* Wrapped all output in a div tag to allow styling of success and error messages
+* Added #anchor to action to keep form on screen after submit when not the first item in a page (may not work in older versions of IE)
+* Add per field validation filter and error output (thanks to http://HomeStretchMktg.com for sponsoring this feature)
 
 = 2.1.1 =
 * Fixes a bug that caused the organization id field to be hidden on new installs
