@@ -4,7 +4,7 @@ Plugin Name: WordPress-to-Lead for Salesforce CRM
 Plugin URI: http://daddyanalytics.com/wordpress-salesforce/?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP-SF-Plugin&utm_content=plugin_uri
 Description: Easily embed a contactform into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM!
 Author: Daddy Analytics & Thought Refinery
-Version: 2.1
+Version: 2.2
 Author URI: http://daddyanalytics.com/?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP-SF-Plugin&utm_content=author_uri
 License: GPL2
 */
@@ -140,13 +140,15 @@ function salesforce_captcha(){
 	die();
 }
 
-function salesforce_form($options, $is_sidebar = false, $content = '', $form_id = 1) {
+function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id = 1) {
 	
 	if( !isset($options['forms'][$form_id]) )
 		return;
 	
+/*
 	if (!empty($content))
 		$content = wpautop('<strong>'.$content.'</strong>');
+*/
 		
 	if ($options['usecss']) {
 		wp_enqueue_style( 'sfwp2lcss', plugins_url('/assets/css/sfwp2l.css', __FILE__) );
@@ -185,6 +187,7 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 		if (isset($input['error']) && $input['error']) {
 			$error 	= ' error ';
 		}
+		
 			
 		if($input['type'] != 'hidden' && $input['type'] != 'current_date') {
 			if ($options['wpcf7css']) { $content .= '<p>'; }
@@ -243,6 +246,11 @@ function salesforce_form($options, $is_sidebar = false, $content = '', $form_id 
 			}
 			$content .= '</select>'."\n\n";
 		}
+		
+		if( $errors && !$errors[$id]['valid'] ){
+			$content .=  "\t\n\t<span class=\"error_message\">".  $errors[$id]['message'].'</span>';
+		}
+		
 		if($input['type'] != 'hidden' && $input['type'] != 'current_date') {
 			if ($options['wpcf7css']) { $content .= '</span></p>'; }
 			$content .= '</div>';
@@ -522,16 +530,43 @@ function salesforce_form_shortcode($atts) {
 		$error = false;
 		$post = array();
 		
+		
+		// field validation
 		foreach ($options['forms'][$form]['inputs'] as $id => $input) {
 		
 			$val = trim( $_POST[$id] );
-		
+			
+			$error = array(
+				'valid' => false,
+				'message' => $options['errormsg'],
+			);
+			
 			if ($input['required'] && !$val ) {
-				$options['forms'][$form]['inputs'][$id]['error'] = true;
-				$error = true;
-			} else if ($id == 'email' && $input['required'] && !is_email($_POST[$id]) ) {
-				$error = true;
-				$emailerror = true;
+				$error['valid'] = false;
+			}else{
+				$error['valid'] = true;
+			}
+			
+			if ($id == 'email' && $input['required'] && !is_email($val) ) {
+				$error['valid'] = false;
+				$error['message'] = 'The email address you entered is not valid.';
+			}
+			
+		
+			$error = apply_filters('sfwp2l_validate_field', $error, $id, $val, $options['forms'][$form]['inputs'][$id] );
+
+			//$error = apply_filters('sfwp2l_'.$id, $error, $id, $options['forms'][$form]['inputs'][$id] );
+
+			$errors[$id] = $error;
+			
+			if ($input['required'] && !$val ) {
+			
+			//$options['forms'][$form]['inputs'][$id]['error'] = true;
+				
+			//	$error = true;
+			//} else if ($id == 'email' && $input['required'] && !is_email($_POST[$id]) ) {
+			//	$error = true;
+			//	$emailerror = true;
 			} else {
 				if( isset($_POST[$id]) ) $post[$id] = trim(strip_tags(stripslashes($_POST[$id])));
 			}
@@ -552,13 +587,18 @@ function salesforce_form_shortcode($atts) {
 		if( $options['captcha'] ){
 			
 			if( $_POST['captcha_hash'] != sha1( $_POST['captcha_text'].NONCE_SALT )){
-				$error = true;
+				$has_error = true;
 				$captchaerror = true;
 			}
 			
 		}
 		
-		if (!$error) {
+		foreach( $errors as $error ){
+			if(!$error['valid'])
+				$has_error = true;
+		}
+		
+		if (!$has_error) {
 			$result = submit_salesforce_form($post, $options, $form);
 			
 			//echo 'RESULT='.$result;
@@ -587,13 +627,23 @@ function salesforce_form_shortcode($atts) {
 			}
 		} else {
 			$errormsg = esc_html( stripslashes($options['errormsg']) ) ;
+			
+/*
 			if ($emailerror)
 				$errormsg .= '<br/>'.__('The email address you entered is not a valid email address.','salesforce');
+*/
+
+/*
+			foreach( $errors as $error ){
+				if( ! $error['valid'] )
+					$errormsg .= '<br/>'.$error['message'];
+			}
+*/
 			
 			if ($captchaerror)
 				$errormsg .= '<br/>'.__('The text you entered did not match the image.','salesforce');
 			
-			$content .= salesforce_form($options, $sidebar, $errormsg, $form);
+			$content .= salesforce_form($options, $sidebar, $errors, $form);
 		}
 	} else {
 		$content = salesforce_form($options, $sidebar, null, $form);

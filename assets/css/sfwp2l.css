@@ -9,6 +9,13 @@ form.w2llead{ text-align:left; clear:both;}
 .w2lsubmit{ float:none; clear:both; }
 .w2linput.submit { float:none; margin: 10px 0 0 0; clear:both;}
 
+.sf_field span.error_message{
+	clear: left;
+	display: block;
+	color: red;
+	font-size: 80%;
+}
+
 .w2llabel.checkbox, .w2linput.checkbox{ display: inline-block; float: none; }
 .sf_field, .sf_type_checkbox{ clear: both; }
 .w2llabel.checkbox{ clear: none; margin: 0; }
@@ -25,3 +32,4 @@ span.required { font-weight: bold; }
 .sidebar .w2linput.textarea {width:95%; height:50px; margin:10px 0;}
 .sidebar .w2lsubmit{ float:none; clear:both; }
 .sidebar .w2linput.submit { margin:10px 0 0 0; }
+

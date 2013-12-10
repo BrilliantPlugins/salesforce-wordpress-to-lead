@@ -1,9 +1,9 @@
 === WordPress-to-lead for Salesforce CRM ===
 Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
-Requires at least: 2.8
-Tested up to: 3.7
-Stable tag: 2.1
+Requires at least: 3.0
+Tested up to: 3.7.1
+Stable tag: 2.2
 License: GPLv2
 Donate link: http://thoughtrefinery.com/donate/?item=salesforce
 
@@ -34,7 +34,7 @@ Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hn
 
 1. Upload the `plugin` folder to the `/wp-content/plugins/` directory or install via the Add New Plugin menu
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Enter your Salesforce.com Organisation ID on the WordPress-to-Lead plugin configuration page.
+1. Enter your Salesforce.com Organization ID on the WordPress-to-Lead plugin configuration page.
 
 == Frequently Asked Questions ==
 
@@ -47,12 +47,21 @@ Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hn
 = How do I setup a Web to Case form? =
 Choose _Web to Case_ in the **Form Settings** (bottom of the form editor page).
 
-= Where do I find my Salesforce organisation ID? =
-To find your Organisation ID, do the following steps:
+= Where do I find my Salesforce organization ID? =
+To find your Organization ID, do the following steps:
 
 1. Log in to your SalesForce.com account
 2. Go to Setup &raquo; Company Profile &raquo; Company Information
-3. You'll find the Organisation ID in the lower right hand corner of your screen
+3. You'll find the Organization ID in the lower right hand corner of your screen
+
+= How do I use a SalesForce custom field? =
+
+1. Go to Setup &raquo; Customize &raquo; Leads &raquo; Fields
+1. If your custom field does not exist yet, create it now.
+1. Find the API Name for your field (e.g. Custom_Field_Example__c). If it doesn't end in "__c" it's not the API name and will not work. 
+1. Add a new field to your form using the form editor on the plugin admin screen
+1. Enter the API Name as the field name (left most box), then fill out the other fields normally (make sure to enable the field!).
+1. Save your changes -- new submissions will now post that custom field to SalesForce.
 
 = How do I use the checkbox field? =
 Like any other field. Note that it is a single checkbox, not a checkbox list.
@@ -181,6 +190,12 @@ return $emails;
 
 == Changelog ==
 
+= 2.1.2 =
+* Add per field validation filter and error output (thanks )
+
+= 2.1.1 =
+* Fixes a bug that caused the organization id field to be hidden on new installs
+
 = 2.1 =
 * Add drop down field type (thanks jbuchbinder)
 * Improve form HTML (thanks jbuchbinder)
@@ -259,6 +274,9 @@ return $emails;
 * Initial release.
 
 == Upgrade Notice ==
+
+= 2.2 =
+Includes new CSS rules: make sure to update any custom CSS files with the new *.sf_field span.error_message* rule.
 
 = 2.1 =
 This version includes most of the functionality in the "jbuchbinder" GitHub fork many users installed. Most users should not experience any issues upgrading. However, the "current date" field is not included in this release.
