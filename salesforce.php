@@ -140,6 +140,12 @@ function salesforce_captcha(){
 	die();
 }
 
+function get_salesforce_form_id( $form_id, $sidebar ){
+	
+	return 'salesforce_w2l_lead_'.$form_id.str_replace(' ','_',$sidebar);
+	
+}
+
 function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id = 1) {
 	
 	if( !isset($options['forms'][$form_id]) )
@@ -166,8 +172,11 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 	
 	if ( $options['wpcf7css'] ) {
 		$content .= '<section class="form-holder clearfix"><div class="wpcf7">';
-	}	
-	$content .= "\n".'<form id="salesforce_w2l_lead_'.$form_id.str_replace(' ','_',$sidebar).'" class="'.($options['wpcf7css'] ? 'wpcf7-form' : 'w2llead'.$sidebar ).'" method="post">'."\n";
+	}
+	
+	$sf_form_id = get_salesforce_form_id( $form_id, $sidebar );
+	
+	$content .= "\n".'<form id="'.$sf_form_id.'" class="'.($options['wpcf7css'] ? 'wpcf7-form' : 'w2llead'.$sidebar ).'" method="post" action="#'.$sf_form_id.'">'."\n";
 
 	foreach ($options['forms'][$form_id]['inputs'] as $id => $input) {
 		if (!$input['show'])
@@ -606,8 +615,7 @@ function salesforce_form_shortcode($atts) {
 			//if(!$result) echo 'false';
 						
 			if (!$result){
-				
-				$content = '<strong>'.esc_html(stripslashes($options['sferrormsg'])).'</strong>';			
+				$content = '<strong class="error_message">'.esc_html(stripslashes($options['sferrormsg'])).'</strong>';			
 			}else{
 			
 				if( !empty($options['forms'][$form]['returl']) ){
@@ -623,8 +631,13 @@ function salesforce_form_shortcode($atts) {
 					<?php
 				}
 			
-				$content = '<strong>'.esc_html(stripslashes($options['successmsg'])).'</strong>';
+				$content = '<strong class="success_message">'.esc_html(stripslashes($options['successmsg'])).'</strong>';
 			}
+			
+			$sf_form_id = get_salesforce_form_id( $form_id, $sidebar );
+			
+			$content = '<div id="'.$sf_form_id.'">'.$content.'</div>';
+			
 		} else {
 			$errormsg = esc_html( stripslashes($options['errormsg']) ) ;
 			
