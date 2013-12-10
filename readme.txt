@@ -281,6 +281,7 @@ return $emails;
 
 = 2.2 =
 Includes new CSS rules: make sure to update any custom CSS files with the new *.sf_field span.error_message* rule.
+Changes how error messages are output. Please review your *error message* on the settings screen to make sure it still makes sense in the new context.
 
 = 2.1 =
 This version includes most of the functionality in the "jbuchbinder" GitHub fork many users installed. Most users should not experience any issues upgrading. However, the "current date" field is not included in this release.

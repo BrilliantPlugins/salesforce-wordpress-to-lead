@@ -340,7 +340,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								$this->postbox('sfsettings',__('Daddy Analytics Settings', 'salesforce'), $content, $class); 
 							
 								$content = $this->textinput('successmsg',__('Success message after sending message', 'salesforce') );
-								$content .= $this->textinput('errormsg',__('Error message when not all form fields are filled', 'salesforce') );
+								$content .= $this->textinput('errormsg',__('Error message shown when required fields are not filled out', 'salesforce') );
 								$content .= $this->textinput('sferrormsg',__('Error message when Salesforce.com connection fails', 'salesforce') );
 								$this->postbox('basicsettings',__('Basic Settings', 'salesforce'),$content); 
 

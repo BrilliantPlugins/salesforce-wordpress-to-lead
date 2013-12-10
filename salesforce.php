@@ -38,7 +38,7 @@ function salesforce_default_settings() {
 	$options = array();
 	$options['version'] 			= '2.0';
 	$options['successmsg'] 			= __('Success!','salesforce');
-	$options['errormsg'] 			= __('There was an error, please fill all required fields.','salesforce');
+	$options['errormsg'] 			= __('This field is required.','salesforce');
 	$options['requiredfieldstext'] 	= __('These fields are required.','salesforce');
 	$options['sferrormsg'] 			= __('Failed to connect to Salesforce.com.','salesforce');
 	$options['submitbutton']	 	= __('Submit','salesforce');
