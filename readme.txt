@@ -132,6 +132,8 @@ _The daily limit for Web-to-Lead requests is 500. If your organization exceeds i
 
 See also: [How many leads can we capture from our website?](https://help.salesforce.com/apex/HTViewHelpDoc?id=faq_leads_how_many_leads.htm&language=en_US#faq_leads_how_many_leads)
 
+
+
 == Other Notes ==
 
 = Filters =
@@ -147,6 +149,38 @@ function my_w2l_api_url( $url ){
 	return 'https://my.custom-api-url.com/something/';
 }
 `
+
+**sfwp2l_validate_field**
+
+Provide your own validation logic for each field.
+
+_An error array is passed in, along with the field name, submitted value, and field configuration (type, default value, required, etc)._
+
+Here's an example of blocking common free email providers:
+
+`
+add_filter('sfwp2l_validate_field','block_non_biz_emails', 10, 4);
+ 
+function block_non_biz_emails( $error, $name, $val, $field ){
+	
+	if( $name == 'email' ){
+	
+		$non_biz_domains = array( 'gmail.com', 'yahoo.com', 'hotmail.com', 'aol.com' );
+ 
+		$domain = array_pop(explode('@', $val));
+		
+		if( in_array( $domain, $non_biz_domains ) ){
+			$error['valid'] = false;
+			$error['message'] = 'Please enter a business email addresss.';
+		}
+		
+	}
+	
+	return $error;
+}
+`
+
+You can add to the $non_biz_domains to block other providers as well.
 
 **salesforce_w2l_form_html**
 
