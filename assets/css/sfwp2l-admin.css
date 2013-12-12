@@ -8,3 +8,7 @@ img{
 p.aligncenter{
 	text-align: center;
 }
+
+code.language-css{
+	background-color: transparent;
+}

@@ -427,8 +427,13 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 						</form>
 						<?php }
 						
-						if (isset($_GET['tab']) && $_GET['tab'] == 'css') { 
-						echo '<p>'.salesforce_back_link($this->plugin_options_url()).'</p>'; ?>
+						if (isset($_GET['tab']) && $_GET['tab'] == 'css') {
+						
+						wp_enqueue_style( 'prismcss', plugins_url('assets/css/prism.css', dirname(__FILE__) ) );
+						wp_enqueue_script( 'prismjs', plugins_url('assets/js/prism.min.js', dirname(__FILE__) ) );
+
+						
+						//echo '<p>'.salesforce_back_link($this->plugin_options_url()).'</p>'; ?>
 						<p>
 						<?php echo __("<p>If you don't want the default styling this plugins uses, but add the CSS for the form to your own theme, create a folder named <i>salesforce-wordpress-to-lead</i> in your theme folder, then create a file called <i>custom.css</i> within that.</p>
 							
@@ -437,7 +442,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 							<p>If found, that file will be enqueued after the default CSS, or by itself if the default CSS is disabled on the main options screen.</p>
 							");
 						
-						echo '<pre>'.file_get_contents( dirname(plugin_dir_path(__FILE__)) . '/assets/css/sfwp2l.css' ).'<pre>';
+						echo '<pre><code class="language-css">'.file_get_contents( dirname(plugin_dir_path(__FILE__)) . '/assets/css/sfwp2l.css' ).'</code><pre>';
 						
 						?>
 
@@ -648,7 +653,7 @@ i++;
 <?php } ?>
 				<?php } ?>
 				
-				<?php echo '<p>'.salesforce_back_link($this->plugin_options_url()).'</p>'; ?>
+				<?php //echo '<p>'.salesforce_back_link($this->plugin_options_url()).'</p>'; ?>
 				
 						<?php } ?>
 					</div>
