@@ -38,7 +38,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	
 		$dform = array();
 		
-		$dform['form_name'] = 'My Lead Form '.date('Y-m-d h:i:s');
+		$dform['form_name'] = 'My New Lead Form '.date('Y-m-d h:i:s');
 		
 		if( self::using_da() ){
 			$dform['source'] = '';
