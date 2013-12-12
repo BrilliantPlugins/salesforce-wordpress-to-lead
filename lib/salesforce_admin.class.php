@@ -435,7 +435,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 						
 						//echo '<p>'.salesforce_back_link($this->plugin_options_url()).'</p>'; ?>
 						<p>
-						<?php echo __("<p>If you don't want the default styling this plugins uses, but add the CSS for the form to your own theme, create a folder named <i>salesforce-wordpress-to-lead</i> in your theme folder, then create a file called <i>custom.css</i> within that.</p>
+						<?php echo __("<p>If you don't want the default styling this plugin uses, you can add the CSS for the form to your own theme by creating a folder named <i>salesforce-wordpress-to-lead</i> in your theme folder, then creating a file called <i>custom.css</i> within that with your custom CSS.</p>
 							
 							<p>".get_stylesheet_directory()."/<b>salesforce-wordpress-to-lead</b>/<b>custom.css</b></p>
 							

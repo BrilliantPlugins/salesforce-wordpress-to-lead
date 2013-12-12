@@ -11,7 +11,8 @@
 .salesforce_w2l_lead .w2linput.textarea { clear:both; width:100%; height:75px; margin:10px 0;}
 .salesforce_w2l_lead .w2lsubmit{ float:none; clear:both; }
 .salesforce_w2l_lead .w2linput.submit { float:none; margin: 10px 0 0 0; clear:both;}
-.salesforce_w2l_lead .w2llabel.checkbox, .salesforce_w2l_lead .w2linput.checkbox{ display: inline-block; float: none; }
+.salesforce_w2l_lead .w2llabel.checkbox, 
+.salesforce_w2l_lead .w2linput.checkbox{ display: inline-block; float: none; }
 .salesforce_w2l_lead .w2llabel.checkbox{ clear: none; margin: 0; }
 
 .salesforce_w2l_lead .w2limg{ display: block; clear: both; }
