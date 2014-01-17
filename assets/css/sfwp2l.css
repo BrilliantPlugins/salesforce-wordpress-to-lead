@@ -7,7 +7,7 @@
 .salesforce_w2l_lead .w2llabel, .w2linput { display:block; float:left; }
 .salesforce_w2l_lead .w2llabel.error { color:#f00; }
 .salesforce_w2l_lead .w2llabel { clear:left; margin:4px 0; width:50%; }
-.salesforce_w2l_lead .w2linput.text{ width:50%; height:18px; margin:4px 0; }
+.salesforce_w2l_lead .w2linput.text{ width:50%; height:auto; margin:4px 0; }
 .salesforce_w2l_lead .w2linput.textarea { clear:both; width:100%; height:75px; margin:10px 0;}
 .salesforce_w2l_lead .w2lsubmit{ float:none; clear:both; }
 .salesforce_w2l_lead .w2linput.submit { float:none; margin: 10px 0 0 0; clear:both;}
@@ -21,7 +21,7 @@
 .sidebar .w2linput, #sidebar .w2llabel{ float:none; display:inline; }
 .sidebar .w2llabel.error { color:#f00; }
 .sidebar .w2llabel { margin:4px 0; float:none; display:inline; }
-.sidebar .w2linput.text{ width:95%; height:18px; margin:4px 0;}
+.sidebar .w2linput.text{ width:95%; height:auto; margin:4px 0;}
 .sidebar .w2linput.textarea {width:95%; height:50px; margin:10px 0;}
 .sidebar .w2lsubmit{ float:none; clear:both; }
 .sidebar .w2linput.submit { margin:10px 0 0 0; }
