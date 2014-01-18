@@ -566,9 +566,8 @@ function salesforce_form_shortcode($atts) {
 			
 			if ($id == 'email' && $input['required'] && !is_email($val) ) {
 				$error['valid'] = false;
-				$error['message'] = 'The email address you entered is not valid.';
+				$error['message'] = __('The email address you entered is not valid.','salesforce');
 			}
-			
 		
 			$error = apply_filters('sfwp2l_validate_field', $error, $id, $val, $options['forms'][$form]['inputs'][$id] );
 
