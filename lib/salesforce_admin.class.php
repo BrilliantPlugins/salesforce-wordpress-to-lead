@@ -373,7 +373,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 							}
 							
 								$content .= $this->textinput('da_token',__('Daddy Analytics Token','salesforce'));
-								$content .= $this->textinput('da_url',__('Daddy Analytics Webform URL','salesforce'));
+								$content .= $this->textinput('da_url',__('Daddy Analytics Web to Lead URL ID','salesforce'));
 								$content .= $this->textinput('da_site',__('Daddy Analytics Site ID','salesforce'));
 								$this->postbox('sfsettings',__('Daddy Analytics Settings', 'salesforce'), $content, $class); 
 							

@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.0
 Tested up to: 3.8
-Stable tag: 2.2
+Stable tag: 2.2.1
 License: GPLv2
 Donate link: http://thoughtrefinery.com/donate/?item=salesforce
 
@@ -223,6 +223,13 @@ return $emails;
 `
 
 == Changelog ==
+
+= 2.2.1 =
+* Fix untranslatable string (invalid email)
+* Set input height to auto (18px causing issues with themes containing plentiful padding)
+* Change "Daddy Analytics Webform URL" to "Daddy Analytics Web to Lead URL ID"
+* Fixed slashes issues in field labels, select options and field labels in emails
+* Test using new deploy script: https://github.com/eyesofjeremy/Github-to-WordPress-Plugin-Directory-Deployment-Script
 
 = 2.2 =
 * Bug: Fixed checkboxes not retaining checked state after submit

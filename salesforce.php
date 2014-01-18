@@ -4,7 +4,7 @@ Plugin Name: WordPress-to-Lead for Salesforce CRM
 Plugin URI: http://daddyanalytics.com/wordpress-salesforce/?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP-SF-Plugin&utm_content=plugin_uri
 Description: Easily embed a contact form into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM. Also supports Web to Case and Comments to leads.
 Author: Daddy Analytics & Thought Refinery
-Version: 2.2
+Version: 2.2.1
 Author URI: http://daddyanalytics.com/?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP-SF-Plugin&utm_content=author_uri
 License: GPL2
 */
@@ -247,9 +247,11 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 					} else {
 						$k = $v = $opt;
 					}
-					$v = trim($v);
+					$v = trim(esc_attr(strip_tags(stripslashes($v))));
 					
-					$content .= '<option value="' . $v . '" '.selected($val, $v, false).'>' . trim($k) . '</option>' . "\n";
+					//echo $val .'|'. $v . '<br>';
+					
+					$content .= '<option value="' . esc_attr($v) . '" '.selected($val, $v, false).'>' . trim( stripslashes( $k ) ) . '</option>' . "\n";
 				}
 			}
 			$content .= '</select>'."\n\n";
@@ -458,7 +460,7 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 			$label = $options['forms'][$form_id]['inputs'][$name]['label'];
 			
 			if( trim( $label ) != '' ) 
-				$message .= $label.': '.$value."\r\n";
+				$message .= stripslashes($label).': '.$value."\r\n";
 	}
 
 	wp_mail( $_POST['email'], $subject, $message, $headers );
@@ -497,7 +499,7 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 			$label = $options['forms'][$form_id]['inputs'][$name]['label'];
 			
 			if( trim( $label ) != '' ) 
-				$message .= $label.': '.$value."\r\n";
+				$message .= stripslashes($label).': '.$value."\r\n";
 		}
 	}
 
