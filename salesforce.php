@@ -4,7 +4,7 @@ Plugin Name: WordPress-to-Lead for Salesforce CRM
 Plugin URI: http://daddyanalytics.com/wordpress-salesforce/?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP-SF-Plugin&utm_content=plugin_uri
 Description: Easily embed a contact form into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM. Also supports Web to Case and Comments to leads.
 Author: Daddy Analytics & Thought Refinery
-Version: 2.2.1
+Version: 2.2.2
 Author URI: http://daddyanalytics.com/?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP-SF-Plugin&utm_content=author_uri
 License: GPL2
 */
