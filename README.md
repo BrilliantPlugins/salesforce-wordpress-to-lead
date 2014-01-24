@@ -14,4 +14,6 @@ http://www.youtube.com/watch?v=hnMzkxPUIyc
 You can fully configure all the different settings for the form, and then use a shortcode to insert the form into your posts or pages, or you can use the widget that comes with the plugin and insert the form into your sidebar!
 
 ## More Information ##
-See readme.txt for changelog and other info
+See the WordPress plugin page for the changelog and other info:
+
+http://wordpress.org/extend/plugins/salesforce-wordpress-to-lead/
