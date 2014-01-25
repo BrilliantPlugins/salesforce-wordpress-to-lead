@@ -87,12 +87,16 @@ if (!class_exists('OV_Plugin_Admin')) {
 		/**
 		 * Create a Text input field
 		 */
-		function textinput($id, $label) {
+		function textinput($id, $label, $note='') {
 			$options = get_option($this->optionname);
 			$textinput = '<label for="'.$id.'">'.$label.':</label><br/><input size="45" type="text" id="'.$id.'" name="'.$id.'" value="';
 			if ( isset($options[$id]))
 				$textinput .= htmlentities(stripslashes($options[$id]));
-			$textinput .= '"/><br/><br/>';
+			$textinput .= '"/><br/>';
+			
+			if( $note ) $textinput .= '<small>'.$note.'</small><br/>';
+			
+			$textinput .= '<br/>';
 			return $textinput;
 		}
 
