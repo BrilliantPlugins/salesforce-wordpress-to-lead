@@ -4,7 +4,7 @@ Plugin Name: WordPress-to-Lead for Salesforce CRM
 Plugin URI: http://daddyanalytics.com/wordpress-salesforce/?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP-SF-Plugin&utm_content=plugin_uri
 Description: Easily embed a contact form into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM. Also supports Web to Case and Comments to leads.
 Author: Daddy Analytics & Thought Refinery
-Version: 2.2.4
+Version: 2.2.5
 Author URI: http://daddyanalytics.com/?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP-SF-Plugin&utm_content=author_uri
 License: GPL2
 */
@@ -153,6 +153,8 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 	if( !isset($options['forms'][$form_id]) )
 		return;
 	
+	$content = '';
+	
 /*
 	if (!empty($content))
 		$content = wpautop('<strong>'.$content.'</strong>');
@@ -202,7 +204,14 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		if($input['type'] != 'hidden' && $input['type'] != 'current_date') {
 			if ($options['wpcf7css']) { $content .= '<p>'; }
 			if ($input['type'] == 'checkbox') {
-				$content .= "\t\n\t".'<input type="checkbox" id="sf_'.$id.'" class="w2linput checkbox" name="'.$id.'" value="'.$val.'" '.checked( $_POST[$id] , $val, false ).'/>'."\n\n";
+				
+				if( isset( $_POST[$id] ) ){
+					$post_val = $_POST[$id];
+				}else{
+					$post_val = '';
+				}
+			
+				$content .= "\t\n\t".'<input type="checkbox" id="sf_'.$id.'" class="w2linput checkbox" name="'.$id.'" value="'.$val.'" '.checked( $post_val, $val, false ).'/>'."\n\n";
 			}
 			if (!empty($input['label'])) {
 				$content .= "\t".'<label class="w2llabel'.$error.$input['type'].($input['type'] == 'checkbox' ? ' w2llabel-checkbox-label' : '').'" for="sf_'.$id.'">'.( $input['opts'] == 'html' && $input['type'] == 'checkbox' ? stripslashes($input['label']) : esc_html(stripslashes($input['label'])));
@@ -560,8 +569,12 @@ function salesforce_form_shortcode($atts) {
 		
 		// field validation
 		foreach ($options['forms'][$form]['inputs'] as $id => $input) {
-		
-			$val = trim( $_POST[$id] );
+			
+			if( isset( $_POST[$id] ) ){
+				$val = trim( $_POST[$id] );
+			}else{
+				$val = '';
+			}
 			
 			$error = array(
 				'valid' => false,
@@ -577,7 +590,7 @@ function salesforce_form_shortcode($atts) {
 			if ($id == 'email' && $input['required'] && !is_email($val) ) {
 				$error['valid'] = false;
 				
-				if( $options['emailerrormsg'] ){
+				if( isset( $options['emailerrormsg'] ) && $options['emailerrormsg'] ){
 					$error['message'] = $options['emailerrormsg'];
 				}else{
 					// backwards compatibility
@@ -624,7 +637,7 @@ function salesforce_form_shortcode($atts) {
 				
 				$errors['captcha']['valid'] = false;
 
-				if( $options['captchaerrormsg'] ){
+				if( isset( $options['captchaerrormsg'] ) && $options['captchaerrormsg'] ){
 					$errors['captcha']['message'] = $options['captchaerrormsg'];
 				}else{
 					//backwards compatibility

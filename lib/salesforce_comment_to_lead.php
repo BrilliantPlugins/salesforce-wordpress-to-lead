@@ -99,6 +99,7 @@ function salesforce_comment_form_defaults( $defaults ) {
         unset( $defaults[ 'fields' ][ 'author' ] );
         $req = get_option( 'require_name_email' );
         $aria_req = ( $req ? " aria-required='true'" : '' );
+        $commenter = wp_get_current_commenter();
         $additions = array(
                 'author_first_name' => '<p class="comment-form-author comment-form-author-first-name">' . '<label for="author_first_name">' . __( 'First Name', 'salesforce' ) . ( $req ? ' <span class="required">*</span>' : '' ) . '</label> ' .
                         '<input id="author_first_name" name="author_first_name" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30"' . $aria_req . ' /></p>',

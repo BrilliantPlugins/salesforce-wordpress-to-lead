@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.0
 Tested up to: 3.8
-Stable tag: 2.2.4
+Stable tag: 2.2.5
 License: GPLv2
 Donate link: http://thoughtrefinery.com/donate/?item=salesforce
 
@@ -250,6 +250,9 @@ function salesforce_filter_admin_message( $message ){
 `
 
 == Changelog ==
+
+= 2.2.5 =
+* Fix PHP warnings and notices
 
 = 2.2.4 =
 * Add email and captcha error to settings page.

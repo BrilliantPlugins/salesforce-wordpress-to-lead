@@ -347,7 +347,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 									//$class='closed';
 								
 								$content = $this->textinput('org_id',__('Your Salesforce.com organisation ID','salesforce'), __('To find your Organisation ID, in your Salesforce.com account, go to Setup &raquo; Company Profile &raquo; Company Information','salesforce'));
-								$this->postbox('sfsettings',__('Salesforce.com Settings', 'salesforce'),$content, $class); 
+								$this->postbox('sfsettings',__('Salesforce.com Settings', 'salesforce'), $content); 
 
 
 							$loc = 'banner-main';
@@ -374,7 +374,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								$content .= $this->textinput('da_token',__('Daddy Analytics Token','salesforce'));
 								$content .= $this->textinput('da_url',__('Daddy Analytics Web to Lead URL ID','salesforce'));
 								$content .= $this->textinput('da_site',__('Daddy Analytics Site ID','salesforce'));
-								$this->postbox('sfsettings',__('Daddy Analytics Settings', 'salesforce'), $content, $class); 
+								$this->postbox('sfsettings',__('Daddy Analytics Settings', 'salesforce'), $content); 
 							
 								$content = $this->textinput('successmsg',__('Success message after sending message', 'salesforce') );
 								$content .= $this->textinput('errormsg',__('Error message shown when required fields are not filled out', 'salesforce') );
@@ -548,7 +548,12 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 										$content .= '<small>Value:</small> <input size="14" name="inputs['.$field.'_value]" type="text" value="';
 										if( isset($input['value']) ) $content .= esc_html(stripslashes($input['value']));
 										$content .= '"/></td>';
-										$content .= '<td><textarea rows="4" name="inputs['.$field.'_opts]"  >'.esc_textarea(stripslashes($input['opts'])).'</textarea></td>';
+										
+										$opts = '';
+										if( isset( $input['opts'] ) )
+											$opts = $input['opts'];
+										
+										$content .= '<td><textarea rows="4" name="inputs['.$field.'_opts]"  >'.esc_textarea(stripslashes( $opts )).'</textarea></td>';
 										$content .= '<td><input size="2" name="inputs['.$field.'_pos]" type="text" value="'.esc_html($input['pos']).'"/></td>';
 										$content .= '</tr>';
 										$i++;
