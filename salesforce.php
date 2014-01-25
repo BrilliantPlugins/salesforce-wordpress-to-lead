@@ -39,6 +39,8 @@ function salesforce_default_settings() {
 	$options['version'] 			= '2.0';
 	$options['successmsg'] 			= __('Success!','salesforce');
 	$options['errormsg'] 			= __('This field is required.','salesforce');
+	$options['emailerrormsg']		= __('The email address you entered is not valid.','salesforce');
+	$options['captchaerrormsg']		= __('The text you entered did not match the image.','salesforce');
 	$options['requiredfieldstext'] 	= __('These fields are required.','salesforce');
 	$options['sferrormsg'] 			= __('Failed to connect to Salesforce.com.','salesforce');
 	$options['submitbutton']	 	= __('Submit','salesforce');
@@ -574,7 +576,14 @@ function salesforce_form_shortcode($atts) {
 			
 			if ($id == 'email' && $input['required'] && !is_email($val) ) {
 				$error['valid'] = false;
-				$error['message'] = __('The email address you entered is not valid.','salesforce');
+				
+				if( $options['emailerrormsg'] ){
+					$error['message'] = $options['emailerrormsg'];
+				}else{
+					// backwards compatibility
+					$error['message'] = __('The email address you entered is not valid.','salesforce');
+				}
+				
 			}
 		
 			$error = apply_filters('sfwp2l_validate_field', $error, $id, $val, $options['forms'][$form]['inputs'][$id] );
@@ -614,7 +623,14 @@ function salesforce_form_shortcode($atts) {
 				$has_error = true;
 				
 				$errors['captcha']['valid'] = false;
-				$errors['captcha']['message'] = __('The text you entered did not match the image.','salesforce');
+
+				if( $options['captchaerrormsg'] ){
+					$errors['captcha']['message'] = $options['captchaerrormsg'];
+				}else{
+					//backwards compatibility
+					$errors['captcha']['message'] = __('The text you entered did not match the image.','salesforce');
+				}
+				
 			}
 			
 		}

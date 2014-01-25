@@ -283,7 +283,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 					}
 				}
 
-		        foreach (array('successmsg','errormsg','sferrormsg','org_id','submitbutton','subject','ccusermsg','requiredfieldstext', 'da_token', 'da_url', 'da_site') as $option_name) {
+		        foreach (array('successmsg','errormsg','emailerrormsg','captchaerrormsg','sferrormsg','org_id','submitbutton','subject','ccusermsg','requiredfieldstext', 'da_token', 'da_url', 'da_site') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options[$option_name] = $_POST[$option_name];
 					}
@@ -346,8 +346,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								//if( $options['org_id'] )
 									//$class='closed';
 								
-								$content = $this->textinput('org_id',__('Your Salesforce.com organisation ID','salesforce'));
-								$content .= '<small>'.__('To find your Organisation ID, in your Salesforce.com account, go to Setup &raquo; Company Profile &raquo; Company Information','salesforce').'</small><br/>';
+								$content = $this->textinput('org_id',__('Your Salesforce.com organisation ID','salesforce'), __('To find your Organisation ID, in your Salesforce.com account, go to Setup &raquo; Company Profile &raquo; Company Information','salesforce'));
 								$this->postbox('sfsettings',__('Salesforce.com Settings', 'salesforce'),$content, $class); 
 
 
@@ -379,14 +378,17 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 							
 								$content = $this->textinput('successmsg',__('Success message after sending message', 'salesforce') );
 								$content .= $this->textinput('errormsg',__('Error message shown when required fields are not filled out', 'salesforce') );
+								$content .= $this->textinput('emailerrormsg',__('Error message shown when email field is invalid', 'salesforce'), 'Default: The email address you entered is not valid.' );
+
+								$content .= $this->textinput('captchaerrormsg',__('Error message shown when captcha is invalid', 'salesforce'), 'Default: The text you entered did not match the image.' );
+								
 								$content .= $this->textinput('sferrormsg',__('Error message when Salesforce.com connection fails', 'salesforce') );
 								$this->postbox('basicsettings',__('Basic Settings', 'salesforce'),$content); 
 
 								$content = $this->checkbox('showccuser',__('Allow user to request a copy of their submission', 'salesforce') );
 								$content .= '<br/>';
 								$content .= $this->textinput('ccusermsg',__('Request a copy text', 'salesforce') );
-								$content .= $this->textinput('subject',__('Email subject', 'salesforce') );
-								$content .= '<small>'.__('Use %BLOG_NAME% to auto-insert the blog title into the subject','salesforce').'</small><br/><br/><br/>';
+								$content .= $this->textinput('subject',__('Email subject', 'salesforce'), __('Use %BLOG_NAME% to auto-insert the blog title into the subject','salesforce') );
 
 								$content .= $this->checkbox('ccadmin',__('Send blog admin an email notification', 'salesforce') );
 								//$content .= $this->checkbox('email_sender',__('Use this sender', 'salesforce') );
