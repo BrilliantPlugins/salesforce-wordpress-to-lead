@@ -98,6 +98,9 @@ Right now, the only way of ordering input fields is by changing the position num
 = How do I apply my own styling to the form? =
 Instructions for disabling or overriding the CSS are included on the plugin settings screen (see Style Settings).
 
+= What does "Use WPCF7 CSS integration" do? =
+This option adds the WPCF7 classes to the form fields so you get the WPCF7 CSS styles applied (if that plugin is also activated).
+
 = Is it possible to make multiple forms with this plugin? =
 Yes, version 2.0 introduces this feature. Version 2.1 allows you to duplicate forms to reduce re-entering data.
 
