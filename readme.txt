@@ -254,6 +254,9 @@ function salesforce_filter_admin_message( $message ){
 
 == Changelog ==
 
+= 2.3 =
+* Allow some settings to be overriden per form (Success Message, ... )
+
 = 2.2.5 =
 * Fix PHP warnings and notices
 
