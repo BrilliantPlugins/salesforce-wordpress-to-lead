@@ -247,7 +247,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				w2l_sksort($newinputs,'pos',true);
 				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
 				
-				foreach (array('form_name','source','returl','type') as $option_name) {
+				foreach (array('form_name','source','returl','successmsg','type') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options['forms'][$form_id][$option_name] = $_POST[$option_name];
 					}
@@ -376,7 +376,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								$content .= $this->textinput('da_site',__('Daddy Analytics Site ID','salesforce'));
 								$this->postbox('sfsettings',__('Daddy Analytics Settings', 'salesforce'), $content); 
 							
-								$content = $this->textinput('successmsg',__('Success message after sending message', 'salesforce') );
+								$content = $this->textinput('successmsg',__('Success message after sending lead to SalesForce', 'salesforce') );
 								$content .= $this->textinput('errormsg',__('Error message shown when required fields are not filled out', 'salesforce') );
 								$content .= $this->textinput('emailerrormsg',__('Error message shown when email field is invalid', 'salesforce'), 'Default: The email address you entered is not valid.' );
 
@@ -632,6 +632,12 @@ i++;
 									$content .= '<label>'.__('Return/Thanks URL:','salesforce').'</label><br/>';
 									$content .= '<input type="text" name="returl" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['returl']).'">';
 									$content .= '<br/><small>'.__('e.g.http://yoursite.com/thanks/').'</small>';
+									$content .= '</p>';
+
+									$content .= '<p>';
+									$content .= '<label>'.__('Success Message:','salesforce').'</label><br/>';
+									$content .= '<input type="text" name="successmsg" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['successmsg']).'">';
+									$content .= '<br/><small>'.__('Overrides the default message for this form.').'</small>';
 									$content .= '</p>';
 
 									$content .= '<input type="hidden" name="form_id" id="form_id" value="'.$form_id.'">';

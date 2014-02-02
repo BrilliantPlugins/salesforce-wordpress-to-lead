@@ -677,7 +677,9 @@ function salesforce_form_shortcode($atts) {
 					<?php
 				}
 			
-				$content = '<strong class="success_message">'.esc_html(stripslashes($options['successmsg'])).'</strong>';
+				$success_message = salesforce_get_option( 'successmsg', $form, $options );
+			
+				$content = '<strong class="success_message">'.esc_html(stripslashes( $success_message )).'</strong>';
 			}
 			
 			$sf_form_id = get_salesforce_form_id( $form_id, $sidebar );
@@ -711,6 +713,23 @@ function salesforce_form_shortcode($atts) {
 
 add_shortcode('salesforce', 'salesforce_form_shortcode');	
 
+function salesforce_get_option( $name, $form, $options = null ){
+	
+	if( !$options ){
+		$options = get_option("salesforce2");
+		if (!is_array($options))
+			$options = salesforce_default_settings();
+	}
+	
+	if( isset( $options['forms'][$form][$name] ) )
+		return $options['forms'][$form][$name];
+		
+	if( isset( $options[$name] ) )
+		return $options[$name];
+	
+	return false;
+	
+}
 
 function salesforce_activate(){
 
