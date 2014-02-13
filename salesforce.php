@@ -344,17 +344,9 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		
 		$content .= '<div class="sf_field sf_field_captcha sf_type_captcha">';
 		
-		//if( salesforce_get_option('labellocation', $form_id, $options) != 'placeholders' ){
 			$content .=  '<label class="w2llabel">'.$label.'</label>'."\n\n".'
 				<img class="w2limg" src="' . $captcha['image_src'] . '&hash=' . $sf_hash . '" alt="CAPTCHA image" />'."\n\n";
 				$content .=  '<input type="text" class="w2linput text captcha" name="captcha_text" value="">';
-/*
-		}else{
-				$content .= '<img class="w2limg" src="' . $captcha['image_src'] . '&hash=' . $sf_hash . '" alt="CAPTCHA image" />'."\n\n";
-				$content .=  '<input placeholder="'.$label.'" type="text" class="w2linput text captcha" name="captcha_text" value="">';
-
-		}
-*/
 		
 
 		if( $errors && !$errors['captcha']['valid'] ){

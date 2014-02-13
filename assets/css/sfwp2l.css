@@ -48,14 +48,13 @@
 	height: 75px;
 	margin: 0 0 0 .5em;
 	font-size: 2.5em;
-	font-family: serif;
+	font-family: 'Times New Yorker', serif;
 	text-align: center;
- }
- 
+}
+
 .salesforce_w2l_lead .sf_cc_user{
 	padding: 1em 0;
 }
-
 
 .sidebar .w2linput, #sidebar .w2llabel{ float:none; display:inline; }
 .sidebar .w2llabel.error { color:#f00; }
@@ -65,11 +64,11 @@
 .sidebar .w2lsubmit{ float:none; clear:both; }
 .sidebar .w2linput.submit { margin:.25em 0 0 0; }
 
-.sidebar .sf_field_captcha{
+.sidebar .sf_type_captcha{
 	text-align: center;
 }
 
-.sidebar .sf_field_captcha .w2llabel{
+.sidebar .sf_type_captcha .w2llabel{
 	padding: .5em 0;
 	display: inline-block;
 	width: 100%;
@@ -83,8 +82,7 @@
 .sidebar .w2linput.text.captcha{
 	margin: .25em 0 0 0;
 	height: auto;
-	font-size: 1em;
-	
+	font-size: 1em;	
 }
 
 .salesforce_w2l_lead .sf_field, .sf_type_checkbox{ clear: both; }
