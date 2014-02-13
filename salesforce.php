@@ -190,6 +190,11 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 	
 	$content .= "\n".'<form id="'.$sf_form_id.'" class="'.($options['wpcf7css'] ? 'wpcf7-form' : 'w2llead'.$sidebar ).' '.$label_location.'" method="post" action="#'.$sf_form_id.'">'."\n";
 
+	$reqtext = stripslashes( salesforce_get_option('requiredfieldstext',$form_id,$options));
+
+	if (!empty($reqtext) && salesforce_get_option('requiredfieldstextpos',$form_id,$options) == 'top' )
+		$content .= '<p class="sf_required_fields_msg" id="requiredfieldsmsg"><sup><span class="required">*</span></sup> '.esc_html( $reqtext ).'</p>';
+
 	foreach ($options['forms'][$form_id]['inputs'] as $id => $input) {
 		if (!$input['show'])
 			continue;
@@ -234,8 +239,14 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 				//$placeholder = ' placeholder="'.$placeholder.'" ';
 				
 			}else{
+			
+				$required = '';
+				
+				if( $input['required'] )
+					$required = 'required';
+			
 				if (!empty($input['label'])) {
-					$content .= "\t".'<label class="w2llabel'.$error.$input['type'].($input['type'] == 'checkbox' ? ' w2llabel-checkbox-label' : '').'" for="sf_'.$id.'">'.( $input['opts'] == 'html' && $input['type'] == 'checkbox' ? stripslashes($input['label']) : esc_html(stripslashes($input['label'])));
+					$content .= "\t".'<label class="w2llabel '.$required.' '.$error.$input['type'].($input['type'] == 'checkbox' ? ' w2llabel-checkbox-label' : '').'" for="sf_'.$id.'">'.( $input['opts'] == 'html' && $input['type'] == 'checkbox' ? stripslashes($input['label']) : esc_html(stripslashes($input['label'])));
 					if (!in_array($input['type'], array('checkbox', 'html'))) {
 						$content .= ':';
 					}
@@ -333,15 +344,17 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		
 		$content .= '<div class="sf_field sf_field_captcha sf_type_captcha">';
 		
-		if( salesforce_get_option('labellocation', $form_id, $options) != 'placeholders' ){
+		//if( salesforce_get_option('labellocation', $form_id, $options) != 'placeholders' ){
 			$content .=  '<label class="w2llabel">'.$label.'</label>'."\n\n".'
 				<img class="w2limg" src="' . $captcha['image_src'] . '&hash=' . $sf_hash . '" alt="CAPTCHA image" />'."\n\n";
 				$content .=  '<input type="text" class="w2linput text captcha" name="captcha_text" value="">';
+/*
 		}else{
 				$content .= '<img class="w2limg" src="' . $captcha['image_src'] . '&hash=' . $sf_hash . '" alt="CAPTCHA image" />'."\n\n";
 				$content .=  '<input placeholder="'.$label.'" type="text" class="w2linput text captcha" name="captcha_text" value="">';
 
 		}
+*/
 		
 
 		if( $errors && !$errors['captcha']['valid'] ){
@@ -377,9 +390,11 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		$content .= "\t".'<input type="hidden" id="Daddy_Analytics_WebForm_URL" name="'.esc_attr($da_url).'" class="w2linput" value="" style="display: none;"/>'."\n";
 	}
 
-	$submit = stripslashes($options['submitbutton']);
+	$submit = stripslashes( salesforce_get_option( 'submitbutton', $form_id, $options ) );
+	
 	if (empty($submit))
 		$submit = "Submit";
+		
 	$content .= "\t";
 	if ($options['wpcf7css']) {
 		$content .= '<p class="punt">';
@@ -400,8 +415,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 	}
 	$content .= '</form>'."\n";
 
-	$reqtext = stripslashes($options['requiredfieldstext']);
-	if (!empty($reqtext))
+	if (!empty($reqtext) && salesforce_get_option('requiredfieldstextpos',$form_id,$options) == '' )
 		$content .= '<p class="sf_required_fields_msg" id="requiredfieldsmsg"><sup><span class="required">*</span></sup> '.esc_html( $reqtext ).'</p>';
 /*
 	if (!$options['hide_salesforce_link']) {

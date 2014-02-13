@@ -8,7 +8,7 @@
 .salesforce_w2l_lead .w2llabel.error { color:#f00; }
 .salesforce_w2l_lead .w2llabel { clear:left; margin:.25em 0; width:50%; }
 .salesforce_w2l_lead .w2linput.text{ width:50%; height:auto; margin:.25em 0; }
-.salesforce_w2l_lead .w2linput.textarea { width:100%; height:5em; margin:.75em 0;}
+.salesforce_w2l_lead .w2linput.textarea { width:100%; height:6em; margin:.75em 0;}
 .salesforce_w2l_lead .w2lsubmit{ float:none; clear:both; }
 .salesforce_w2l_lead .w2linput.submit { float:none; margin: .75em 0 0 0; clear:both;}
 .salesforce_w2l_lead .w2llabel.checkbox, 
@@ -33,7 +33,8 @@
 
 .salesforce_w2l_lead .w2linput.text.captcha{ width: 160px; float: left; clear: none; }
 .salesforce_w2l_lead .w2limg{ display: block; clear: both; float: left;}
-.salesforce_w2l_lead span.required { font-weight: bold;}
+.salesforce_w2l_lead .required { font-weight: bold; color: inherit; }
+.salesforce_w2l_lead span.required { color: red; }
 
 .salesforce_w2l_lead .left-aligned .w2limg{
 	float: left;
@@ -49,7 +50,7 @@
  }
  
 .salesforce_w2l_lead .sf_cc_user{
-	padding-top: 1em;
+	padding: 1em 0;
 }
 
 
@@ -57,9 +58,31 @@
 .sidebar .w2llabel.error { color:#f00; }
 .sidebar .w2llabel { margin:.25em 0; float:none; display:inline; }
 .sidebar .w2linput.text{ width:95%; height:auto; margin:.25em 0;}
-.sidebar .w2linput.textarea {width:95%; height:3.5em; margin:.25em 0;}
+.sidebar .w2linput.textarea {width:95%; height:4em; margin:.25em 0;}
 .sidebar .w2lsubmit{ float:none; clear:both; }
 .sidebar .w2linput.submit { margin:.25em 0 0 0; }
+
+.sidebar .sf_field_captcha{
+	text-align: center;
+}
+
+.sidebar .sf_field_captcha .w2llabel{
+	padding: .5em 0;
+	display: inline-block;
+	width: 100%;
+}
+
+.sidebar .w2linput.text.captcha, .sidebar .w2limg{
+	float: none;
+	display: inline-block;
+}
+
+.sidebar .w2linput.text.captcha{
+	margin: .25em 0 0 0;
+	height: auto;
+	font-size: 1em;
+	
+}
 
 .salesforce_w2l_lead .sf_field, .sf_type_checkbox{ clear: both; }
 .salesforce_w2l_lead .sf_field span.error_message{ clear: left; display: block; color: red; font-size: 80%; }

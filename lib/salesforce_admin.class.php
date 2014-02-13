@@ -249,7 +249,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				w2l_sksort($newinputs,'pos',true);
 				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
 				
-				foreach (array('form_name','source','returl','successmsg','labellocation','type') as $option_name) {
+				foreach (array('form_name','source','returl','successmsg','labellocation','submitbutton','requiredfieldstext','requiredfieldstextpos','type') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options['forms'][$form_id][$option_name] = $_POST[$option_name];
 					}
@@ -641,6 +641,27 @@ i++;
 									$content .= '<input type="text" name="successmsg" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['successmsg']).'">';
 									$content .= '<br/><small>'.__('Overrides the default message for this form.').'</small>';
 									$content .= '</p>';
+
+
+									$content .= '<p>';
+									$content .= '<label>'.__('Submit button text (override):','salesforce').'</label><br/>';
+									$content .= '<input type="text" name="submitbutton" style="width:50%;" value="'.esc_html(stripslashes($options['forms'][$form_id]['submitbutton'])).'">';
+									$content .= '<br/><small>'.__('Overrides the default message for this form.').'</small>';
+									$content .= '</p>';
+
+									$content .= '<p>';
+									$content .= '<label>'.__('Required fields text (override):','salesforce').'</label><br/>';
+									$content .= '<input type="text" name="requiredfieldstext" style="width:50%;" value="'.esc_html(stripslashes($options['forms'][$form_id]['requiredfieldstext'])).'">';
+									$content .= '<br/><small>'.__('Overrides the default message for this form.').'</small>';
+									$content .= '</p>';
+
+									$content .= '<p>';
+									$content .= '<label>'.__('Required Fields Text Location:','salesforce').'</label><br/>';
+									$content .= '<input type="radio" name="requiredfieldstextpos" value=""'.checked($options['forms'][$form_id]['requiredfieldstextpos'],'',false).'> Below Form <br>';
+									$content .= '<input type="radio" name="requiredfieldstextpos" value="top" '.checked($options['forms'][$form_id]['requiredfieldstextpos'],'top',false).'> Above Form <br>';
+									$content .= '<input type="radio" name="requiredfieldstextpos" value="hidden"'.checked($options['forms'][$form_id]['requiredfieldstextpos'],'hidden',false).'> None';
+									$content .= '</p>';
+
 
 									$content .= '<p>';
 									$content .= '<label>'.__('Label Location:','salesforce').'</label><br/>';
