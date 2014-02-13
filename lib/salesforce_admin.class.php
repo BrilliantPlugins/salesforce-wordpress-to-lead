@@ -45,6 +45,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		}else{
 			$dform['source'] = __('Lead form on ','salesforce').get_bloginfo('name');
 		}
+
+		$dform['placeholders'] = false;
 		
 		$dform['returl'] = '';
 		
@@ -247,7 +249,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				w2l_sksort($newinputs,'pos',true);
 				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
 				
-				foreach (array('form_name','source','returl','successmsg','type') as $option_name) {
+				foreach (array('form_name','source','returl','successmsg','placeholders','type') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options['forms'][$form_id][$option_name] = $_POST[$option_name];
 					}
@@ -432,7 +434,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 						if (isset($_GET['tab']) && $_GET['tab'] == 'css') {
 						
 						wp_enqueue_style( 'prismcss', plugins_url('assets/css/prism.css', dirname(__FILE__) ) );
-						wp_enqueue_script( 'prismjs', plugins_url('assets/js/prism.min.js', dirname(__FILE__) ) );
+						wp_enqueue_script( 'prismjs', plugins_url('assets/js/prism/prism.min.js', dirname(__FILE__) ) );
 
 						
 						//echo '<p>'.salesforce_back_link($this->plugin_options_url()).'</p>'; ?>
@@ -638,6 +640,11 @@ i++;
 									$content .= '<label>'.__('Success Message:','salesforce').'</label><br/>';
 									$content .= '<input type="text" name="successmsg" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['successmsg']).'">';
 									$content .= '<br/><small>'.__('Overrides the default message for this form.').'</small>';
+									$content .= '</p>';
+
+									$content .= '<p>';
+									$content .= '<label>'.__('Placeholders:','salesforce').'</label><br/>';
+									$content .= '<input type="checkbox" name="placeholders" value="1" '.checked($options['forms'][$form_id]['placeholders'],1,false).'> Use placeholders vs. labels<br>';
 									$content .= '</p>';
 
 									$content .= '<input type="hidden" name="form_id" id="form_id" value="'.$form_id.'">';
