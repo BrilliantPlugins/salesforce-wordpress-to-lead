@@ -164,7 +164,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		wp_enqueue_style( 'sfwp2lcss', plugins_url('/assets/css/sfwp2l.css', __FILE__) );
 	}
 
-	if( salesforce_get_option('placeholders', $form_id, $options) )
+	if(  salesforce_get_option('labellocation', $form_id, $options) == 'placeholders' )
 		wp_enqueue_script( 'sfwp2ljqph', plugins_url('/assets/js/jquery-placeholder/jquery.placeholder.js', __FILE__)  );
 
 	$custom_css = '/salesforce-wordpress-to-lead/custom.css';
@@ -413,7 +413,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		$content .= '</section>';
 	}
 	
-	if( salesforce_get_option('placeholders', $form_id, $options) )
+	if(  salesforce_get_option('labellocation', $form_id, $options) == 'placeholders' )
 		$content .= '<script>jQuery( document ).ready( function($) { $(".salesforce_w2l_lead input, .salesforce_w2l_lead textarea").placeholder(); } );
 		</script>';
 		
