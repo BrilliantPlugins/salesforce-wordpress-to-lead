@@ -85,7 +85,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	
 	function get_ad_term(){
 		
-		if( isset( $_GET['id'] ) && $_GET['id'] ){
+		if( ( isset( $_GET['id'] ) && $_GET['id'] ) || ( isset( $_GET['tab'] ) && $_GET['tab'] == 'form' ) ){
 			$term = 'form';
 		}else{
 			$term = 'settings';
