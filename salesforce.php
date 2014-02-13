@@ -329,7 +329,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 	//captcha
 	
-	if($options['captcha']){
+	if( salesforce_get_option('captchaform',$form_id,$options) == 'enabled' || ( salesforce_get_option('captchaform',$form_id,$options) == '' && $options['captcha']) ){
 	
 		include("lib/captcha/captcha.php");
 		$captcha = captcha();
@@ -689,7 +689,8 @@ function salesforce_form_shortcode($atts) {
 		}
 		
 		//check captcha if enabled
-		if( $options['captcha'] ){
+		
+		if( salesforce_get_option('captchaform',$form_id,$options) == 'enabled' || ( salesforce_get_option('captchaform',$form_id,$options) == '' && $options['captcha']) ){
 			
 			if( $_POST['captcha_hash'] != sha1( $_POST['captcha_text'].NONCE_SALT )){
 				$has_error = true;
