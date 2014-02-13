@@ -517,10 +517,17 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 									.'<th width="8%">'.__('Order','salesforce').'</th>'
 									.'</tr>';
 									$i = 1;
+									
+										
 									foreach ($options['forms'][$form_id]['inputs'] as $field => $input) {
+
+									$trclass= 'disabled';
+									if( $input['show'] )
+										$trclass= 'enabled';
+
 										if (empty($input['pos']))
 											$input['pos'] = $i;
-										$content .= '<tr class="' . (($i % 2) ? 'alternate' : '') . '">';
+										$content .= '<tr class="' .$trclass.' '. (($i % 2) ? 'alternate' : '') . '">';
 										$content .= '<th>'.$field.'</th>';
 										$content .= '<td>';
 										$content .= '<table>';
