@@ -256,6 +256,8 @@ function salesforce_filter_admin_message( $message ){
 
 = 2.3 =
 * Allow some settings to be overriden per form (Success Message, ... )
+* Support for option to use placeholders instead of labels (per form)
+* Rmeove newlines in form HTML that were being converted to <br> upon output
 
 = 2.2.5 =
 * Fix PHP warnings and notices

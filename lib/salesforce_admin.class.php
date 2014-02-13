@@ -46,7 +46,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 			$dform['source'] = __('Lead form on ','salesforce').get_bloginfo('name');
 		}
 
-		$dform['placeholders'] = false;
+		$dform['labellocation'] = '';
 		
 		$dform['returl'] = '';
 		
@@ -249,7 +249,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				w2l_sksort($newinputs,'pos',true);
 				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
 				
-				foreach (array('form_name','source','returl','successmsg','placeholders','type') as $option_name) {
+				foreach (array('form_name','source','returl','successmsg','labellocation','type') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options['forms'][$form_id][$option_name] = $_POST[$option_name];
 					}
@@ -643,8 +643,10 @@ i++;
 									$content .= '</p>';
 
 									$content .= '<p>';
-									$content .= '<label>'.__('Placeholders:','salesforce').'</label><br/>';
-									$content .= '<input type="checkbox" name="placeholders" value="1" '.checked($options['forms'][$form_id]['placeholders'],1,false).'> Use placeholders vs. labels<br>';
+									$content .= '<label>'.__('Label Location:','salesforce').'</label><br/>';
+									$content .= '<input type="radio" name="labellocation" value="top-aligned" '.checked($options['forms'][$form_id]['labellocation'],'',false).'> Top Aligned <br>';
+									$content .= '<input type="radio" name="labellocation" value="left-aligned"'.checked($options['forms'][$form_id]['labellocation'],'left-aligned',false).'> Left Aligned <br>';
+									$content .= '<input type="radio" name="labellocation" value="placeholders"'.checked($options['forms'][$form_id]['labellocation'],'placeholders',false).'> Placeholders';
 									$content .= '</p>';
 
 									$content .= '<input type="hidden" name="form_id" id="form_id" value="'.$form_id.'">';

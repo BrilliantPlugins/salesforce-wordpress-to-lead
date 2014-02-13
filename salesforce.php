@@ -183,7 +183,12 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 	
 	$sf_form_id = get_salesforce_form_id( $form_id, $sidebar );
 	
-	$content .= "\n".'<form id="'.$sf_form_id.'" class="'.($options['wpcf7css'] ? 'wpcf7-form' : 'w2llead'.$sidebar ).'" method="post" action="#'.$sf_form_id.'">'."\n";
+	$label_location = salesforce_get_option('labellocation', $form_id, $options);
+	
+	if( !$label_location )
+		$label_location = 'top-aligned';
+	
+	$content .= "\n".'<form id="'.$sf_form_id.'" class="'.($options['wpcf7css'] ? 'wpcf7-form' : 'w2llead'.$sidebar ).' '.$label_location.'" method="post" action="#'.$sf_form_id.'">'."\n";
 
 	foreach ($options['forms'][$form_id]['inputs'] as $id => $input) {
 		if (!$input['show'])
@@ -219,7 +224,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 			
 			$placeholder = '';
 			
-			if( salesforce_get_option('placeholders', $form_id, $options) && $input['type'] != 'checkbox' ){
+			if( salesforce_get_option('labellocation', $form_id, $options) == 'placeholders' && $input['type'] != 'checkbox' ){
 				
 				$placeholder = stripslashes( strip_tags( $input['label'] ) );
 				
@@ -238,7 +243,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 			}
 		}
 
-		if( ! salesforce_get_option('placeholders', $form_id, $options) == 1 ){
+		if( salesforce_get_option('labellocation', $form_id, $options) != 'placeholders' ){
 		
 			if ($input['required'] && $input['type'] != 'hidden' && $input['type'] != 'current_date')
 				$content .= ' <sup><span class="required">*</span></sup>';
@@ -256,7 +261,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
 			$content .= '" name="'.$id.'" type="text"'.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).'/>'."\n\n";
 		} else if ($input['type'] == 'textarea') {
-			$content .= "\t".( !$options['wpcf7css'] ? '<br/>' : '' )."\n\t".'<textarea id="sf_'.$id.'" class="';
+			$content .= "\t".( !$options['wpcf7css'] ? "\n\n" : '' )."\n\t".'<textarea id="sf_'.$id.'" class="';
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-textarea' : 'w2linput textarea';
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
 			$content .= '" name="'.$id.'"'.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' placeholder="'.$placeholder.'">'.$val.'</textarea>'."\n\n";
@@ -289,8 +294,6 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 						$k = $v = $opt;
 					}
 					$v = trim(esc_attr(strip_tags(stripslashes($v))));
-					
-					//echo $val .'|'. $v . '<br>';
 					
 					if( $placeholder ){
 						$content .= '<option value="' . esc_attr($v) . '">' . trim( stripslashes( $k ) ) . '</option>' . "\n";
@@ -330,12 +333,13 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		
 		$content .= '<div class="sf_field sf_field_captcha sf_type_captcha">';
 		
-		if( ! salesforce_get_option('placeholders', $form_id, $options) ){
-			$content .=  '<label class="w2llabel">'.$label.'</label><br>
-				<img class="w2limg" src="' . $captcha['image_src'] . '&hash=' . $sf_hash . '" alt="CAPTCHA image" /><br>';
-				$content .=  '<input type="text" class="w2linput text" name="captcha_text" value="">';
+		if( salesforce_get_option('labellocation', $form_id, $options) != 'placeholders' ){
+			$content .=  '<label class="w2llabel">'.$label.'</label>'."\n\n".'
+				<img class="w2limg" src="' . $captcha['image_src'] . '&hash=' . $sf_hash . '" alt="CAPTCHA image" />'."\n\n";
+				$content .=  '<input type="text" class="w2linput text captcha" name="captcha_text" value="">';
 		}else{
-				$content .=  '<input placeholder="'.$label.'" type="text" class="w2linput text" name="captcha_text" value="">';
+				$content .= '<img class="w2limg" src="' . $captcha['image_src'] . '&hash=' . $sf_hash . '" alt="CAPTCHA image" />'."\n\n";
+				$content .=  '<input placeholder="'.$label.'" type="text" class="w2linput text captcha" name="captcha_text" value="">';
 
 		}
 		
@@ -354,7 +358,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 	if( $options['showccuser'] ){
 		$label = $options['ccusermsg'];
 		if( empty($label) ) $label = __('Send me a copy','salesforce');
-		$content .= "\t\n\t".'<div class="sf_field sf_field_cb sf_type_checkbox"><label class="w2llabel checkbox w2llabel-checkbox-label"><input type="checkbox" name="w2lcc" class="w2linput checkbox" value="1"/> '.esc_html($label)."</label></div>\n";
+		$content .= "\t\n\t".'<div class="sf_field sf_field_cb sf_type_checkbox sf_cc_user"><label class="w2llabel checkbox w2llabel-checkbox-label"><input type="checkbox" name="w2lcc" class="w2linput checkbox" value="1"/> '.esc_html($label)."</label></div>\n";
 	}
 	
 	//spam honeypot
@@ -412,6 +416,9 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 	if( salesforce_get_option('placeholders', $form_id, $options) )
 		$content .= '<script>jQuery( document ).ready( function($) { $(".salesforce_w2l_lead input, .salesforce_w2l_lead textarea").placeholder(); } );
 		</script>';
+		
+	if( true )
+		$content = str_replace("\n",'', $content);
 
 	$content = apply_filters('salesforce_w2l_form_html', $content);
 	
@@ -734,19 +741,6 @@ function salesforce_form_shortcode($atts) {
 			
 		} else {
 			$errormsg = esc_html( stripslashes($options['errormsg']) ) ;
-			
-/*
-			if ($emailerror)
-				$errormsg .= '<br/>'.__('The email address you entered is not a valid email address.','salesforce');
-*/
-
-/*
-			foreach( $errors as $error ){
-				if( ! $error['valid'] )
-					$errormsg .= '<br/>'.$error['message'];
-			}
-*/
-			
 			
 			$content .= salesforce_form($options, $sidebar, $errors, $form);
 		}
