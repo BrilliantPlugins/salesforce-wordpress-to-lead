@@ -12,3 +12,7 @@ p.aligncenter{
 code.language-css{
 	background-color: transparent;
 }
+
+tr.disabled{
+	opacity: .75;
+}
