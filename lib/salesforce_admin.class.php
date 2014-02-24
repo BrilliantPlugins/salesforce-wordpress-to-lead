@@ -108,7 +108,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	
 		$options  = get_option($this->optionname);
 
-		if( $this->using_da() || defined( SFWP2L_HIDE_ADS )  )
+		if( $this->using_da() || defined( 'SFWP2L_HIDE_ADS' )  )
 			return '';
 		
 		$ads = array(
@@ -141,9 +141,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 			
 		}
 		
-		if( !$num )
-			$num = mt_rand( 1, count( $ads[ $type ] ) ) - 1;
-		
+		$num = mt_rand( 1, count( $ads[ $type ] ) ) - 1;
 		//echo $num;
 		
 		return $ads[ $type ][ $num ];
