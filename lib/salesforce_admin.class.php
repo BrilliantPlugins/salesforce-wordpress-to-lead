@@ -158,19 +158,18 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 	function admin_tabs( $current = 'forms' ) {
 	
-		$current = $_GET['tab'];
-		if( !$current )
-			$current = 'forms';
-			
-	    $tabs = array( 'forms' => 'Forms', 'settings' => 'Settings', 'css' => 'Styling', 'form' => 'Form Editor' );
-	    //echo '<div id="icon-themes" class="icon32"><br></div>';
-	    echo '<h2 class="nav-tab-wrapper">';
-	    foreach( $tabs as $tab => $name ){
-	        $class = ( $tab == $current ) ? ' nav-tab-active' : '';
-	        echo "<a class='nav-tab$class' href='?page=salesforce-wordpress-to-lead&tab=$tab'>$name</a>";
-	
-	    }
-	    echo '</h2>';
+		if ( !empty($_GET['tab']) ) {
+			$current = $_GET['tab'];
+		}
+
+	    	$tabs = array( 'forms' => 'Forms', 'settings' => 'Settings', 'css' => 'Styling', 'form' => 'Form Editor' );
+	    	//echo '<div id="icon-themes" class="icon32"><br></div>';
+	    	echo '<h2 class="nav-tab-wrapper">';
+	    	foreach( $tabs as $tab => $name ) {
+		        $class = ( $tab == $current ) ? ' nav-tab-active' : '';
+	        	echo "<a class='nav-tab$class' href='?page=salesforce-wordpress-to-lead&tab=$tab'>$name</a>";
+	    	}
+	    	echo '</h2>';
 	}
 	
 	function config_page() {
@@ -446,7 +445,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 						
 						?>
 
-<?php } else if ($_GET['tab'] == 'form') {
+<?php } else if (isset($_GET['tab']) && $_GET['tab'] == 'form') {
 
 if(isset($_POST['mode']) && $_POST['mode'] == 'delete' && $form_id != 1 ){
 
