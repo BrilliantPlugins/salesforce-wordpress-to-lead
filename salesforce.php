@@ -466,13 +466,15 @@ function submit_salesforce_form($post, $options) {
 		'sslverify'	=> false,  
 	);
 	
-	if( $options['forms'][$form_id]['type'] == 'case' ){
+	$form_type = $options['forms'][$form_id]['type'];
+	
+	if( $form_type == 'case' ){
 		$url = 'https://www.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8';
 	}else{
 		$url = 'https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
 	}
 	
-	$url = apply_filters( 'salesforce_w2l_api_url', $url );
+	$url = apply_filters( 'salesforce_w2l_api_url', $url, $form_type );
 	
 	$result = wp_remote_post( $url, $args );
 

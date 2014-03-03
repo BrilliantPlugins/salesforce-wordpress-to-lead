@@ -143,12 +143,12 @@ See also: [How many leads can we capture from our website?](https://help.salesfo
 
 **salesforce_w2l_api_url**
 
-Change the API url the plugin posts data to
+Change the API url the plugin posts data to. Passes the form type (lead or case)
 
 `
-add_filter( 'salesforce_w2l_api_url', 'my_w2l_api_url' );
+add_filter( 'salesforce_w2l_api_url', 'my_w2l_api_url', 10, 2 );
 
-function my_w2l_api_url( $url ){
+function my_w2l_api_url( $url, $form_type ){
 	return 'https://my.custom-api-url.com/something/';
 }
 `
