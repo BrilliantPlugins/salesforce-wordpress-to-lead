@@ -255,7 +255,7 @@ function salesforce_filter_admin_message( $message ){
 == Changelog ==
 
 = 2.3 =
-* Allow some settings to be overriden per form (Success Message, Captcha, OrgId, etc)
+* Allow some settings to be overridden per form (Success Message, Captcha, OrgId, etc)
 * Support for option to use placeholders instead of labels (per form)
 * Remove newlines in form HTML that were being converted to <br> upon output
 * Add Settings link to plugin list screen
