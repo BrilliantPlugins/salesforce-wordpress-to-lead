@@ -110,8 +110,14 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	
 		$options  = get_option($this->optionname);
 
-		if( $this->using_da() || ( defined( SFWP2L_HIDE_ADS ) && SFWP2L_HIDE_ADS ) )
-			return;
+		if( defined( 'SFWP2L_HIDE_ADS' ) && SFWP2L_HIDE_ADS == true ){
+			return; // hide ads due to constant
+		}elseif( defined( 'SFWP2L_HIDE_ADS' ) && SFWP2L_HIDE_ADS == false ){
+			// show ads anyways
+		}else{
+			if( $this->using_da() )
+				return; // hide ads as they've signed up
+		}
 		
 		$ads = array(
 			'banner-side' => array(
