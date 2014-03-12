@@ -255,9 +255,19 @@ function salesforce_filter_admin_message( $message ){
 == Changelog ==
 
 = 2.3 =
-* Allow some settings to be overriden per form (Success Message, ... )
+* Allow some settings to be overriden per form (Success Message, Captcha, OrgId, etc)
 * Support for option to use placeholders instead of labels (per form)
-* Rmeove newlines in form HTML that were being converted to <br> upon output
+* Remove newlines in form HTML that were being converted to <br> upon output
+* Add Settings link to plugin list screen
+* Grey out non enabled fields in admin
+* Set a default checkbox width as some themes think input{ width: 100% } is a good idea...
+* All default CSS now uses relative sizes
+* Prevent multiple submission of form data (even if it's the same form id on the page multiple times)
+* Remember "send me a copy" between submits
+* Defined DONOTCACHEPAGE if captcha is enabled
+* Fix PHP notices when form is submitted
+* Update ads and landing page URLs
+* Add support links to plugin list page, restore WP.org plugin link
 
 = 2.2.5 =
 * Fix PHP warnings and notices
