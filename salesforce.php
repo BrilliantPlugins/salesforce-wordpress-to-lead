@@ -437,8 +437,12 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 function submit_salesforce_form($post, $options) {
 	
+	$form_id = absint( $_POST['form_id'] );
+	
+	$org_id = salesforce_get_option('org_id', $form_id, $options);
+	
 	global $wp_version;
-	if (!isset($options['org_id']) || empty($options['org_id'])) {
+	if ( !$org_id ) {
 		error_log( "Salesforce: No organisation ID set." );
 		return false;
 	}
@@ -450,14 +454,14 @@ function submit_salesforce_form($post, $options) {
 	}
 
 	//print_r($_POST); //DEBUG
-	
-	$form_id = absint( $_POST['form_id'] );
 
-	$post['oid'] 	= $options['org_id']; // web to lead
-	$post['orgid'] 	= $options['org_id']; // web to case
+	//echo $org_id;
+
+	$post['oid'] 	= $org_id; // web to lead
+	$post['orgid'] 	= $org_id; // web to case
 	
 	if (!empty($options['forms'][$form_id]['source'])) {
-		$post['lead_source']	= str_replace('%URL%','['.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'].']',$options['forms'][$form_id]['source']);
+		$post['lead_source'] = str_replace('%URL%','['.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'].']',$options['forms'][$form_id]['source']);
 	}
 	$post['debug']	= 0;
 

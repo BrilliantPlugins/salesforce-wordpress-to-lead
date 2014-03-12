@@ -154,7 +154,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	function warning() {
 		$options  = get_option($this->optionname);
 		if (!isset($options['org_id']) || empty($options['org_id']))
-			echo "<div id='message' class='error'><p><strong>".__('Your WordPress-to-Lead settings are not complete.','salesforce')."</strong> ".__('You must enter your Salesforce.com Organisation ID for it to work.','salesforce')." <a href='".$this->plugin_options_url()."'>".__('Settings','salesforce')."</a></p></div>";
+			echo "<div id='message' class='error'><p><strong>".__('Your WordPress-to-Lead settings are not complete.','salesforce')."</strong> ".__('You must enter your Salesforce.com Organization ID for it to work.','salesforce')." <a href='".$this->plugin_options_url()."'>".__('Settings','salesforce')."</a></p></div>";
 			
 			//echo 'ERROR= '.get_option('plugin_error');
 			
@@ -249,7 +249,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				w2l_sksort($newinputs,'pos',true);
 				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
 				
-				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','submitbutton','requiredfieldstext','requiredfieldstextpos','type') as $option_name) {
+				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options['forms'][$form_id][$option_name] = $_POST[$option_name];
 					}
@@ -348,7 +348,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								//if( $options['org_id'] )
 									//$class='closed';
 								
-								$content = $this->textinput('org_id',__('Your Salesforce.com organisation ID','salesforce'), __('To find your Organisation ID, in your Salesforce.com account, go to Setup &raquo; Company Profile &raquo; Company Information','salesforce'));
+								$content = $this->textinput('org_id',__('Your Salesforce.com Organization ID','salesforce'), __('To find your Salesforce.com Organization ID, in your Salesforce.com account, go to Setup &raquo; Company Profile &raquo; Company Information','salesforce'));
 								$this->postbox('sfsettings',__('Salesforce.com Settings', 'salesforce'), $content); 
 
 
@@ -689,6 +689,13 @@ i++;
 									$content .= '</p>';
 
 									$content .= '<input type="hidden" name="form_id" id="form_id" value="'.$form_id.'">';
+
+									$content .= '<p>';
+									$content .= '<label>'.__('Salesforce.com Organization ID (override):','salesforce').'</label><br/>';
+									$content .= '<input type="text" name="org_id" style="width:50%;" value="'.esc_html(stripslashes($options['forms'][$form_id]['org_id'])).'">';
+									$content .= '<br/><small>'.__('Overrides the default org_id for this form (leave blank to use the global setting).').'</small>';
+									$content .= '</p>';
+
 									
 									$this->postbox('sfformmeta',__('Form Settings', 'salesforce'),$content); 
 								
@@ -733,7 +740,7 @@ i++;
 
 							}else{
 								
-								$this->postbox('usesalesforce',__('How to Use This Plugin','salesforce'),__('<p>To embed a form, copy the following shortcode into a post or page:</p><p> [salesforce form="X"] </p><p>Replace X with the form number for the form you want to show.</p><p><i>Make sure you have entered all the correct settings on the left, including your Organisation ID.</i></p>','salesforce'));
+								$this->postbox('usesalesforce',__('How to Use This Plugin','salesforce'),__('<p>To embed a form, copy the following shortcode into a post or page:</p><p> [salesforce form="X"] </p><p>Replace X with the form number for the form you want to show.</p><p><i>Make sure you have entered all the correct settings on the left, including your Organization ID.</i></p>','salesforce'));
 								
 							}
 
