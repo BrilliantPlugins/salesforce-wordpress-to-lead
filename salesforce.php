@@ -331,6 +331,10 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 	
 	if( salesforce_get_option('captchaform',$form_id,$options) == 'enabled' || ( salesforce_get_option('captchaform',$form_id,$options) == '' && $options['captcha']) ){
 	
+		// attempt to disable caching
+		if ( !defined( 'DONOTCACHEPAGE' ) )
+			define( 'DONOTCACHEPAGE', true );
+			
 		include("lib/captcha/captcha.php");
 		$captcha = captcha();
 		
