@@ -268,6 +268,7 @@ function salesforce_filter_admin_message( $message ){
 * Fix PHP notices when form is submitted
 * Update ads and landing page URLs
 * Add support links to plugin list page, restore WP.org plugin link
+* Load text domain on plugin init
 
 = 2.2.5 =
 * Fix PHP warnings and notices
