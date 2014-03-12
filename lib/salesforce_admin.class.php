@@ -106,7 +106,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		
 	}
 	
-	function get_ad_code( $type, $id = null ){
+	function get_ad_code( $type, $id = null, $num = null ){
 	
 		$options  = get_option($this->optionname);
 
