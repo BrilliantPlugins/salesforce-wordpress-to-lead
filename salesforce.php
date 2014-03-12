@@ -5,7 +5,7 @@ Plugin URI: http://wordpress.org/plugins/salesforce-wordpress-to-lead/
 Description: Easily embed a contact form into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM. Also supports Web to Case and Comments to leads.
 Author: Daddy Analytics & Thought Refinery
 Version: 2.3 beta
-Author URI: http://try.daddyanalytics.com/wordpress-to-lead-general?utm_source=ThoughtRefinery&utm_medium=text&utm_campaign=WP2L_Plugin_01&utm_content=da1_ls
+Author URI: http://try.daddyanalytics.com/wordpress-to-lead-general?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP2L_Plugin_01&utm_content=da1_author_uri
 License: GPL2
 */
 
@@ -860,17 +860,16 @@ function save_error(){
 // Add settings link to plugins list
 function salesforce_add_settings_link( $links ) {
   	array_unshift( $links, '<a href="options-general.php?page=salesforce-wordpress-to-lead">Settings</a>' );
-
-
   	return $links;
 }
 $plugin = plugin_basename( __FILE__ );
 add_filter( 'plugin_action_links_'.$plugin, 'salesforce_add_settings_link' );
 
+//Add try DA and support links
 function salesforce_add_plugin_meta( $plugin_meta, $plugin_file, $plugin_data, $status ){
 
 	if( $plugin_file == plugin_basename( __FILE__ ) ){
-	  	array_push( $plugin_meta, '<a href="hhttp://try.daddyanalytics.com/wordpress-to-lead-general?utm_source=ThoughtRefinery&utm_medium=text&utm_campaign=WP2L_Plugin_01&utm_content=da1_ls" target="_blank">Try Daddy Analytics</a>' );
+	  	array_push( $plugin_meta, '<a href="http://try.daddyanalytics.com/wordpress-to-lead-general?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP2L_Plugin_01&utm_content=da1_try_uri" target="_blank">Try Daddy Analytics</a>' );
 	  	array_push( $plugin_meta, '<a href="http://wordpress.org/support/plugin/salesforce-wordpress-to-lead" target="_blank">Community Support</a>' );
 	  	array_push( $plugin_meta, '<a href="http://thoughtrefinery.com/plugins/support/?plugin=salesforce-wordpress-to-lead" target="_blank">Premium Support</a>' );
 	}
