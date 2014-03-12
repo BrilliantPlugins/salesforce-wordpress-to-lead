@@ -95,7 +95,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		
 	}
 
-	function get_ad_link( $content, $medium, $url = 'http://daddyanalytics.com/', $term='', $source = 'ThoughtRefinery', $campaign = 'WP-SF-Plugin' ){
+	function get_ad_link( $content, $medium, $url = 'http://daddyanalytics.com/', $term='', $source = 'ThoughtRefinery', $campaign = 'WP2L_Plugin_01' ){
 	
 		if( !$term )
 			$term = $this->get_ad_term();
@@ -105,30 +105,30 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		return sprintf( $link, $source, $medium, $campaign, $term, $content  );
 		
 	}
-	
+
 	function get_ad_code( $type, $id = null, $num = null ){
 	
 		$options  = get_option($this->optionname);
 
-		if( $this->using_da() || defined( SFWP2L_HIDE_ADS )  )
-			return '';
+		if( $this->using_da() || ( defined( SFWP2L_HIDE_ADS ) && SFWP2L_HIDE_ADS ) )
+			//return;
 		
 		$ads = array(
 			'banner-side' => array(
-				array( 'id' => 'da01', 'url' => '', 'content' => 'assets/ads/side_Analytics-track-form-submission-keyword.png' ),
-				array( 'id' => 'da02', 'url' => '', 'content' => 'assets/ads/side_analytics-marketing-roi-offer.png' ),
-				array( 'id' => 'da03', 'url' => '', 'content' => 'assets/ads/side_analytics-track-lead-location.png' ),
+				array( 'id' => 'da01', 'url' => 'http://daddyanalytics.com?utm_source=ThoughtRefinery&utm_medium=banner-side&utm_campaign=WP2L_Plugin_01&utm_content=da1_1', 'content' => 'assets/ads/side-analytics-track-form-submission-keyword.png' ),
+				array( 'id' => 'da02', 'url' => 'http://daddyanalytics.com?utm_source=ThoughtRefinery&utm_medium=banner-side&utm_campaign=WP2L_Plugin_01&utm_content=da1_2', 'content' => 'assets/ads/side-analytics-marketing-roi-offer.png' ),
+				array( 'id' => 'da03', 'url' => 'http://daddyanalytics.com?utm_source=ThoughtRefinery&utm_medium=banner-side&utm_campaign=WP2L_Plugin_01&utm_content=da1_3', 'content' => 'assets/ads/side-analytics-track-lead-location.png' ),
 			),
 
 			'banner-main' => array(
-				array( 'id' => 'da04', 'url' => '', 'content' => 'assets/ads/main_analytics-lead-management.png' ),
-				array( 'id' => 'da05', 'url' => '', 'content' => 'assets/ads/main_analytics-track-affiliate-ppc.png' ),
-				array( 'id' => 'da06', 'url' => '', 'content' => 'assets/ads/main_analytics-track-lead-source-offer.png' ),
+				array( 'id' => 'da04', 'url' => 'http://try.daddyanalytics.com/marketing-roi-wp2l/?utm_source=ThoughtRefinery&utm_medium=banner-main&utm_campaign=WP2L_Plugin_01&utm_content=da1_4', 'content' => 'assets/ads/main-prove-marketing-roi.png' ),
+				array( 'id' => 'da05', 'url' => 'http://try.daddyanalytics.com/integrate-salesforce-and-adwords-wp2l/?utm_source=ThoughtRefinery&utm_medium=banner-main&utm_campaign=WP2L_Plugin_01&utm_content=da1_5', 'content' => 'assets/ads/main-track-google-adwords.png' ),
+				array( 'id' => 'da06', 'url' => 'http://try.daddyanalytics.com/track-lead-source-wp2l/?utm_source=ThoughtRefinery&utm_medium=banner-main&utm_campaign=WP2L_Plugin_01&utm_content=da1_6', 'content' => 'assets/ads/main-track-lead-source-offer.png' ),
 			),
 
 			'text' => array(
-				array( 'id' => 'da07', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a class="button-secondary" href="%link1%" target="_blank">Watch a video of Daddy Analytics</a> or <a class="button-secondary" href="%link2%" target="_blank">Sign up for a free trial of Daddy Analytics.</a>'),
-				array( 'id' => 'da08', 'cta' => 'Sign up Now', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a href="%link1%" target="_blank">Watch a video of Daddy Analytics</a> or <a href="%link2%" target="_blank">Sign up for a free trial of Daddy Analytics.</a>'),
+				array( 'id' => 'da07', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a class="button-secondary" href="%link1%" target="_blank">Watch a video of Daddy Analytics</a>'),
+				array( 'id' => 'da08', 'cta' => 'Sign up Now', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a  class="button-secondary" href="%link2%" target="_blank">Sign up for a free trial of Daddy Analytics</a>'),
 				//array( 'id' => 'da09', 'cta' => 'Sign up Soon!', 'content' => 'Daddy Analytics allows you to... TODO3'),
 			),
 
@@ -334,8 +334,16 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								$content .= '</table>';	
 								
 								$content .= '<p><a class="button-secondary" href="'.$this->plugin_options_url().'&tab=form">'.__('Add a new form','salesforce').' &raquo;</a></p>';			
+								
+								$this->postbox('sfforms',__('Forms', 'salesforce'),$content); 
 
-									$this->postbox('sfforms',__('Forms', 'salesforce'),$content); 
+								$loc = 'banner-main';
+								$ad = $this->get_ad_code( $loc );		
+								if( $ad ){
+									$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
+									echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
+								}
+
 						
 						}
 
@@ -355,14 +363,14 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 							$loc = 'banner-main';
 							$ad = $this->get_ad_code( $loc );		
 							if( $ad ){
-								$link = $this->get_ad_link( $ad['id'], $loc );
+								$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
 								echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
 							}
 							$loc = 'text';
 							$ad = $this->get_ad_code( $loc );		
 							if( $ad ){
-								$link1 = $this->get_ad_link( $ad['id'], $loc );
-								$link2 = $this->get_ad_link( $ad['id'], $loc, 'https://daddyanalytics.com/start-free-trial/' );
+								$link1 = $this->get_ad_link( $ad['id'], $loc, 'http://try.daddyanalytics.com/watch-a-video-wp2l/?utm_source=ThoughtRefinery&utm_medium=text&utm_campaign=WP2L_Plugin_01&utm_content=da1_7' );
+								$link2 = $this->get_ad_link( $ad['id'], $loc, 'http://try.daddyanalytics.com/start-free-trial-wp2l/?utm_source=ThoughtRefinery&utm_medium=text&utm_campaign=WP2L_Plugin_01&utm_content=da1_8' );
 								
 								$ad['content'] = str_replace( array('%link1%','%link2%'), array($link1,$link2), $ad['content'] );
 								
@@ -502,7 +510,7 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 									$loc = 'banner-main';
 									$ad = $this->get_ad_code( $loc );		
 									if( $ad ){
-										$link = $this->get_ad_link( $ad['id'], $loc );
+										$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
 										echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
 									}
 									
@@ -760,7 +768,7 @@ i++;
 
 							if( $ad ){
 	
-								$link =$this->get_ad_link( $ad['id'], $loc );
+								$link =$this->get_ad_link( $ad['id'], $loc, $ad['url'] );
 								
 								$this->postbox('usesalesforce',__('Plugin Sponsor: Daddy Analytics','salesforce'),__('<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>','salesforce'));
 							}
