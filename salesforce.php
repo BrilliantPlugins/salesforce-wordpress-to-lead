@@ -878,4 +878,10 @@ function salesforce_add_plugin_meta( $plugin_meta, $plugin_file, $plugin_data, $
 }
 add_filter( 'plugin_row_meta', 'salesforce_add_plugin_meta', 10, 4);
 
+
+function salesforce_init() {
+	load_plugin_textdomain( 'salesforce', false, plugin_dir_path( __FILE__ ) . 'languages' );
+}
+add_action('plugins_loaded', 'salesforce_init');
+
 register_activation_hook( __FILE__, 'salesforce_activate' );
