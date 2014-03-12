@@ -489,13 +489,16 @@ function submit_salesforce_form($post, $options) {
 	
 	if ($result['response']['code'] == 200){
 
+		unset( $_POST['oid'] );
+		unset( $_POST['org_id'] );
+
 		if( isset( $_POST['w2lcc'] ) && $_POST['w2lcc'] == 1 )
 			salesforce_cc_user($post, $options, $form_id);
 
 		if( isset( $options['ccadmin'] ) && $options['ccadmin'] )
 			salesforce_cc_admin($post, $options, $form_id);
 		
-		// Prevent multiple form submissions
+		// Prevent multiple form submissions by clearing key data
 		unset( $_POST['form_id'] );
 		unset( $_POST['w2lsubmit'] );
 		
@@ -522,7 +525,6 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 			unset( $post[$id] );
 	}
 	
-	unset($post['oid']);
 	if (!empty($options['forms'][$form_id]['source'])) {
 		unset($post['lead_source']);
 	}
@@ -536,7 +538,7 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 	
 	//format message
 	foreach($post as $name=>$value){
-		if( !empty($name) && !empty($value) )
+		if( !empty($name) && !empty($value) && isset($options['forms'][$form_id]['inputs'][$name]['label']) )
 			$label = $options['forms'][$form_id]['inputs'][$name]['label'];
 			
 			if( trim( $label ) != '' ) 
@@ -569,7 +571,6 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 
 	$message = '';
 
-	unset($post['oid']);
 	if (!empty($options['forms'][$form_id]['source'])) {
 		unset($post['lead_source']);
 	}
@@ -577,7 +578,7 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 	
 	//format message
 	foreach($post as $name=>$value){
-		if( !empty($value) ){
+		if( !empty($value) && isset($options['forms'][$form_id]['inputs'][$name]['label']) ){
 		
 			$label = $options['forms'][$form_id]['inputs'][$name]['label'];
 			
@@ -635,6 +636,7 @@ function salesforce_form_shortcode($atts) {
 		$error = false;
 		$post = array();
 		
+		$has_error = false;
 		
 		// field validation
 		foreach ($options['forms'][$form]['inputs'] as $id => $input) {
