@@ -491,6 +491,10 @@ function submit_salesforce_form($post, $options) {
 		if( isset( $options['ccadmin'] ) && $options['ccadmin'] )
 			salesforce_cc_admin($post, $options, $form_id);
 		
+		// Prevent multiple form submissions
+		unset( $_POST['form_id'] );
+		unset( $_POST['w2lsubmit'] );
+		
 		return true;
 	}else{
 		error_log( "Salesforce response error: " . print_r( $result, true ) );
