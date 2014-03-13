@@ -802,7 +802,7 @@ function salesforce_get_option( $name, $form, $options = null ){
 			$options = salesforce_default_settings();
 	}
 	
-	if( isset( $options['forms'][$form][$name] ) && !empty( $options['forms'][$form][$name] ) )
+	if( isset( $options['forms'][$form][$name] ) && strlen( trim( $options['forms'][$form][$name] ) ) )
 		return $options['forms'][$form][$name];
 		
 	if( isset( $options[$name] ) )
