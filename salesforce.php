@@ -445,13 +445,18 @@ function salesforce_get_post_data( $index ){
 
 function submit_salesforce_form($post, $options) {
 	
+	global $wp_version;
+
 	$form_id = absint( $_POST['form_id'] );
 	
 	$org_id = salesforce_get_option('org_id', $form_id, $options);
+	//echo '$org_id='.$org_id;
 	
-	global $wp_version;
+	if ( !$org_id )
+		$org_id = $options['org_id']; // fallback to global
+	
 	if ( !$org_id ) {
-		error_log( "Salesforce: No organisation ID set." );
+		error_log( "Salesforce: No SalesForce Organization ID set." );
 		return false;
 	}
 
@@ -737,6 +742,11 @@ function salesforce_form_shortcode($atts) {
 				$has_error = true;
 		}
 		
+/*
+		$org_id = salesforce_get_option('org_id', $form_id, $options);
+		echo '$org_id='.$org_id;
+*/
+		
 		if (!$has_error) {
 			$result = submit_salesforce_form($post, $options, $form);
 			
@@ -792,7 +802,7 @@ function salesforce_get_option( $name, $form, $options = null ){
 			$options = salesforce_default_settings();
 	}
 	
-	if( isset( $options['forms'][$form][$name] ) )
+	if( isset( $options['forms'][$form][$name] ) && !empty( $options['forms'][$form][$name] ) )
 		return $options['forms'][$form][$name];
 		
 	if( isset( $options[$name] ) )
