@@ -887,7 +887,7 @@ add_filter( 'plugin_action_links_'.$plugin, 'salesforce_add_settings_link' );
 function salesforce_add_plugin_meta( $plugin_meta, $plugin_file, $plugin_data, $status ){
 
 	if( $plugin_file == plugin_basename( __FILE__ ) ){
-	  	array_push( $plugin_meta, '<a href="http://try.daddyanalytics.com/wordpress-to-lead-general?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP2L_Plugin_01&utm_content=da1_try_uri" target="_blank">Try Daddy Analytics</a>' );
+	  	//array_push( $plugin_meta, '<a href="http://try.daddyanalytics.com/wordpress-to-lead-general?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP2L_Plugin_01&utm_content=da1_try_uri" target="_blank">Try Daddy Analytics</a>' );
 	  	array_push( $plugin_meta, '<a href="http://wordpress.org/support/plugin/salesforce-wordpress-to-lead" target="_blank">Community Support</a>' );
 	  	array_push( $plugin_meta, '<a href="http://thoughtrefinery.com/plugins/support/?plugin=salesforce-wordpress-to-lead" target="_blank">Premium Support</a>' );
 	}
