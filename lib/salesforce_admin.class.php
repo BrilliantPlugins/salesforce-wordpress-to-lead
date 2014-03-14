@@ -121,20 +121,20 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		
 		$ads = array(
 			'banner-side' => array(
-				array( 'id' => 'da01', 'url' => 'http://daddyanalytics.com?utm_source=ThoughtRefinery&utm_medium=banner-side&utm_campaign=WP2L_Plugin_01&utm_content=da1_1', 'content' => 'assets/ads/side-analytics-track-form-submission-keyword.png' ),
-				array( 'id' => 'da02', 'url' => 'http://daddyanalytics.com?utm_source=ThoughtRefinery&utm_medium=banner-side&utm_campaign=WP2L_Plugin_01&utm_content=da1_2', 'content' => 'assets/ads/side-analytics-marketing-roi-offer.png' ),
-				array( 'id' => 'da03', 'url' => 'http://daddyanalytics.com?utm_source=ThoughtRefinery&utm_medium=banner-side&utm_campaign=WP2L_Plugin_01&utm_content=da1_3', 'content' => 'assets/ads/side-analytics-track-lead-location.png' ),
+				array( 'id' => 'da1_1', 'url' => 'http://daddyanalytics.com', 'content' => 'assets/ads/side-analytics-track-form-submission-keyword.png' ),
+				array( 'id' => 'da1_2', 'url' => 'http://daddyanalytics.com', 'content' => 'assets/ads/side-analytics-marketing-roi-offer.png' ),
+				array( 'id' => 'da1_3', 'url' => 'http://daddyanalytics.com', 'content' => 'assets/ads/side-analytics-track-lead-location.png' ),
 			),
 
 			'banner-main' => array(
-				array( 'id' => 'da04', 'url' => 'http://try.daddyanalytics.com/marketing-roi-wp2l/?utm_source=ThoughtRefinery&utm_medium=banner-main&utm_campaign=WP2L_Plugin_01&utm_content=da1_4', 'content' => 'assets/ads/main-prove-marketing-roi.png' ),
-				array( 'id' => 'da05', 'url' => 'http://try.daddyanalytics.com/integrate-salesforce-and-adwords-wp2l/?utm_source=ThoughtRefinery&utm_medium=banner-main&utm_campaign=WP2L_Plugin_01&utm_content=da1_5', 'content' => 'assets/ads/main-track-google-adwords.png' ),
-				array( 'id' => 'da06', 'url' => 'http://try.daddyanalytics.com/track-lead-source-wp2l/?utm_source=ThoughtRefinery&utm_medium=banner-main&utm_campaign=WP2L_Plugin_01&utm_content=da1_6', 'content' => 'assets/ads/main-track-lead-source-offer.png' ),
+				array( 'id' => 'da04', 'url' => 'http://try.daddyanalytics.com/marketing-roi-wp2l/', 'content' => 'assets/ads/main-prove-marketing-roi.png' ),
+				array( 'id' => 'da1_5', 'url' => 'http://try.daddyanalytics.com/integrate-salesforce-and-adwords-wp2l/', 'content' => 'assets/ads/main-track-google-adwords.png' ),
+				array( 'id' => 'da1_6', 'url' => 'http://try.daddyanalytics.com/track-lead-source-wp2l/', 'content' => 'assets/ads/main-track-lead-source-offer.png' ),
 			),
 
 			'text' => array(
-				array( 'id' => 'da07', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a class="button-secondary" href="%link1%" target="_blank">Watch a video of Daddy Analytics</a>'),
-				array( 'id' => 'da08', 'cta' => 'Sign up Now', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a  class="button-secondary" href="%link2%" target="_blank">Sign up for a free trial of Daddy Analytics</a>'),
+				array( 'id' => 'da1_7', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a class="button-secondary" href="%link1%" target="_blank">Watch a video of Daddy Analytics</a>'),
+				array( 'id' => 'da1_8', 'cta' => 'Sign up Now', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a  class="button-secondary" href="%link2%" target="_blank">Sign up for a free trial of Daddy Analytics</a>'),
 				//array( 'id' => 'da09', 'cta' => 'Sign up Soon!', 'content' => 'Daddy Analytics allows you to... TODO3'),
 			),
 
