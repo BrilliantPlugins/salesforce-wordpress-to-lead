@@ -167,8 +167,10 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	}
 
 	function admin_tabs( $current = 'forms' ) {
-	
-		$current = $_GET['tab'];
+		
+		if( isset( $_GET['tab'] ) )
+			$current = $_GET['tab'];
+		
 		if( !$current )
 			$current = 'forms';
 			
@@ -464,7 +466,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 						
 						?>
 
-<?php } else if ($_GET['tab'] == 'form') {
+<?php } else if ( isset( $_GET['tab'] ) && $_GET['tab'] == 'form') {
 
 if(isset($_POST['mode']) && $_POST['mode'] == 'delete' && $form_id != 1 ){
 
