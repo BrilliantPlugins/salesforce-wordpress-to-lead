@@ -45,6 +45,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		}else{
 			$dform['source'] = __('Lead form on ','salesforce').get_bloginfo('name');
 		}
+
+		$dform['labellocation'] = '';
 		
 		$dform['returl'] = '';
 		
@@ -83,7 +85,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	
 	function get_ad_term(){
 		
-		if( isset( $_GET['id'] ) && $_GET['id'] ){
+		if( ( isset( $_GET['id'] ) && $_GET['id'] ) || ( isset( $_GET['tab'] ) && $_GET['tab'] == 'form' ) ){
 			$term = 'form';
 		}else{
 			$term = 'settings';
@@ -93,7 +95,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		
 	}
 
-	function get_ad_link( $content, $medium, $url = 'http://daddyanalytics.com/', $term='', $source = 'ThoughtRefinery', $campaign = 'WP-SF-Plugin' ){
+	function get_ad_link( $content, $medium, $url = 'http://daddyanalytics.com/', $term='', $source = 'ThoughtRefinery', $campaign = 'WP2L_Plugin_01' ){
 	
 		if( !$term )
 			$term = $this->get_ad_term();
@@ -103,30 +105,36 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		return sprintf( $link, $source, $medium, $campaign, $term, $content  );
 		
 	}
-	
-	function get_ad_code( $type, $id = null ){
+
+	function get_ad_code( $type, $id = null, $num = null ){
 	
 		$options  = get_option($this->optionname);
 
-		if( $this->using_da() || defined( 'SFWP2L_HIDE_ADS' )  )
-			return '';
-		
+		if( defined( 'SFWP2L_HIDE_ADS' ) && SFWP2L_HIDE_ADS == true ){
+			return; // hide ads due to constant
+		}elseif( defined( 'SFWP2L_HIDE_ADS' ) && SFWP2L_HIDE_ADS == false ){
+			// show ads anyways
+		}else{
+			if( $this->using_da() )
+				return; // hide ads as they've signed up
+		}
+				
 		$ads = array(
 			'banner-side' => array(
-				array( 'id' => 'da01', 'url' => '', 'content' => 'assets/ads/side_Analytics-track-form-submission-keyword.png' ),
-				array( 'id' => 'da02', 'url' => '', 'content' => 'assets/ads/side_analytics-marketing-roi-offer.png' ),
-				array( 'id' => 'da03', 'url' => '', 'content' => 'assets/ads/side_analytics-track-lead-location.png' ),
+				array( 'id' => 'da1_1', 'url' => 'http://daddyanalytics.com', 'content' => 'assets/ads/side-analytics-track-form-submission-keyword.png' ),
+				array( 'id' => 'da1_2', 'url' => 'http://daddyanalytics.com', 'content' => 'assets/ads/side-analytics-marketing-roi-offer.png' ),
+				array( 'id' => 'da1_3', 'url' => 'http://daddyanalytics.com', 'content' => 'assets/ads/side-analytics-track-lead-location.png' ),
 			),
 
 			'banner-main' => array(
-				array( 'id' => 'da04', 'url' => '', 'content' => 'assets/ads/main_analytics-lead-management.png' ),
-				array( 'id' => 'da05', 'url' => '', 'content' => 'assets/ads/main_analytics-track-affiliate-ppc.png' ),
-				array( 'id' => 'da06', 'url' => '', 'content' => 'assets/ads/main_analytics-track-lead-source-offer.png' ),
+				array( 'id' => 'da04', 'url' => 'http://try.daddyanalytics.com/marketing-roi-wp2l/', 'content' => 'assets/ads/main-prove-marketing-roi.png' ),
+				array( 'id' => 'da1_5', 'url' => 'http://try.daddyanalytics.com/integrate-salesforce-and-adwords-wp2l/', 'content' => 'assets/ads/main-track-google-adwords.png' ),
+				array( 'id' => 'da1_6', 'url' => 'http://try.daddyanalytics.com/track-lead-source-wp2l/', 'content' => 'assets/ads/main-track-lead-source-offer.png' ),
 			),
 
 			'text' => array(
-				array( 'id' => 'da07', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a class="button-secondary" href="%link1%" target="_blank">Watch a video of Daddy Analytics</a> or <a class="button-secondary" href="%link2%" target="_blank">Sign up for a free trial of Daddy Analytics.</a>'),
-				array( 'id' => 'da08', 'cta' => 'Sign up Now', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a href="%link1%" target="_blank">Watch a video of Daddy Analytics</a> or <a href="%link2%" target="_blank">Sign up for a free trial of Daddy Analytics.</a>'),
+				array( 'id' => 'da1_7', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a class="button-secondary" href="%link1%" target="_blank">Watch a video of Daddy Analytics</a>'),
+				array( 'id' => 'da1_8', 'cta' => 'Sign up Now', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a  class="button-secondary" href="%link2%" target="_blank">Sign up for a free trial of Daddy Analytics</a>'),
 				//array( 'id' => 'da09', 'cta' => 'Sign up Soon!', 'content' => 'Daddy Analytics allows you to... TODO3'),
 			),
 
@@ -150,26 +158,28 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	function warning() {
 		$options  = get_option($this->optionname);
 		if (!isset($options['org_id']) || empty($options['org_id']))
-			echo "<div id='message' class='error'><p><strong>".__('Your WordPress-to-Lead settings are not complete.','salesforce')."</strong> ".__('You must enter your Salesforce.com Organisation ID for it to work.','salesforce')." <a href='".$this->plugin_options_url()."'>".__('Settings','salesforce')."</a></p></div>";
+			echo "<div id='message' class='error'><p><strong>".__('Your WordPress-to-Lead settings are not complete.','salesforce')."</strong> ".__('You must enter your Salesforce.com Organization ID for it to work.','salesforce')." <a href='".$this->plugin_options_url()."'>".__('Settings','salesforce')."</a></p></div>";
 			
 			//echo 'ERROR= '.get_option('plugin_error');
 			
 	}
 
 	function admin_tabs( $current = 'forms' ) {
-	
-		if ( !empty($_GET['tab']) ) {
+		if( isset( $_GET['tab'] ) )
 			$current = $_GET['tab'];
-		}
-
-	    	$tabs = array( 'forms' => 'Forms', 'settings' => 'Settings', 'css' => 'Styling', 'form' => 'Form Editor' );
-	    	//echo '<div id="icon-themes" class="icon32"><br></div>';
-	    	echo '<h2 class="nav-tab-wrapper">';
-	    	foreach( $tabs as $tab => $name ) {
-		        $class = ( $tab == $current ) ? ' nav-tab-active' : '';
-	        	echo "<a class='nav-tab$class' href='?page=salesforce-wordpress-to-lead&tab=$tab'>$name</a>";
-	    	}
-	    	echo '</h2>';
+		
+		if( !$current )
+			$current = 'forms';
+			
+	    $tabs = array( 'forms' => 'Forms', 'settings' => 'Settings', 'css' => 'Styling', 'form' => 'Form Editor' );
+	    //echo '<div id="icon-themes" class="icon32"><br></div>';
+	    echo '<h2 class="nav-tab-wrapper">';
+	    foreach( $tabs as $tab => $name ){
+	        $class = ( $tab == $current ) ? ' nav-tab-active' : '';
+	        echo "<a class='nav-tab$class' href='?page=salesforce-wordpress-to-lead&tab=$tab'>$name</a>";
+	
+	    }
+	    echo '</h2>';
 	}
 	
 	function config_page() {
@@ -244,7 +254,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				w2l_sksort($newinputs,'pos',true);
 				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
 				
-				foreach (array('form_name','source','returl','type') as $option_name) {
+				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options['forms'][$form_id][$option_name] = $_POST[$option_name];
 					}
@@ -329,8 +339,16 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								$content .= '</table>';	
 								
 								$content .= '<p><a class="button-secondary" href="'.$this->plugin_options_url().'&tab=form">'.__('Add a new form','salesforce').' &raquo;</a></p>';			
+								
+								$this->postbox('sfforms',__('Forms', 'salesforce'),$content); 
 
-									$this->postbox('sfforms',__('Forms', 'salesforce'),$content); 
+								$loc = 'banner-main';
+								$ad = $this->get_ad_code( $loc );		
+								if( $ad ){
+									$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
+									echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
+								}
+
 						
 						}
 
@@ -343,21 +361,21 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								//if( $options['org_id'] )
 									//$class='closed';
 								
-								$content = $this->textinput('org_id',__('Your Salesforce.com organisation ID','salesforce'), __('To find your Organisation ID, in your Salesforce.com account, go to Setup &raquo; Company Profile &raquo; Company Information','salesforce'));
+								$content = $this->textinput('org_id',__('Your Salesforce.com Organization ID','salesforce'), __('To find your Salesforce.com Organization ID, in your Salesforce.com account, go to Setup &raquo; Company Profile &raquo; Company Information','salesforce'));
 								$this->postbox('sfsettings',__('Salesforce.com Settings', 'salesforce'), $content); 
 
 
 							$loc = 'banner-main';
 							$ad = $this->get_ad_code( $loc );		
 							if( $ad ){
-								$link = $this->get_ad_link( $ad['id'], $loc );
+								$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
 								echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
 							}
 							$loc = 'text';
 							$ad = $this->get_ad_code( $loc );		
 							if( $ad ){
-								$link1 = $this->get_ad_link( $ad['id'], $loc );
-								$link2 = $this->get_ad_link( $ad['id'], $loc, 'https://daddyanalytics.com/start-free-trial/' );
+								$link1 = $this->get_ad_link( $ad['id'], $loc, 'http://try.daddyanalytics.com/watch-a-video-wp2l/?utm_source=ThoughtRefinery&utm_medium=text&utm_campaign=WP2L_Plugin_01&utm_content=da1_7' );
+								$link2 = $this->get_ad_link( $ad['id'], $loc, 'http://try.daddyanalytics.com/start-free-trial-wp2l/?utm_source=ThoughtRefinery&utm_medium=text&utm_campaign=WP2L_Plugin_01&utm_content=da1_8' );
 								
 								$ad['content'] = str_replace( array('%link1%','%link2%'), array($link1,$link2), $ad['content'] );
 								
@@ -373,7 +391,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								$content .= $this->textinput('da_site',__('Daddy Analytics Site ID','salesforce'));
 								$this->postbox('sfsettings',__('Daddy Analytics Settings', 'salesforce'), $content); 
 							
-								$content = $this->textinput('successmsg',__('Success message after sending message', 'salesforce') );
+								$content = $this->textinput('successmsg',__('Success message after sending lead to SalesForce', 'salesforce') );
 								$content .= $this->textinput('errormsg',__('Error message shown when required fields are not filled out', 'salesforce') );
 								$content .= $this->textinput('emailerrormsg',__('Error message shown when email field is invalid', 'salesforce'), 'Default: The email address you entered is not valid.' );
 
@@ -429,7 +447,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 						if (isset($_GET['tab']) && $_GET['tab'] == 'css') {
 						
 						wp_enqueue_style( 'prismcss', plugins_url('assets/css/prism.css', dirname(__FILE__) ) );
-						wp_enqueue_script( 'prismjs', plugins_url('assets/js/prism.min.js', dirname(__FILE__) ) );
+						wp_enqueue_script( 'prismjs', plugins_url('assets/js/prism/prism.min.js', dirname(__FILE__) ) );
 
 						
 						//echo '<p>'.salesforce_back_link($this->plugin_options_url()).'</p>'; ?>
@@ -445,7 +463,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 						
 						?>
 
-<?php } else if (isset($_GET['tab']) && $_GET['tab'] == 'form') {
+<?php } else if ( isset( $_GET['tab'] ) && $_GET['tab'] == 'form') {
 
 if(isset($_POST['mode']) && $_POST['mode'] == 'delete' && $form_id != 1 ){
 
@@ -497,7 +515,7 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 									$loc = 'banner-main';
 									$ad = $this->get_ad_code( $loc );		
 									if( $ad ){
-										$link = $this->get_ad_link( $ad['id'], $loc );
+										$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
 										echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
 									}
 									
@@ -512,10 +530,17 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 									.'<th width="8%">'.__('Order','salesforce').'</th>'
 									.'</tr>';
 									$i = 1;
+									
+										
 									foreach ($options['forms'][$form_id]['inputs'] as $field => $input) {
+
+									$trclass= 'disabled';
+									if( $input['show'] )
+										$trclass= 'enabled';
+
 										if (empty($input['pos']))
 											$input['pos'] = $i;
-										$content .= '<tr class="' . (($i % 2) ? 'alternate' : '') . '">';
+										$content .= '<tr class="' .$trclass.' '. (($i % 2) ? 'alternate' : '') . '">';
 										$content .= '<th>'.$field.'</th>';
 										$content .= '<td>';
 										$content .= '<table>';
@@ -631,7 +656,59 @@ i++;
 									$content .= '<br/><small>'.__('e.g.http://yoursite.com/thanks/').'</small>';
 									$content .= '</p>';
 
+									$content .= '<p>';
+									$content .= '<label>'.__('Success Message:','salesforce').'</label><br/>';
+									$content .= '<input type="text" name="successmsg" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['successmsg']).'">';
+									$content .= '<br/><small>'.__('Overrides the default message for this form.(leave blank to use the global setting)').'</small>';
+									$content .= '</p>';
+
+									$content .= '<p>';
+									$content .= '<label>'.__('Submit button text (override):','salesforce').'</label><br/>';
+									$content .= '<input type="text" name="submitbutton" style="width:50%;" value="'.esc_html(stripslashes($options['forms'][$form_id]['submitbutton'])).'">';
+									$content .= '<br/><small>'.__('Overrides the default message for this form.(leave blank to use the global setting)').'</small>';
+									$content .= '</p>';
+
+									$content .= '<p>';
+									$content .= '<label>'.__('Required fields text (override):','salesforce').'</label><br/>';
+									$content .= '<input type="text" name="requiredfieldstext" style="width:50%;" value="'.esc_html(stripslashes($options['forms'][$form_id]['requiredfieldstext'])).'">';
+									$content .= '<br/><small>'.__('Overrides the default message for this form (leave blank to use the global setting).').'</small>';
+									$content .= '</p>';
+
+									$content .= '<p>';
+									$content .= '<label>'.__('Captcha:','salesforce').'</label><br/>';
+
+									$content .= '<input type="radio" name="captchaform" value=""'.checked($options['forms'][$form_id]['captchaform'],'',false).'> Use global setting <br>';
+									$content .= '<input type="radio" name="captchaform" value="enabled" '.checked($options['forms'][$form_id]['captchaform'],'enabled',false).'> Enabled for this form<br>';
+									$content .= '<input type="radio" name="captchaform" value="disabled"'.checked($options['forms'][$form_id]['captchaform'],'disabled',false).'> Disabled for this form';
+
+
+									$content .= '<br/><small>'.__('Overrides the default captcha settings for this form.').'</small>';
+									$content .= '</p>';
+
+
+									$content .= '<p>';
+									$content .= '<label>'.__('Required Fields Text Location:','salesforce').'</label><br/>';
+									$content .= '<input type="radio" name="requiredfieldstextpos" value=""'.checked($options['forms'][$form_id]['requiredfieldstextpos'],'',false).'> Below Form <br>';
+									$content .= '<input type="radio" name="requiredfieldstextpos" value="top" '.checked($options['forms'][$form_id]['requiredfieldstextpos'],'top',false).'> Above Form <br>';
+									$content .= '<input type="radio" name="requiredfieldstextpos" value="hidden"'.checked($options['forms'][$form_id]['requiredfieldstextpos'],'hidden',false).'> None';
+									$content .= '</p>';
+
+
+									$content .= '<p>';
+									$content .= '<label>'.__('Label Location:','salesforce').'</label><br/>';
+									$content .= '<input type="radio" name="labellocation" value="top-aligned" '.checked($options['forms'][$form_id]['labellocation'],'',false).'> Top Aligned <br>';
+									$content .= '<input type="radio" name="labellocation" value="left-aligned"'.checked($options['forms'][$form_id]['labellocation'],'left-aligned',false).'> Left Aligned <br>';
+									$content .= '<input type="radio" name="labellocation" value="placeholders"'.checked($options['forms'][$form_id]['labellocation'],'placeholders',false).'> Placeholders';
+									$content .= '</p>';
+
 									$content .= '<input type="hidden" name="form_id" id="form_id" value="'.$form_id.'">';
+
+									$content .= '<p>';
+									$content .= '<label>'.__('Salesforce.com Organization ID (override):','salesforce').'</label><br/>';
+									$content .= '<input type="text" name="org_id" style="width:50%;" value="'.esc_html(stripslashes($options['forms'][$form_id]['org_id'])).'">';
+									$content .= '<br/><small>'.__('Overrides the default org_id for this form (leave blank to use the global setting).').'</small>';
+									$content .= '</p>';
+
 									
 									$this->postbox('sfformmeta',__('Form Settings', 'salesforce'),$content); 
 								
@@ -676,7 +753,7 @@ i++;
 
 							}else{
 								
-								$this->postbox('usesalesforce',__('How to Use This Plugin','salesforce'),__('<p>To embed a form, copy the following shortcode into a post or page:</p><p> [salesforce form="X"] </p><p>Replace X with the form number for the form you want to show.</p><p><i>Make sure you have entered all the correct settings on the left, including your Organisation ID.</i></p>','salesforce'));
+								$this->postbox('usesalesforce',__('How to Use This Plugin','salesforce'),__('<p>To embed a form, copy the following shortcode into a post or page:</p><p> [salesforce form="X"] </p><p>Replace X with the form number for the form you want to show.</p><p><i>Make sure you have entered all the correct settings on the left, including your Organization ID.</i></p>','salesforce'));
 								
 							}
 
@@ -696,7 +773,7 @@ i++;
 
 							if( $ad ){
 	
-								$link =$this->get_ad_link( $ad['id'], $loc );
+								$link =$this->get_ad_link( $ad['id'], $loc, $ad['url'] );
 								
 								$this->postbox('usesalesforce',__('Plugin Sponsor: Daddy Analytics','salesforce'),__('<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>','salesforce'));
 							}
