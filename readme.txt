@@ -1,9 +1,9 @@
 === WordPress-to-lead for Salesforce CRM ===
 Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
-Requires at least: 3.0
-Tested up to: 3.8
-Stable tag: 2.3 alpha
+Requires at least: 3.5.2
+Tested up to: 3.8.1
+Stable tag: 2.3.1
 License: GPLv2
 Donate link: http://thoughtrefinery.com/donate/?item=salesforce
 
@@ -253,6 +253,9 @@ function salesforce_filter_admin_message( $message ){
 `
 
 == Changelog ==
+
+= 2.3.1 =
+* Version number bumps
 
 = 2.3 =
 * Allow some settings to be overridden per form (Success Message, Captcha, OrgId, etc)
