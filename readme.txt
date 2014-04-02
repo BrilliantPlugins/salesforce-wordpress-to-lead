@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 3.8.1
-Stable tag: 2.3.1
+Stable tag: 2.3.2
 License: GPLv2
 Donate link: http://thoughtrefinery.com/donate/?item=salesforce
 
@@ -226,6 +226,7 @@ return $emails;
 `
 
 **salesforce_w2l_cc_user_email_content**
+
 **salesforce_w2l_cc_admin_email_content**
 
 Allows you to filter (append, prepend, modify) the email message content sent to the user or admin(s).
@@ -252,7 +253,58 @@ function salesforce_filter_admin_message( $message ){
 }
 `
 
+**salesforce_w2l_field_value**
+
+**salesforce_w2l_field_value_{Form ID}_{Field Name}**
+
+Allows you to filter the value of a field before it is output to dynamically populate it with a value, auto set it based on another value, etc.
+
+Note that the second filter reuires you replace {Form ID} and {Field Name} to be replaced with the relevant form id and field name.
+
+If you need access to the field or form settings in your filter you can use:
+
+`$field = salesforce_get_field( $field_name, $form_id );`
+
+`$form = salesforce_get_form( $form_id );`
+
+Examples:
+
+`
+// Filter all field of all forms
+add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_example', 10, 3 );
+function salesforce_w2l_field_value_example( $val, $field, $form ){
+
+	// Target a specific form
+	if( $form == 1 )	
+		$val = 'TEST';
+	
+	// Target a specific field on all forms
+	if( $field == 'test_field' )	
+		$val = 'TEST3';
+
+	// Target a specific field on a form
+	if( $form == 1 && $field == 'test_field' )	
+		$val = 'TEST2';
+	
+	return $val;
+	
+}
+
+// Filter a specific field on a specific form
+// salesforce_w2l_field_value_{Form ID}_{Field Name}
+add_filter( 'salesforce_w2l_field_value_1_tester', 'salesforce_w2l_field_value_1_tester_example', 10, 1 );
+function salesforce_w2l_field_value_1_tester_example(  $val ){
+	
+	return '123';
+	
+}
+`
+
 == Changelog ==
+
+= 2.3.2 =
+* Add filter for field values
+* Add salesforce_get_form and salesforce_get_field helper functions
 
 = 2.3.1 =
 * Version number bumps
