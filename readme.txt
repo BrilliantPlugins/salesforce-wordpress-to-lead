@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 3.8.1
-Stable tag: 2.3.2
+Stable tag: 2.3.4
 License: GPLv2
 Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
 
@@ -137,7 +137,12 @@ See also: [How many leads can we capture from our website?](https://help.salesfo
 
 
 
-== Other Notes ==
+== Filters and Hooks ==
+
+**Note:**
+* These should be placed in your active theme functions.php or a functionality plugin.
+* Never edit a plugin directly (unless you understand the implications of doing so).
+* You can use Pluginception to create a custom plugin for these to make them independent of your theme: https://wordpress.org/plugins/pluginception/
 
 = Filters =
 
@@ -259,7 +264,7 @@ function salesforce_filter_admin_message( $message ){
 
 Allows you to filter the value of a field before it is output to dynamically populate it with a value, auto set it based on another value, etc.
 
-Note that the second filter reuires you replace {Form ID} and {Field Name} to be replaced with the relevant form id and field name.
+Note that the second filter requires you to replace {Form ID} and {Field Name} to be replaced with the relevant form id and field name.
 
 If you need access to the field or form settings in your filter you can use:
 
@@ -301,6 +306,15 @@ function salesforce_w2l_field_value_1_tester_example(  $val ){
 `
 
 == Changelog ==
+
+= 2.3.4 =
+* Fix bug in load_plugin_textdomain call
+* Readme improvements
+* Change value input size to match label field
+
+= 2.3.3 =
+* Fix confusing wrapping on form editor on very wide screens (reported by cindybou)
+* Change name of and add note to filters and hooks section
 
 = 2.3.2 =
 * Add filter for field values

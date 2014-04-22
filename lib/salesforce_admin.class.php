@@ -567,7 +567,7 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 										$content .= '</select></td>';
 										$content .= '<td><small>Label:</small> <input size="10" name="inputs['.$field.'_label]" type="text" value="'.esc_html(stripslashes($input['label'])).'"/>'; //</td>'.'<td>';
 										
-										$content .= '<small>Value:</small> <input size="14" name="inputs['.$field.'_value]" type="text" value="';
+										$content .= '<br><small>Value:</small> <input size="10" name="inputs['.$field.'_value]" type="text" value="';
 										if( isset($input['value']) ) $content .= esc_html(stripslashes($input['value']));
 										$content .= '"/></td>';
 										
