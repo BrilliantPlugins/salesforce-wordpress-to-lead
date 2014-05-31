@@ -647,7 +647,7 @@ function salesforce_form_shortcode($atts) {
 		
 		if( $form_id != $form ){
 			$content = salesforce_form($options, $sidebar, null, $form);
-			return $content;
+			return '<div class="salesforce_w2l_lead">'.$content.'</div>';
 			
 		}
 	}
