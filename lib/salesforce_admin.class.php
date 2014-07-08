@@ -2,7 +2,7 @@
 class Salesforce_Admin extends OV_Plugin_Admin {
 
 	public $optionname;
-	
+
 	public $hook;
 	public $filename;
 	public $longname;
@@ -11,8 +11,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	public $ozhicon;
 
 	function Salesforce_Admin() {
-	
-		$this->optionname = 'salesforce2';	
+
+		$this->optionname = 'salesforce2';
 
 		$this->hook 		= 'salesforce-wordpress-to-lead';
 		$this->filename		= 'salesforce/salesforce.php';
@@ -20,26 +20,26 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		$this->shortname	= 'Salesforce';
 		$this->homepage		= 'http://bit.ly/1d56aqB';
 		$this->ozhicon		= 'salesforce-16x16.png';
-	
+
 		add_action( 'admin_menu', array(&$this, 'register_settings_page') );
 		add_filter( 'plugin_action_links', array(&$this, 'add_action_link'), 10, 2 );
-		add_filter( 'ozh_adminmenu_icon', array(&$this, 'add_ozh_adminmenu_icon' ) );				
-		
+		add_filter( 'ozh_adminmenu_icon', array(&$this, 'add_ozh_adminmenu_icon' ) );
+
 		add_action('admin_print_scripts', array(&$this,'config_page_scripts'));
-		add_action('admin_print_styles', array(&$this,'config_page_styles'));	
+		add_action('admin_print_styles', array(&$this,'config_page_styles'));
 		add_action('admin_footer', array(&$this,'warning'));
-		
+
 		add_action('wp_ajax_sfw2l_get_captcha', 'salesforce_captcha');
 		add_action('wp_ajax_nopriv_sfw2l_get_captcha', 'salesforce_captcha');
 
 	}
 
 	public static function default_form() {
-	
+
 		$dform = array();
-		
+
 		$dform['form_name'] = 'My New Lead Form '.date('Y-m-d h:i:s');
-		
+
 		if( self::using_da() ){
 			$dform['source'] = '';
 		}else{
@@ -47,11 +47,11 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		}
 
 		$dform['labellocation'] = '';
-		
+
 		$dform['returl'] = '';
-		
+
 		$dform['type'] = 'lead';
-		
+
 		$dform['inputs'] = array(
 				'first_name' 	=> array('type' => 'text', 'label' => 'First name', 'show' => true, 'required' => true),
 				'first_name' 	=> array('type' => 'text', 'label' => 'First name', 'show' => true, 'required' => true),
@@ -68,46 +68,46 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				'country'	 	=> array('type' => 'text', 'label' => 'Country', 'show' => false, 'required' => false),
 				'Campaign_ID'	=> array('type' => 'hidden', 'label' => 'Campaign ID', 'show' => false, 'required' => false),
 			);
-		
+
 		return $dform;
-	
+
 	}
-	
+
 	function using_da(){
-		
+
 		$options = get_option( 'salesforce2' );
-		
+
 		if( isset( $options['da_token'] ) && isset( $options['da_url'] ) && isset( $options['da_site'] ) && $options['da_token'] && $options['da_url'] && $options['da_site'] )
 			return true;
-		
+
 		return false;
 	}
-	
+
 	function get_ad_term(){
-		
+
 		if( ( isset( $_GET['id'] ) && $_GET['id'] ) || ( isset( $_GET['tab'] ) && $_GET['tab'] == 'form' ) ){
 			$term = 'form';
 		}else{
 			$term = 'settings';
 		}
-		
+
 		return $term;
-		
+
 	}
 
 	function get_ad_link( $content, $medium, $url = 'http://daddyanalytics.com/', $term='', $source = 'ThoughtRefinery', $campaign = 'WP2L_Plugin_01' ){
-	
+
 		if( !$term )
 			$term = $this->get_ad_term();
-	
+
 		$link = $url . '?utm_source=%s&utm_medium=%s&utm_campaign=%s&utm_term=%s&utm_content=%s';
-	
+
 		return sprintf( $link, $source, $medium, $campaign, $term, $content  );
-		
+
 	}
 
 	function get_ad_code( $type, $id = null, $num = null ){
-	
+
 		$options  = get_option($this->optionname);
 
 		if( defined( 'SFWP2L_HIDE_ADS' ) && SFWP2L_HIDE_ADS == true ){
@@ -118,7 +118,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 			if( $this->using_da() )
 				return; // hide ads as they've signed up
 		}
-				
+
 		$ads = array(
 			'banner-side' => array(
 				array( 'id' => 'da1_1', 'url' => 'http://daddyanalytics.com', 'content' => 'assets/ads/side-analytics-track-form-submission-keyword.png' ),
@@ -139,63 +139,63 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 			),
 
 		);
-		
+
 		if( $id ){
-		
+
 			foreach( $ads[ $type ] as $ad ){
 				if( $ad['id'] == $id )
 					return $ad;
 			}
-			
+
 		}
-		
+
 		$num = mt_rand( 1, count( $ads[ $type ] ) ) - 1;
 		//echo $num;
-		
+
 		return $ads[ $type ][ $num ];
 	}
-	
+
 	function warning() {
 		$options  = get_option($this->optionname);
 		if (!isset($options['org_id']) || empty($options['org_id']))
 			echo "<div id='message' class='error'><p><strong>".__('Your WordPress-to-Lead settings are not complete.','salesforce')."</strong> ".__('You must enter your Salesforce.com Organization ID for it to work.','salesforce')." <a href='".$this->plugin_options_url()."'>".__('Settings','salesforce')."</a></p></div>";
-			
+
 			//echo 'ERROR= '.get_option('plugin_error');
-			
+
 	}
 
 	function admin_tabs( $current = 'forms' ) {
 		if( isset( $_GET['tab'] ) )
 			$current = $_GET['tab'];
-		
+
 		if( !$current )
 			$current = 'forms';
-			
+
 	    $tabs = array( 'forms' => 'Forms', 'settings' => 'Settings', 'css' => 'Styling', 'form' => 'Form Editor' );
 	    //echo '<div id="icon-themes" class="icon32"><br></div>';
 	    echo '<h2 class="nav-tab-wrapper">';
 	    foreach( $tabs as $tab => $name ){
 	        $class = ( $tab == $current ) ? ' nav-tab-active' : '';
 	        echo "<a class='nav-tab$class' href='?page=salesforce-wordpress-to-lead&tab=$tab'>$name</a>";
-	
+
 	    }
 	    echo '</h2>';
 	}
-	
+
 	function config_page() {
 
 		wp_enqueue_style( 'sfwp2lcssadmin', plugins_url('assets/css/sfwp2l-admin.css', dirname(__FILE__) ) );
-		
+
 		$options = get_option($this->optionname);
-		
+
 		if ( isset($_POST['submit']) ) {
-			
+
 			//die('<pre>'.print_r($_POST,true)); //DEBUG
 
 			if( isset( $_POST['mode'] ) && $_POST['mode'] == 'editform' ){
 
 				$form_id = (int) $_POST['form_id'];
-				
+
 				if(!isset($options['forms'][$form_id]))
 					$options['forms'][$form_id] = $this->default_form();
 
@@ -219,17 +219,17 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 							$newinputs[$id][$option_name] = $_POST['inputs'][$id.'_'.$option_name];
 							unset($_POST['inputs'][$id.'_'.$option_name]);
 						}
-					}	
+					}
 				}
-				
+
 				//add any new fields
-				
+
 				if( isset($_POST['add_inputs']) ){
-				
+
 					foreach ($_POST['add_inputs'] as $key=>$input) {
-					
+
 						$id = $input['field_name'];
-					
+
 						if( !empty($id) ){
 							foreach (array('show','required') as $option_name) {
 								if (isset($_POST['add_inputs'][$key][$option_name])) {
@@ -239,7 +239,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 									$newinputs[$id][$option_name] = false;
 								}
 							}
-							
+
 							foreach (array('type','label','value','pos','opts') as $option_name) {
 								if (isset($_POST['add_inputs'][$key][$option_name])) {
 									$newinputs[$id][$option_name] = $_POST['add_inputs'][$key][$option_name];
@@ -248,40 +248,40 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 							}
 						}
 					}
-				
+
 				}
-				
+
 				w2l_sksort($newinputs,'pos',true);
 				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
-				
+
 				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options['forms'][$form_id][$option_name] = $_POST[$option_name];
 					}
 				}
-				
+
 				//End Save Form Data
-			
+
 			}elseif( isset( $_POST['mode'] ) && $_POST['mode'] == 'delete'){
-			
+
 				if( isset( $_POST['form_id'] ) && $_POST['form_id'] != 1 )
 					unset( $options['forms'][$_POST['form_id']] );
-			
+
 			}elseif( isset( $_POST['mode'] ) && $_POST['mode'] == 'clone'){
-			
+
 				if( isset( $_POST['form_id'] ) && $_POST['form_id'] != 1 ) {
 					$new_id = max(array_keys($options['forms'])) + 1;
 					$options['forms'][$new_id] = $options['forms'][$_POST['form_id']];
 				}
-			
+
 			}else{
-			
+
 				//Save general settings
-								
+
 				$options  = get_option($this->optionname);
 				if (!current_user_can('manage_options')) die(__('You cannot edit the WordPress-to-Lead options.', 'salesforce'));
 				check_admin_referer('salesforce-udpatesettings');
-				
+
 				foreach (array('usecss','showccuser','ccadmin','captcha','wpcf7css','hide_salesforce_link', 'commentstoleads', 'commentsnamefields') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options[$option_name] = true;
@@ -296,17 +296,17 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 					}
 				}
 			}
-			
+
 			//save changes to DB
 			update_option($this->optionname, $options);
-		
+
 		}
-		
+
 		//$options = get_option($this->optionname);
 
 		if (empty($options))
 			$options = salesforce_default_settings();
-		
+
 		?>
 		<div class="wrap">
 			<a href="http://salesforce.com/"><div id="yoast-icon" style="background: url(<?php echo plugins_url('/salesforce-50x50.png', dirname(__FILE__) ); ?>) no-repeat;" class="icon32"><br /></div></a>
@@ -315,41 +315,46 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		<?php $this->admin_tabs(); ?>
 
 			<div class="postbox-container" style="width:70%;">
-				
+
 				<?php
-				
+
 				if( isset($_POST['submit']) && empty($_POST['mode']) ){
 					echo '<div id="message" class="updated"><p>' . __('Configuration Saved','salesforce') . '</p></div>';
 				}
-				
+
 				?>
-									
-				<div class="metabox-holder col-wrap">	
+
+				<div class="metabox-holder col-wrap">
 					<div class="meta-box-sortables">
 
 						<?php if (!isset($_GET['tab']) || $_GET['tab'] == 'forms') {
 
 								$content = '<table border="0" cellspacing="0" cellpadding="4">';
-								$content .= '<tr><th>ID</th><th>Name</th></tr>';		
+								$content .= '<tr><th>ID</th><th>Name</th></tr>';
 								foreach($options['forms'] as $key=>$form){
-									
-									$content .= '<tr><td>'.$key.'</td><td><a href="'.$this->plugin_options_url().'&tab=form&id='.$key.'">'.$form['form_name'].'</a><td></tr>';
-								
+
+									$name = $form['form_name'];
+
+									if( !$name )
+										$name = '(Blank)';
+
+									$content .= '<tr><td>'.$key.'</td><td><a href="'.$this->plugin_options_url().'&tab=form&id='.$key.'">'.$name.'</a><td></tr>';
+
 								}
-								$content .= '</table>';	
-								
-								$content .= '<p><a class="button-secondary" href="'.$this->plugin_options_url().'&tab=form">'.__('Add a new form','salesforce').' &raquo;</a></p>';			
-								
-								$this->postbox('sfforms',__('Forms', 'salesforce'),$content); 
+								$content .= '</table>';
+
+								$content .= '<p><a class="button-secondary" href="'.$this->plugin_options_url().'&tab=form">'.__('Add a new form','salesforce').' &raquo;</a></p>';
+
+								$this->postbox('sfforms',__('Forms', 'salesforce'),$content);
 
 								$loc = 'banner-main';
-								$ad = $this->get_ad_code( $loc );		
+								$ad = $this->get_ad_code( $loc );
 								if( $ad ){
 									$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
 									echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
 								}
 
-						
+
 						}
 
 						 if (isset($_GET['tab']) && $_GET['tab'] == 'settings') { ?>
@@ -357,48 +362,48 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 							<?php if (function_exists('wp_nonce_field')) { wp_nonce_field('salesforce-udpatesettings'); } ?>
 							<input type="hidden" value="<?php echo $options['version']; ?>" name="version"/>
 							<?php
-							
+
 								//if( $options['org_id'] )
 									//$class='closed';
-								
+
 								$content = $this->textinput('org_id',__('Your Salesforce.com Organization ID','salesforce'), __('To find your Salesforce.com Organization ID, in your Salesforce.com account, go to Setup &raquo; Company Profile &raquo; Company Information','salesforce'));
-								$this->postbox('sfsettings',__('Salesforce.com Settings', 'salesforce'), $content); 
+								$this->postbox('sfsettings',__('Salesforce.com Settings', 'salesforce'), $content);
 
 
 							$loc = 'banner-main';
-							$ad = $this->get_ad_code( $loc );		
+							$ad = $this->get_ad_code( $loc );
 							if( $ad ){
 								$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
 								echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
 							}
 							$loc = 'text';
-							$ad = $this->get_ad_code( $loc );		
+							$ad = $this->get_ad_code( $loc );
 							if( $ad ){
 								$link1 = $this->get_ad_link( $ad['id'], $loc, 'http://try.daddyanalytics.com/watch-a-video-wp2l/?utm_source=ThoughtRefinery&utm_medium=text&utm_campaign=WP2L_Plugin_01&utm_content=da1_7' );
 								$link2 = $this->get_ad_link( $ad['id'], $loc, 'http://try.daddyanalytics.com/start-free-trial-wp2l/?utm_source=ThoughtRefinery&utm_medium=text&utm_campaign=WP2L_Plugin_01&utm_content=da1_8' );
-								
+
 								$ad['content'] = str_replace( array('%link1%','%link2%'), array($link1,$link2), $ad['content'] );
-								
+
 								$content = $ad['content'].'<br/><br/>';
 								$class = '';
 							}else{
 								//$class = 'closed';
 								$content = 'Thank you for using <a href="http://daddyanalytics.com/" target="_blank">Daddy Analytics</a>!<br/><br/>';
 							}
-							
+
 								$content .= $this->textinput('da_token',__('Daddy Analytics Token','salesforce'));
 								$content .= $this->textinput('da_url',__('Daddy Analytics Web to Lead URL ID','salesforce'));
 								$content .= $this->textinput('da_site',__('Daddy Analytics Site ID','salesforce'));
-								$this->postbox('sfsettings',__('Daddy Analytics Settings', 'salesforce'), $content); 
-							
+								$this->postbox('sfsettings',__('Daddy Analytics Settings', 'salesforce'), $content);
+
 								$content = $this->textinput('successmsg',__('Success message after sending lead to SalesForce', 'salesforce') );
 								$content .= $this->textinput('errormsg',__('Error message shown when required fields are not filled out', 'salesforce') );
 								$content .= $this->textinput('emailerrormsg',__('Error message shown when email field is invalid', 'salesforce'), 'Default: The email address you entered is not valid.' );
 
 								$content .= $this->textinput('captchaerrormsg',__('Error message shown when captcha is invalid', 'salesforce'), 'Default: The text you entered did not match the image.' );
-								
+
 								$content .= $this->textinput('sferrormsg',__('Error message when Salesforce.com connection fails', 'salesforce') );
-								$this->postbox('basicsettings',__('Basic Settings', 'salesforce'),$content); 
+								$this->postbox('basicsettings',__('Basic Settings', 'salesforce'),$content);
 
 								$content = $this->checkbox('showccuser',__('Allow user to request a copy of their submission', 'salesforce') );
 								$content .= '<br/>';
@@ -407,7 +412,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 								$content .= $this->checkbox('ccadmin',__('Send blog admin an email notification', 'salesforce') );
 								//$content .= $this->checkbox('email_sender',__('Use this sender', 'salesforce') );
-								$this->postbox('sfsettings',__('Email Settings', 'salesforce'),$content); 
+								$this->postbox('sfsettings',__('Email Settings', 'salesforce'),$content);
 
 								$content = $this->textinput('submitbutton',__('Submit button text', 'salesforce') );
 								$content .= $this->textinput('requiredfieldstext',__('Required fields text', 'salesforce') );
@@ -415,52 +420,52 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								$content .= $this->checkbox('captcha',__('Use CAPTCHA?', 'salesforce') );
 								$content .= '<br/><small><a href="http://en.wikipedia.org/wiki/CAPTCHA" target="_blank">'.__('Learn more about CAPTCHAs at Wikipedia').'</a></small>';
 
-								$this->postbox('formsettings',__('Form Settings', 'salesforce'),$content); 
+								$this->postbox('formsettings',__('Form Settings', 'salesforce'),$content);
 
 								$content = $this->checkbox('usecss',__('Use Default CSS?', 'salesforce') );
 								$content .= $this->checkbox('wpcf7css',__('Use WPCF7 CSS integration?', 'salesforce') );
 								//$content .= $this->checkbox('hide_salesforce_link',__('Hide "Powered by Salesforce CRM" on form?', 'salesforce') );
 								$content .= '<br/><small><a href="'.$this->plugin_options_url().'&amp;tab=css">'.__('Read how to override the default CSS with your own CSS file').'</a></small><br><br>';
 
-								$this->postbox('csssettings',__('Style Settings', 'salesforce'),$content); 
-								
+								$this->postbox('csssettings',__('Style Settings', 'salesforce'),$content);
+
 								$content = $this->checkbox('commentstoleads',__('Create a lead when an approved comment is published', 'salesforce') );
 								$content .= $this->checkbox('commentsnamefields',__('Replace the "Name" field on the comment form with "First Name" and "Last Name"', 'salesforce') );
 								$content .= sprintf( '<p class="description">%s</p>', __( '<small>Using first and last name fields allows for cleaner Salesforce leads, otherwise the "first name" on the lead will contain the full name, but it may create issues with some WordPress themes.</small>', 'salesforce' ) );
-								
-								$this->postbox('commentsettings',__('Comment Settings', 'salesforce'),$content);								
-								
+
+								$this->postbox('commentsettings',__('Comment Settings', 'salesforce'),$content);
+
 								?>
 								<div class="submit"><input type="submit" class="button-primary" name="submit" value="<?php _e("Save WordPress-to-Lead Settings", 'salesforce'); ?>" /></div>
 								<?php
-								
+
 
 								if( WP_DEBUG )
 									$this->postbox('options','DEBUG: Options','<small>This dump of the plugin options is only shown when WP_DEBUG is enabled.</small><br><br>'.'<pre>'.print_r($options,true).'</pre>', 'closed'); //DEBUG
 
 
 							?>
-							
+
 						</form>
 						<?php }
-						
+
 						if (isset($_GET['tab']) && $_GET['tab'] == 'css') {
-						
+
 						wp_enqueue_style( 'prismcss', plugins_url('assets/css/prism.css', dirname(__FILE__) ) );
 						wp_enqueue_script( 'prismjs', plugins_url('assets/js/prism/prism.min.js', dirname(__FILE__) ) );
 
-						
+
 						//echo '<p>'.salesforce_back_link($this->plugin_options_url()).'</p>'; ?>
 						<p>
 						<?php echo __("<p>If you don't want the default styling this plugin uses, you can add the CSS for the form to your own theme by creating a folder named <i>salesforce-wordpress-to-lead</i> in your theme folder, then creating a file called <i>custom.css</i> within that with your custom CSS.</p>
-							
+
 							<p>".get_stylesheet_directory()."/<b>salesforce-wordpress-to-lead</b>/<b>custom.css</b></p>
-							
+
 							<p>If found, that file will be enqueued after the default CSS, or by itself if the default CSS is disabled on the main options screen.</p>
 							");
-						
+
 						echo '<pre><code class="language-css">'.file_get_contents( dirname(plugin_dir_path(__FILE__)) . '/assets/css/sfwp2l.css' ).'</code><pre>';
-						
+
 						?>
 
 <?php } else if ( isset( $_GET['tab'] ) && $_GET['tab'] == 'form') {
@@ -476,7 +481,7 @@ echo '<div id="message" class="updated"><p>' . __('Duplicated Form #','salesforc
 }else{
 
 if(!isset($form_id) && isset($_GET['id']))
-	$form_id = (int) $_GET['id'];	
+	$form_id = (int) $_GET['id'];
 
 if( isset($_POST['form_id']) )
 	$form_id = (int) $_POST['form_id'];
@@ -500,25 +505,25 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 						<form action="" method="post" id="salesforce-conf">
 							<?php if (function_exists('wp_nonce_field')) { wp_nonce_field('salesforce-udpatesettings'); } ?>
 							<input type="hidden" value="<?php echo $options['version']; ?>" name="version"/>
-							<input type="hidden" value="editform" name="mode"/>								
+							<input type="hidden" value="editform" name="mode"/>
 							<?php
-							
+
 								//$this->postbox('options','Options','<pre>'.print_r($options,true).'</pre>'); //DEBUG
 
 									$content = '<p>';
 									$content .= '<input type="text" name="form_name" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['form_name']).'">';
 									//$content .= '<br/><small>'.__('').'</small>';
 									$content .= '</p>';
-									
+
 									$this->postbox('sfformtitle',__('Form Name', 'salesforce'),$content);
-									
+
 									$loc = 'banner-main';
-									$ad = $this->get_ad_code( $loc );		
+									$ad = $this->get_ad_code( $loc );
 									if( $ad ){
 										$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
 										echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
 									}
-									
+
 									$content = '<table id="salesforce_form_editor" class="wp-list-table widefat fixed">';
 									$content .= '<tr>'
 									.'<th width="10%">'.__('Field','salesforce').'</th>'
@@ -530,8 +535,8 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 									.'<th width="8%">'.__('Order','salesforce').'</th>'
 									.'</tr>';
 									$i = 1;
-									
-										
+
+
 									foreach ($options['forms'][$form_id]['inputs'] as $field => $input) {
 
 									$trclass= 'disabled';
@@ -566,23 +571,23 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 										$content .= '<option value="html" '.selected($input['type'],'html',false).'>html</option>';
 										$content .= '</select></td>';
 										$content .= '<td><small>Label:</small> <input size="10" name="inputs['.$field.'_label]" type="text" value="'.esc_html(stripslashes($input['label'])).'"/>'; //</td>'.'<td>';
-										
+
 										$content .= '<br><small>Value:</small> <input size="10" name="inputs['.$field.'_value]" type="text" value="';
 										if( isset($input['value']) ) $content .= esc_html(stripslashes($input['value']));
 										$content .= '"/></td>';
-										
+
 										$opts = '';
 										if( isset( $input['opts'] ) )
 											$opts = $input['opts'];
-										
+
 										$content .= '<td><textarea rows="4" name="inputs['.$field.'_opts]"  >'.esc_textarea(stripslashes( $opts )).'</textarea></td>';
 										$content .= '<td><input size="2" name="inputs['.$field.'_pos]" type="text" value="'.esc_html($input['pos']).'"/></td>';
 										$content .= '</tr>';
 										$i++;
 									}
-									
+
 									$content .= '</table>';
-									
+
 									?>
 <script>
 
@@ -620,17 +625,17 @@ i++;
 
 </script>
 									<?php
-									
+
 									$content .= '<p><a class="button-secondary" href="javascript:salesforce_add_field();">Add a field</a></p>';
-									
+
 									// $this->postbox('sffields',__('Form Fields', 'salesforce'),$content);
 									echo $content;
-									
+
 									$content = '';
-									
+
 									if( $options['forms'][$form_id]['type'] == '' )
 										$options['forms'][$form_id]['type'] = 'lead';
-									
+
 									$content .= '<p>';
 									$content .= '<label>'.__('Form Type:','salesforce').'</label><br/>';
 									$content .= '<input type="radio" name="type" value="lead" '.checked($options['forms'][$form_id]['type'],'lead',false).'> Web to Lead <br>';
@@ -638,7 +643,7 @@ i++;
 									$content .= '<br/><small>'.__('<b>Note:</b> Daddy Analytics does not support cases at this time.').'</small>';
 									$content .= '</p>';
 
-									
+
 									$content .= '<p>';
 									$content .= '<label>'.__('Lead Source:','salesforce').'</label><br/>';
 									$content .= '<input type="text" name="source" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['source']).'">';
@@ -647,9 +652,9 @@ i++;
 
 									if( !defined('SFWP2L_HIDE_ADS') )
 										$content .= '<br/><br/><small>'.__('<b>Daddy Analytics</b> will populate the Lead Source field with the web source of the Lead (such as Organic - Google, Paid - Bing, or Google Adwords). Daddy Analytics will also populate the Salesforce Address field with the estimated GeoLocation of your Leads. <br><i>Leave the Lead Source field blank if you have a subscription to <a href="'.$this->get_ad_link( 'da_ls', 'text' ).'">Daddy Analytics.</a></i>').'</small>';
-									
+
 									$content .= '</p>';
-									
+
 									$content .= '<p>';
 									$content .= '<label>'.__('Return/Thanks URL:','salesforce').'</label><br/>';
 									$content .= '<input type="text" name="returl" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['returl']).'">';
@@ -709,14 +714,14 @@ i++;
 									$content .= '<br/><small>'.__('Overrides the default org_id for this form (leave blank to use the global setting).').'</small>';
 									$content .= '</p>';
 
-									
-									$this->postbox('sfformmeta',__('Form Settings', 'salesforce'),$content); 
-								
+
+									$this->postbox('sfformmeta',__('Form Settings', 'salesforce'),$content);
+
 							?>
-							
+
 							<div class="submit"><input type="submit" class="button-primary" name="submit" value="<?php _e("Save Form", 'salesforce'); ?>" /></div>
 						</form>
-						
+
 							<?php if( !empty($_GET['id']) && $_GET['id'] != 1 ){ ?>
 							<form action="" method="post" id="salesforce-delete">
 							<?php if (function_exists('wp_nonce_field')) { wp_nonce_field('salesforce-udpatesettings'); } ?>
@@ -733,28 +738,28 @@ i++;
 							<?php } ?>
 <?php } ?>
 				<?php } ?>
-				
+
 				<?php //echo '<p>'.salesforce_back_link($this->plugin_options_url()).'</p>'; ?>
-				
+
 						<?php } ?>
 					</div>
 				</div>
 			</div>
 			<div class="postbox-container" style="width:20%;">
-				<div class="metabox-holder">	
+				<div class="metabox-holder">
 					<div class="meta-box-sortables">
 						<?php
-						
+
 							if( isset( $_GET['id'] ) && $_GET['id'] ){
-							
+
 								$fid = absint( $_GET['id'] );
-								
+
 								$this->postbox('usesalesforce',__('How to Use This Form','salesforce'),__('<p>To embed this form, copy the following shortcode into a post or page:</p><p> [salesforce form="'.$fid.'"] </p>','salesforce'));
 
 							}else{
-								
+
 								$this->postbox('usesalesforce',__('How to Use This Plugin','salesforce'),__('<p>To embed a form, copy the following shortcode into a post or page:</p><p> [salesforce form="X"] </p><p>Replace X with the form number for the form you want to show.</p><p><i>Make sure you have entered all the correct settings on the left, including your Organization ID.</i></p>','salesforce'));
-								
+
 							}
 
 							$this->plugin_like(false);
@@ -764,33 +769,33 @@ i++;
 
 							$content .= '<p>'.__('<b>Premium</b><br>Need guaranteed support, customization help, or want to sponsor a feature addition?','ystplugin').'</p><p> <a target="_blank" class="button-secondary" href="http://thoughtrefinery.com/plugins/support/?plugin='.$this->hook.'">'.__("Request Premium Support",'ystplugin').'</a></p>';
 
-							
+
 							$this->postbox($this->hook.'support', 'Need support?', $content);
 
 							$loc = 'banner-side';
 
-							$ad = $this->get_ad_code( $loc );		
+							$ad = $this->get_ad_code( $loc );
 
 							if( $ad ){
-	
+
 								$link =$this->get_ad_link( $ad['id'], $loc, $ad['url'] );
-								
+
 								$this->postbox('usesalesforce',__('Plugin Sponsor: Daddy Analytics','salesforce'),__('<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>','salesforce'));
 							}
-							
+
 							$this->postbox('usesalesforce',__('Want to contribute?','salesforce'),__('<p class="aligncenter">Pull requests welcome!<br><br>
-							
+
 							<a class="button-secondary" href="https://github.com/nciske/salesforce-wordpress-to-lead" target="_blank">Fork me on GitHub</a><br><br>
 
 							<a class="button-secondary" href="https://github.com/nciske/salesforce-wordpress-to-lead/issues" target="_blank">Submit an issue</a>
 
-							
-							
-							
+
+
+
 							</p>','salesforce'));
 
 
-							// $this->news(); 
+							// $this->news();
 						?>
 					</div>
 					<br/><br/><br/>
