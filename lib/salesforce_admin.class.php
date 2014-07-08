@@ -73,7 +73,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 	}
 
-	function using_da(){
+	static function using_da(){
 
 		$options = get_option( 'salesforce2' );
 
@@ -663,28 +663,28 @@ i++;
 
 									$content .= '<p>';
 									$content .= '<label>'.__('Success Message:','salesforce').'</label><br/>';
-									$content .= '<input type="text" name="successmsg" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['successmsg']).'">';
+									$content .= '<input type="text" name="successmsg" style="width:50%;" value="'.esc_html(salesforce_get_option('successmsg',$form_id,$options)).'">';
 									$content .= '<br/><small>'.__('Overrides the default message for this form.(leave blank to use the global setting)').'</small>';
 									$content .= '</p>';
 
 									$content .= '<p>';
 									$content .= '<label>'.__('Submit button text (override):','salesforce').'</label><br/>';
-									$content .= '<input type="text" name="submitbutton" style="width:50%;" value="'.esc_html(stripslashes($options['forms'][$form_id]['submitbutton'])).'">';
+									$content .= '<input type="text" name="submitbutton" style="width:50%;" value="'.esc_html(stripslashes( salesforce_get_option('submitbutton',$form_id,$options) )).'">';
 									$content .= '<br/><small>'.__('Overrides the default message for this form.(leave blank to use the global setting)').'</small>';
 									$content .= '</p>';
 
 									$content .= '<p>';
 									$content .= '<label>'.__('Required fields text (override):','salesforce').'</label><br/>';
-									$content .= '<input type="text" name="requiredfieldstext" style="width:50%;" value="'.esc_html(stripslashes($options['forms'][$form_id]['requiredfieldstext'])).'">';
+									$content .= '<input type="text" name="requiredfieldstext" style="width:50%;" value="'.esc_html(stripslashes( salesforce_get_option('requiredfieldstext',$form_id,$options) )).'">';
 									$content .= '<br/><small>'.__('Overrides the default message for this form (leave blank to use the global setting).').'</small>';
 									$content .= '</p>';
 
 									$content .= '<p>';
 									$content .= '<label>'.__('Captcha:','salesforce').'</label><br/>';
 
-									$content .= '<input type="radio" name="captchaform" value=""'.checked($options['forms'][$form_id]['captchaform'],'',false).'> Use global setting <br>';
-									$content .= '<input type="radio" name="captchaform" value="enabled" '.checked($options['forms'][$form_id]['captchaform'],'enabled',false).'> Enabled for this form<br>';
-									$content .= '<input type="radio" name="captchaform" value="disabled"'.checked($options['forms'][$form_id]['captchaform'],'disabled',false).'> Disabled for this form';
+									$content .= '<input type="radio" name="captchaform" value=""'.checked(salesforce_get_option('captchaform',$form_id,$options),'',false).'> Use global setting <br>';
+									$content .= '<input type="radio" name="captchaform" value="enabled" '.checked(salesforce_get_option('captchaform',$form_id,$options),'enabled',false).'> Enabled for this form<br>';
+									$content .= '<input type="radio" name="captchaform" value="disabled"'.checked(salesforce_get_option('captchaform',$form_id,$options),'disabled',false).'> Disabled for this form';
 
 
 									$content .= '<br/><small>'.__('Overrides the default captcha settings for this form.').'</small>';
@@ -693,9 +693,9 @@ i++;
 
 									$content .= '<p>';
 									$content .= '<label>'.__('Required Fields Text Location:','salesforce').'</label><br/>';
-									$content .= '<input type="radio" name="requiredfieldstextpos" value=""'.checked($options['forms'][$form_id]['requiredfieldstextpos'],'',false).'> Below Form <br>';
-									$content .= '<input type="radio" name="requiredfieldstextpos" value="top" '.checked($options['forms'][$form_id]['requiredfieldstextpos'],'top',false).'> Above Form <br>';
-									$content .= '<input type="radio" name="requiredfieldstextpos" value="hidden"'.checked($options['forms'][$form_id]['requiredfieldstextpos'],'hidden',false).'> None';
+									$content .= '<input type="radio" name="requiredfieldstextpos" value=""'.checked( salesforce_get_option('requiredfieldstextpos',$form_id,$options),'',false).'> Below Form <br>';
+									$content .= '<input type="radio" name="requiredfieldstextpos" value="top" '.checked(salesforce_get_option('requiredfieldstextpos',$form_id,$options),'top',false).'> Above Form <br>';
+									$content .= '<input type="radio" name="requiredfieldstextpos" value="hidden"'.checked(salesforce_get_option('requiredfieldstextpos',$form_id,$options),'hidden',false).'> None';
 									$content .= '</p>';
 
 
@@ -710,7 +710,7 @@ i++;
 
 									$content .= '<p>';
 									$content .= '<label>'.__('Salesforce.com Organization ID (override):','salesforce').'</label><br/>';
-									$content .= '<input type="text" name="org_id" style="width:50%;" value="'.esc_html(stripslashes($options['forms'][$form_id]['org_id'])).'">';
+									$content .= '<input type="text" name="org_id" style="width:50%;" value="'.esc_html(stripslashes(salesforce_get_option('org_id',$form_id,$options))).'">';
 									$content .= '<br/><small>'.__('Overrides the default org_id for this form (leave blank to use the global setting).').'</small>';
 									$content .= '</p>';
 

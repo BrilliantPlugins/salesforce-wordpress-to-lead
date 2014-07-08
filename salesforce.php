@@ -730,8 +730,11 @@ function salesforce_form_shortcode($atts) {
 			$da_token = $options['da_token'];
 			$da_url = $options['da_url'];
 
-			$post[$da_token] = $_POST[$da_token];
-			$post[$da_url] = $_POST[$da_url];
+			if( isset( $_POST[$da_token] ) )
+				$post[$da_token] = $_POST[$da_token];
+
+			if( isset( $_POST[$da_url] ) )
+				$post[$da_url] = $_POST[$da_url];
 
 		}
 
