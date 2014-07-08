@@ -2,8 +2,8 @@
 Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
-Tested up to: 3.8.1
-Stable tag: 2.3.5
+Tested up to: 3.9.1
+Stable tag: 2.3.7
 License: GPLv2
 Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
 
@@ -321,10 +321,17 @@ function salesforce_w2l_form_action_example(  $action ){
 
 == Changelog ==
 
-= 2.3.5 =
+= 2.3.7 =
 * Fix issue where deleting form title made the edit link disappear
 * Fix settings url in alert to go to settings tab
 * Add filter to allow form action to be removed
+
+= 2.3.6 =
+* Fix issue with OID and other fields being appended to the user confirmation email
+* Add `salesforce_w2l_cc_user_suppress_fields` filter to allow supression of fields in the user confirmation email
+
+= 2.3.5 =
+* Readme improvements
 
 = 2.3.4 =
 * Fix bug in load_plugin_textdomain call
