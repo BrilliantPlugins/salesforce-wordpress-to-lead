@@ -257,9 +257,9 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 				if (!empty($input['label'])) {
 					$content .= "\t".'<label class="w2llabel '.$required.' '.$error.$input['type'].($input['type'] == 'checkbox' ? ' w2llabel-checkbox-label' : '').'" for="sf_'.$id.'">'.( $input['opts'] == 'html' && $input['type'] == 'checkbox' ? stripslashes($input['label']) : esc_html(stripslashes($input['label'])));
-					if (!in_array($input['type'], array('checkbox', 'html'))) {
+					//if (!in_array($input['type'], array('checkbox', 'html'))) {
 						$content .= ':';
-					}
+					//}
 				}
 			}
 		}
@@ -291,7 +291,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		} else if ($input['type'] == 'current_date') {
 			$content .= "\t\n\t".'<input type="hidden" id="sf_'.$id.'" class="w2linput hidden" name="'.$id.'" value="'.date($input['opts']).'">'."\n\n";
 		} else if ($input['type'] == 'html'){
-			$content .= stripslashes($input['opts'])."\n\n";
+			$content .= '<br>'.stripslashes($input['opts'])."\n\n";
 		} else if ($input['type'] == 'select') {
 			$content .= "\t\n\t".'<select id="sf_'.$id.'" class="';
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-select style-select' : 'w2linput select';
@@ -546,6 +546,7 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 	$subject = str_replace('%BLOG_NAME%', get_bloginfo('name'), $options['subject']);
 	if( empty($subject) ) $subject = __('Thank you for contacting','salesforce').' '.get_bloginfo('name');
 
+
 	//remove hidden fields
 	foreach ($options['forms'][$form_id]['inputs'] as $id => $input) {
 		if( $input['type'] == 'hidden' )
@@ -555,16 +556,17 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 	if (!empty($options['forms'][$form_id]['source'])) {
 		unset($post['lead_source']);
 	}
-	unset($post['debug']);
+
+	$remove_keys = apply_filters( 'salesforce_w2l_cc_user_suppress_fields', array('debug','oid','orgid',$options['da_token'],$options['da_url']) );
+
+	foreach( $remove_keys as $key ){
+		unset($post[$key]);
+	}
 
 	$message = '';
 
-	//$message .= print_r( $post , true);
-	//$message .= print_r( $options['forms'][$form_id]['inputs'] , true);
-
-
 	//format message
-	foreach($post as $name=>$value){
+	foreach($post as $name => $value){
 		if( !empty($name) && !empty($value) && isset($options['forms'][$form_id]['inputs'][$name]['label']) )
 			$label = $options['forms'][$form_id]['inputs'][$name]['label'];
 
@@ -573,6 +575,9 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 	}
 
 	$message = apply_filters('salesforce_w2l_cc_user_email_content', $message );
+
+	if( WP_DEBUG )
+		error_log( 'salesforce_cc_user:'.print_r( array($message),1 ) );
 
 	if( $message )
 		wp_mail( $_POST['email'], $subject, $message, $headers );
@@ -621,6 +626,9 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 	//print_r( $emails );
 
 	$message = apply_filters('salesforce_w2l_cc_admin_email_content', $message );
+
+	if( WP_DEBUG )
+		error_log( 'salesforce_cc_admin:'.print_r( array($emails,$message),1 ) );
 
 	if( $message ){
 		foreach( $emails as $email ){
