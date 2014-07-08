@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 3.8.1
-Stable tag: 2.3.4
+Stable tag: 2.3.5
 License: GPLv2
 Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
 
@@ -58,7 +58,7 @@ To find your Organization ID, do the following steps:
 
 1. Go to Setup &raquo; Customize &raquo; Leads &raquo; Fields
 1. If your custom field does not exist yet, create it now.
-1. Find the API Name for your field (e.g. Custom_Field_Example__c). If it doesn't end in "__c" it's not the API name and will not work. 
+1. Find the API Name for your field (e.g. Custom_Field_Example__c). If it doesn't end in "__c" it's not the API name and will not work.
 1. Add a new field to your form using the form editor on the plugin admin screen
 1. Enter the API Name as the field name (left most box), then fill out the other fields normally (make sure to enable the field!).
 1. Save your changes -- new submissions will now post that custom field to SalesForce.
@@ -131,7 +131,7 @@ e.g. http://yoursite.com/thanks/ not just /thanks/
 = Is there a limit to how many leads can be captured? =
 While the plugin has no limits, SalesForce does limit API calls per day:
 
-_The daily limit for Web-to-Lead requests is 500. If your organization exceeds its daily Web-to-Lead limit, the Default Lead Creator (specified in the Web-to-Lead setup page) receives an email containing the additional lead information._ 
+_The daily limit for Web-to-Lead requests is 500. If your organization exceeds its daily Web-to-Lead limit, the Default Lead Creator (specified in the Web-to-Lead setup page) receives an email containing the additional lead information._
 
 See also: [How many leads can we capture from our website?](https://help.salesforce.com/apex/HTViewHelpDoc?id=faq_leads_how_many_leads.htm&language=en_US#faq_leads_how_many_leads)
 
@@ -168,22 +168,22 @@ Here's an example of blocking common free email providers:
 
 `
 add_filter('sfwp2l_validate_field','block_non_biz_emails', 10, 4);
- 
+
 function block_non_biz_emails( $error, $name, $val, $field ){
-	
+
 	if( $name == 'email' ){
-	
+
 		$non_biz_domains = array( 'gmail.com', 'yahoo.com', 'hotmail.com', 'aol.com' );
- 
+
 		$domain = array_pop(explode('@', $val));
-		
+
 		if( in_array( $domain, $non_biz_domains ) ){
 			$error['valid'] = false;
 			$error['message'] = 'Please enter a business email addresss.';
 		}
-		
+
 	}
-	
+
 	return $error;
 }
 `
@@ -242,9 +242,9 @@ add_filter('salesforce_w2l_cc_user_email_content','salesforce_filter_user_messag
 function salesforce_filter_user_message( $message ){
 
 	$message = 'Before the user message' . "\r\n\r\n" . $message . "\r\n\r\n" . 'After the user message';
-	
+
 	return $message;
-	
+
 }
 
 add_filter('salesforce_w2l_cc_admin_email_content','salesforce_filter_admin_message', 10, 1);
@@ -252,9 +252,9 @@ add_filter('salesforce_w2l_cc_admin_email_content','salesforce_filter_admin_mess
 function salesforce_filter_admin_message( $message ){
 
 	$message = 'Before the admin message' . "\r\n\r\n" . $message . "\r\n\r\n" . 'After the admin message';
-	
+
 	return $message;
-	
+
 }
 `
 
@@ -280,32 +280,51 @@ add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_example', 
 function salesforce_w2l_field_value_example( $val, $field, $form ){
 
 	// Target a specific form
-	if( $form == 1 )	
+	if( $form == 1 )
 		$val = 'TEST';
-	
+
 	// Target a specific field on all forms
-	if( $field == 'test_field' )	
+	if( $field == 'test_field' )
 		$val = 'TEST3';
 
 	// Target a specific field on a form
-	if( $form == 1 && $field == 'test_field' )	
+	if( $form == 1 && $field == 'test_field' )
 		$val = 'TEST2';
-	
+
 	return $val;
-	
+
 }
 
 // Filter a specific field on a specific form
 // salesforce_w2l_field_value_{Form ID}_{Field Name}
 add_filter( 'salesforce_w2l_field_value_1_tester', 'salesforce_w2l_field_value_1_tester_example', 10, 1 );
 function salesforce_w2l_field_value_1_tester_example(  $val ){
-	
+
 	return '123';
-	
+
+}
+`
+
+**salesforce_w2l_form_action**
+
+Allows you to remove the form action.
+
+`
+// Remove Form Action
+add_filter( 'salesforce_w2l_form_action', 'salesforce_w2l_form_action_example', 10, 1 );
+function salesforce_w2l_form_action_example(  $action ){
+
+	return '';
+
 }
 `
 
 == Changelog ==
+
+= 2.3.5 =
+* Fix issue where deleting form title made the edit link disappear
+* Fix settings url in alert to go to settings tab
+* Add filter to allow form action to be removed
 
 = 2.3.4 =
 * Fix bug in load_plugin_textdomain call
