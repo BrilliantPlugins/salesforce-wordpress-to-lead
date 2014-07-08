@@ -687,7 +687,7 @@ function salesforce_form_shortcode($atts) {
 				'message' => $options['errormsg'],
 			);
 
-			if ($input['required'] && !$val ) {
+			if ( $input['enabled'] && $input['required'] && !$val ) {
 				$error['valid'] = false;
 			}else{
 				$error['valid'] = true;
