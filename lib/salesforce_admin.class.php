@@ -158,7 +158,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	function warning() {
 		$options  = get_option($this->optionname);
 		if (!isset($options['org_id']) || empty($options['org_id']))
-			echo "<div id='message' class='error'><p><strong>".__('Your WordPress-to-Lead settings are not complete.','salesforce')."</strong> ".__('You must enter your Salesforce.com Organization ID for it to work.','salesforce')." <a href='".$this->plugin_options_url()."'>".__('Settings','salesforce')."</a></p></div>";
+			echo "<div id='message' class='error'><p><strong>".__('Your WordPress-to-Lead settings are not complete.','salesforce')."</strong> ".__('You must enter your Salesforce.com Organization ID for it to work.','salesforce')." <a href='".$this->plugin_options_url()."&tab=settings'>".__('Settings','salesforce')."</a></p></div>";
 
 			//echo 'ERROR= '.get_option('plugin_error');
 
