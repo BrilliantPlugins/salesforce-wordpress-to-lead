@@ -603,9 +603,11 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 
 	$message = '';
 
+/*
 	if (!empty($options['forms'][$form_id]['source'])) {
 		unset($post['lead_source']);
 	}
+*/
 	unset($post['debug']);
 
 	//format message
