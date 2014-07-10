@@ -603,11 +603,6 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 
 	$message = '';
 
-/*
-	if (!empty($options['forms'][$form_id]['source'])) {
-		unset($post['lead_source']);
-	}
-*/
 	unset($post['debug']);
 
 	//format message
@@ -619,6 +614,10 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 			if( trim( $label ) != '' )
 				$message .= stripslashes($label).': '.$value."\r\n";
 		}
+	}
+
+	if (!empty($options['forms'][$form_id]['source'])) {
+		$message .= "\r\n".'Lead Source: '.$options['forms'][$form_id]['source']."\r\n";
 	}
 
 	$emails = array( get_option('admin_email') );
