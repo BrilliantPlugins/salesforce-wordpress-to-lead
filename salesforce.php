@@ -4,7 +4,7 @@ Plugin Name: WordPress-to-Lead for Salesforce CRM
 Plugin URI: http://wordpress.org/plugins/salesforce-wordpress-to-lead/
 Description: Easily embed a contact form into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM. Also supports Web to Case and Comments to leads.
 Author: Daddy Analytics & Thought Refinery
-Version: 2.3.7
+Version: 2.3.8
 Author URI: http://try.daddyanalytics.com/wordpress-to-lead-general?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP2L_Plugin_01&utm_content=da1_author_uri
 License: GPL2
 */
@@ -13,7 +13,8 @@ License: GPL2
 require_once('lib/ov_plugin_tools.php');
 
 // Filter Examples
-// require_once('examples.php');
+if( defined('TR_DEVELOPMENT') && TR_DEVELOPMENT )
+	require_once('examples.php');
 
 // Admin Class
 if ( ! class_exists( 'Salesforce_Admin' ) ) {
@@ -486,6 +487,9 @@ function submit_salesforce_form($post, $options) {
 	if (!empty($options['forms'][$form_id]['source'])) {
 		$post['lead_source'] = str_replace('%URL%','['.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'].']',$options['forms'][$form_id]['source']);
 	}
+
+	$post['lead_source'] = apply_filters('salesforce_w2l_lead_source', $post['lead_source'], $form_id);
+
 	$post['debug']	= 0;
 
 	// Set SSL verify to false because of server issues.
@@ -616,8 +620,9 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 		}
 	}
 
-	if (!empty($options['forms'][$form_id]['source'])) {
-		$message .= "\r\n".'Lead Source: '.$options['forms'][$form_id]['source']."\r\n";
+
+	if ( $post['lead_source'] ) {
+		$message .= "\r\n".'Lead Source: '.$post['lead_source']."\r\n";
 	}
 
 	$emails = array( get_option('admin_email') );

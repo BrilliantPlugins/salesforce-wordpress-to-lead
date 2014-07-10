@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 3.9.1
-Stable tag: 2.3.7
+Stable tag: 2.3.8
 License: GPLv2
 Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
 
@@ -319,7 +319,28 @@ function salesforce_w2l_form_action_example(  $action ){
 }
 `
 
+**salesforce_w2l_lead_source**
+
+Allows you to remove the form action.
+
+`
+// Alter Lead Source
+add_filter( 'salesforce_w2l_lead_source', 'salesforce_w2l_lead_source_example', 10, 2 );
+function salesforce_w2l_lead_source_example(  $lead_source, $form_id ){
+
+	if( $form_id == 1 )
+		return 'Example Lead Source for Form #1 on page id #'.get_the_id();
+
+	return $lead_source;
+
+}
+`
+
 == Changelog ==
+
+= 2.3.8 =
+* Add lead source back into admin email
+* Add filter for lead source
 
 = 2.3.7 =
 * Fix issue where deleting form title made the edit link disappear
