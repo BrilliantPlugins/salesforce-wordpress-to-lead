@@ -321,7 +321,7 @@ function salesforce_w2l_form_action_example(  $action ){
 
 **salesforce_w2l_lead_source**
 
-Allows you to remove the form action.
+Allows you to alter the lead source (per form or globally).
 
 `
 // Alter Lead Source
@@ -338,7 +338,7 @@ function salesforce_w2l_lead_source_example(  $lead_source, $form_id ){
 
 **salesforce_w2l_post_args**
 
-Allows filtering of the wp_remote_post arguments (e.g. extend the timeout, increase redirect limit, etc).
+Allows filtering of the [wp_remote_post](http://codex.wordpress.org/Function_Reference/wp_remote_post) arguments (e.g. extend the timeout, increase redirect limit, etc).
 
 `
 add_filter( 'salesforce_w2l_post_args', 'salesforce_w2l_post_args_example' );
