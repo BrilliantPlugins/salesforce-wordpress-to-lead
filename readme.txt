@@ -353,7 +353,7 @@ function salesforce_w2l_post_args_example( $args ){
 
 == Changelog ==
 
-= 2.3.9=
+= 2.3.9 =
 * Allow filtering of wp_remote_post arguments
 
 = 2.3.8 =
