@@ -18,3 +18,12 @@ function salesforce_w2l_lead_source_example(  $lead_source, $form_id ){
 	return $lead_source;
 
 }
+
+add_filter( 'salesforce_w2l_post_args', 'salesforce_w2l_post_args_example' );
+
+function salesforce_w2l_post_args_example( $args ){
+	
+	$args['timeout'] = 10;
+	return $args;
+	
+}

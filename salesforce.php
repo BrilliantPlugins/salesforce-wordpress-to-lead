@@ -501,6 +501,8 @@ function submit_salesforce_form($post, $options) {
 		'sslverify'	=> false,
 	);
 
+	$args = apply_filters( 'salesforce_w2l_post_args', $args );
+
 	$form_type = $options['forms'][$form_id]['type'];
 
 	if( $form_type == 'case' ){
