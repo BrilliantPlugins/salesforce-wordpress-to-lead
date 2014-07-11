@@ -23,7 +23,7 @@ add_filter( 'salesforce_w2l_post_args', 'salesforce_w2l_post_args_example' );
 
 function salesforce_w2l_post_args_example( $args ){
 	
-	$args['timeout'] = 10;
+	$args['timeout'] = 10; // http timeout in seconds
 	return $args;
 	
 }

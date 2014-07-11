@@ -336,7 +336,25 @@ function salesforce_w2l_lead_source_example(  $lead_source, $form_id ){
 }
 `
 
+**salesforce_w2l_post_args**
+
+Allows filtering of the wp_remote_post arguments (e.g. extend the timeout, increase redirect limit, etc).
+
+`
+add_filter( 'salesforce_w2l_post_args', 'salesforce_w2l_post_args_example' );
+
+function salesforce_w2l_post_args_example( $args ){
+	
+	$args['timeout'] = 10; // http timeout in seconds
+	return $args;
+	
+}
+`
+
 == Changelog ==
+
+= 2.3.9=
+* Allow filtering of wp_remote_post arguments
 
 = 2.3.8 =
 * Add lead source back into admin email
