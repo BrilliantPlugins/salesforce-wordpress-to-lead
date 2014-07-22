@@ -4,7 +4,7 @@ Plugin Name: WordPress-to-Lead for Salesforce CRM
 Plugin URI: http://wordpress.org/plugins/salesforce-wordpress-to-lead/
 Description: Easily embed a contact form into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM. Also supports Web to Case and Comments to leads.
 Author: Daddy Analytics & Thought Refinery
-Version: 2.3.8
+Version: 2.3.9
 Author URI: http://try.daddyanalytics.com/wordpress-to-lead-general?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP2L_Plugin_01&utm_content=da1_author_uri
 License: GPL2
 */
@@ -206,8 +206,15 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		if (!$input['show'])
 			continue;
 		$val = '';
-		if (isset($_POST[$id])){
-			$val = esc_attr(strip_tags(stripslashes($_POST[$id])));
+		if ( isset( $_POST[$id] ) ){
+			$val = $_POST[$id];
+
+			if( is_array( $val  ) ){
+				$val = array_map( 'esc_attr', array_map( 'salesforce_clean_field', $val ) );
+			}else{
+				$val = esc_attr(strip_tags(stripslashes($val)));
+			}
+
 		}else{
 			if( isset($input['value']) ) $val	= esc_attr(strip_tags(stripslashes($input['value'])));
 		}
@@ -244,7 +251,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 				$placeholder = stripslashes( strip_tags( $input['label'] ) );
 
-				if ($input['required'] && $input['type'] != 'hidden' && $input['type'] != 'current_date' && $input['type'] != 'select')
+				if ($input['required'] && $input['type'] != 'hidden' && $input['type'] != 'current_date' && $input['type'] != 'select' && $input['type'] != 'multi-select')
 					$placeholder .= ' *';
 
 				//$placeholder = ' placeholder="'.$placeholder.'" ';
@@ -293,11 +300,17 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 			$content .= "\t\n\t".'<input type="hidden" id="sf_'.$id.'" class="w2linput hidden" name="'.$id.'" value="'.date($input['opts']).'">'."\n\n";
 		} else if ($input['type'] == 'html'){
 			$content .= '<br>'.stripslashes($input['opts'])."\n\n";
-		} else if ($input['type'] == 'select') {
+		} else if ($input['type'] == 'select' || $input['type'] == 'multi-select' ) {
 			$content .= "\t\n\t".'<select id="sf_'.$id.'" class="';
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-select style-select' : 'w2linput select';
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
-			$content .= '" name="'.$id.'">';
+			if( $input['type'] == 'multi-select' ){
+				$content .= '" name="'.$id.'[]"';
+				$content .= ' multiple="multiple" ';
+			}else{
+				$content .= '" name="'.$id.'"';
+			}
+			$content .= '>';
 
 			if( $placeholder  ){
 				if( $input['required'] ){
@@ -305,6 +318,12 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 				}else{
 					$content .= '<option value="" default selected="selected">'. trim( $placeholder ) . ':</option>' . "\n";
 				}
+			}
+
+			if( is_array( $val ) ){
+				$values = $val;
+			}else{
+				$values = array( $val );
 			}
 
 			if (strpos($input['opts'], '|') !== false) {
@@ -320,12 +339,14 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 					if( $placeholder ){
 						$content .= '<option value="' . esc_attr($v) . '">' . trim( stripslashes( $k ) ) . '</option>' . "\n";
 					}else{
-						$content .= '<option value="' . esc_attr($v) . '" '.selected($val, $v, false).'>' . trim( stripslashes( $k ) ) . '</option>' . "\n";
+						$content .= '<option value="' . esc_attr($v) . '" '. selected( in_array($v, $values), true, false ).'>' . trim( stripslashes( $k ) ) . '</option>' . "\n";
 					}
 
 				}
 			}
 			$content .= '</select>'."\n\n";
+			//$content .= '<pre>'.print_r( $values, 1 ).'</pre>';
+
 		}
 
 		if( $errors && !$errors[$id]['valid'] ){
@@ -454,7 +475,7 @@ function salesforce_get_post_data( $index ){
 	}
 }
 
-function submit_salesforce_form($post, $options) {
+function submit_salesforce_form( $post, $options ) {
 
 	global $wp_version;
 
@@ -492,9 +513,29 @@ function submit_salesforce_form($post, $options) {
 
 	$post['debug']	= 0;
 
+/*
+	$body = '';
+
+	foreach( $post as $k => $v ){
+		if( is_array( $v ) ){
+			foreach( $v as $i ){
+				$body .= '&'.urlencode($k).'='.urlencode($i);
+			}
+		}else{
+			$body .= '&'.urlencode($k).'='. urlencode($v);
+
+		}
+	}
+
+	$body = substr( $body, 1 );
+*/
+
+	$body = preg_replace('/%5B[0-9]+%5D/simU', '', http_build_query($post) ); // remove php style arrays for array values [1]
+	//echo $body .'<hr>';
+
 	// Set SSL verify to false because of server issues.
 	$args = array(
-		'body' 		=> $post,
+		'body' 		=> $body,
 		'headers' 	=> array(
 			'user-agent' => 'WordPress-to-Lead for Salesforce plugin - WordPress/'.$wp_version.'; '.get_bloginfo('url'),
 		),
@@ -577,7 +618,7 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 			$label = $options['forms'][$form_id]['inputs'][$name]['label'];
 
 			if( trim( $label ) != '' )
-				$message .= stripslashes($label).': '.$value."\r\n";
+				$message .= stripslashes($label).': '.salesforce_maybe_implode(',', $value)."\r\n";
 	}
 
 	$message = apply_filters('salesforce_w2l_cc_user_email_content', $message );
@@ -587,6 +628,15 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 
 	if( $message )
 		wp_mail( $_POST['email'], $subject, $message, $headers );
+
+}
+
+function salesforce_maybe_implode( $delimiter, $data ){
+
+	if( is_array($data) )
+		return implode( $delimiter, $data );
+
+	return $data;
 
 }
 
@@ -618,7 +668,7 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 			$label = $options['forms'][$form_id]['inputs'][$name]['label'];
 
 			if( trim( $label ) != '' )
-				$message .= stripslashes($label).': '.$value."\r\n";
+				$message .= stripslashes($label).': '. salesforce_maybe_implode( ',', $value)."\r\n";
 		}
 	}
 
@@ -685,7 +735,14 @@ function salesforce_form_shortcode($atts) {
 		foreach ($options['forms'][$form]['inputs'] as $id => $input) {
 
 			if( isset( $_POST[$id] ) ){
-				$val = trim( $_POST[$id] );
+
+				$val = $_POST[$id];
+
+				if( is_array($val) ){
+					$val = array_map( 'trim', $val );
+				}else{
+					$val = trim( $val );
+				}
 			}else{
 				$val = '';
 			}
@@ -728,7 +785,13 @@ function salesforce_form_shortcode($atts) {
 			//	$error = true;
 			//	$emailerror = true;
 			} else {
-				if( isset($_POST[$id]) ) $post[$id] = trim(strip_tags(stripslashes($_POST[$id])));
+				if( isset( $_POST[$id] ) ){
+					if( is_array( $_POST[$id] ) ){
+						$post[$id] = array_map( 'salesforce_clean_field', $_POST[$id] );
+					}else{
+						$post[$id] = salesforce_clean_field( $_POST[$id] );
+					}
+				}
 			}
 		}
 
@@ -819,6 +882,10 @@ function salesforce_form_shortcode($atts) {
 	}
 
 	return '<div class="salesforce_w2l_lead">'.$content.'</div>';
+}
+
+function salesforce_clean_field( $value ){
+	return trim(strip_tags(stripslashes( $value )));
 }
 
 add_shortcode('salesforce', 'salesforce_form_shortcode');

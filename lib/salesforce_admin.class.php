@@ -562,13 +562,14 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 										$content .= '</table>';
 										$content .= '</td>';
 										$content .= '<td><select name="inputs['.$field.'_type]">';
-										$content .= '<option value="text" '.selected($input['type'],'text',false).'>text</option>';
-										$content .= '<option value="textarea" '.selected($input['type'],'textarea',false).'>textarea</option>';
-										$content .= '<option value="hidden" '.selected($input['type'],'hidden',false).'>hidden</option>';
-										$content .= '<option value="select" '.selected($input['type'],'select',false).'>select (picklist)</option>';
-										$content .= '<option '.selected($input['type'],'checkbox',false).'>checkbox</option>';
+										$content .= '<option value="text" '.selected($input['type'],'text',false).'>Text</option>';
+										$content .= '<option value="textarea" '.selected($input['type'],'textarea',false).'>Textarea</option>';
+										$content .= '<option value="hidden" '.selected($input['type'],'hidden',false).'>Hidden</option>';
+										$content .= '<option value="select" '.selected($input['type'],'select',false).'>Select (picklist)</option>';
+										$content .= '<option value="multi-select" '.selected($input['type'],'multi-select',false).'>Multi-Select (picklist)</option>';
+										$content .= '<option '.selected($input['type'],'checkbox',false).'>Checkbox</option>';
 										//$content .= '<option '.selected($input['type'],'current_date',false).'>current_date</option>';
-										$content .= '<option value="html" '.selected($input['type'],'html',false).'>html</option>';
+										$content .= '<option value="html" '.selected($input['type'],'html',false).'>HTML</option>';
 										$content .= '</select></td>';
 										$content .= '<td><small>Label:</small> <input size="10" name="inputs['.$field.'_label]" type="text" value="'.esc_html(stripslashes($input['label'])).'"/>'; //</td>'.'<td>';
 
@@ -607,6 +608,7 @@ row += '<td><select name="add_inputs['+i+'][type]">'
 	+ '<option value="textarea">Textarea</option>'
 	+ '<option valur="hidden">Hidden</option>'
 	+ '<option value="select">Select (picklist)</option>'
+	+ '<option value="multi-select">Multi-Select (picklist)</option>'
 	+ '<option value="checkbox">Checkbox</option>'
 	//+ '<option value="current_date">current_date</option>'
 	+ '<option value="html">HTML</option>'

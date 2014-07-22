@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 3.9.1
-Stable tag: 2.3.8
+Stable tag: 2.3.9
 License: GPLv2
 Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
 
@@ -69,7 +69,7 @@ Like any other field. Note that it is a single checkbox, not a checkbox list.
 _Checkbox lists and radio buttons will be in a future update._
 
 = How do I use the select (picklist) field? =
-Use it like any other field -- however you'll need to specify the options (and optional values) for each field using the options box (far right).
+Use it like any other field -- however you'll need to specify the options (and optional values) for each field using the options box (far right). You'll also need to use the "internal name" from Salesforce as your field name (see next FAQ).
 
 The value box for a select list is the default value (the one selected on a fresh form).
 
@@ -85,6 +85,18 @@ name1:value1 | name2:value2
 `
 
 _Note: Leading & trailing whitespace is trimmed when names and values are displayed, so feel free to use spaces to make things more readable._
+
+= How do I find the "internal name" of my picklist field? =
+
+Picklists in SalesForce (Web to Lead at least) are a strange beast -- you'd think you could pass the field name and SF would map it on their end... but they don't make it that easy. Instead you need to use the internal SF ID of the picklist... which looks more like: `00Nd0000007p1Ej` (this is just en example, this is not the id of your field).
+
+Where do you find this cryptic value? You can find it in two places (that I know of):
+
+1. Edit the field and it'll be in the URL:
+e.g. `https://na14.salesforce.com/00Nd0000007p1Ej/...`
+
+2. Generate a Web to Lead form with your field included and it'll be in the HTML
+e.g. `TestPicklist: <select  id="00Nd0000007p1Ej" name="00Nd0000007p1Ej" title="TestPicklist">`
 
 = How do I use the HTML field? =
 1. Optionally enter a label (field will display full width if a label is not entered.
@@ -344,10 +356,10 @@ Allows filtering of the [wp_remote_post](http://codex.wordpress.org/Function_Ref
 add_filter( 'salesforce_w2l_post_args', 'salesforce_w2l_post_args_example' );
 
 function salesforce_w2l_post_args_example( $args ){
-	
+
 	$args['timeout'] = 10; // http timeout in seconds
 	return $args;
-	
+
 }
 `
 
@@ -355,6 +367,9 @@ function salesforce_w2l_post_args_example( $args ){
 
 = 2.3.9 =
 * Allow filtering of wp_remote_post arguments
+* Add picklist FAQ regarding field names
+* Add Multi-Select field (aka MultiPicklist)
+* Refactor code to properly handle strings and arrays as field values (to support multi-selects)
 
 = 2.3.8 =
 * Add lead source back into admin email
