@@ -119,6 +119,36 @@ Yes, version 2.0 introduces this feature. Version 2.1 allows you to duplicate fo
 = How do I change the Lead Source that shows up in Salesforce? =
 You can easily change this by going into the WordPress-to-Lead admin panel and, under form settings, changing the Lead Source for that form. Daddy Analytics uers can set this to blank to have it automatically filled.
 
+= I want to include the full URL the form is embedded on, but SF limits the lead source to 40 characters -- how would I do that? =
+
+The lead source supports using %URL% as the lead source (which will be replaced with the form embed url), but SF inexplicably limits the lead source to 40 characters.
+
+Here's how to route around that:
+
+`
+/*
+How to use:
+1. Create a custom URL field at SalesForce (or Text field that holds more than 255 characters if you desire). A URL field makes it clickable in the lead detail view(s).
+2. Replace URL_CUSTOM_FIELD_NAME below with the name of the custom field you setup in SalesForce,
+   it will be something like EmbedUrl__c
+3. Add a hidden field to each form with the same field name (e.g. "EmbedUrl__c")
+4. Profit
+*/
+
+add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_embedurl', 10, 3 );
+function salesforce_w2l_field_embedurl( $val, $field, $form ){
+
+    // Target a specific field on all forms
+    if( $field == 'URL_CUSTOM_FIELD_NAME' )
+         $val = esc_url("http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+
+    return $val;
+
+}
+`
+
+https://gist.github.com/nciske/10047552
+
 = Can I change the submit button? =
 Of course you can! Go into the WordPress-to-Lead admin panel and, under Form Settings, change the text from the default "Submit" to whatever you'd like it to be!
 
@@ -370,6 +400,7 @@ function salesforce_w2l_post_args_example( $args ){
 * Add picklist FAQ regarding field names
 * Add Multi-Select field (aka MultiPicklist)
 * Refactor code to properly handle strings and arrays as field values (to support multi-selects)
+* Add embed URL example code to FAQ
 
 = 2.3.8 =
 * Add lead source back into admin email
