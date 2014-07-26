@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 3.9.1
-Stable tag: 2.3.9
+Stable tag: 2.4
 License: GPLv2
 Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
 
@@ -394,6 +394,9 @@ function salesforce_w2l_post_args_example( $args ){
 `
 
 == Changelog ==
+
+= 2.4 =
+* Allow lead_source to be a form field (i.e. don't overwrite value if it already exists)
 
 = 2.3.9 =
 * Allow filtering of wp_remote_post arguments
