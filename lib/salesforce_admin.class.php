@@ -650,7 +650,7 @@ i++;
 									$content .= '<label>'.__('Lead Source:','salesforce').'</label><br/>';
 									$content .= '<input type="text" name="source" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['source']).'">';
 
-									$content .= '<br/><small>'.__('Lead Source (up to 40 characters) to display in Salesforce.com, use %URL% to include the URL of the page containing the form.').'</small>';
+									$content .= '<br/><small>'.__('Lead Source (up to 40 characters) to display in Salesforce.com, use %URL% to include the URL of the page containing the form (need more characters? See the <a href="https://wordpress.org/plugins/salesforce-wordpress-to-lead/faq/" target="_blank">FAQ</a>). You can also use a field above to set the lead source (this value will not be used if a field named lead_source exists).').'</small>';
 
 									if( !defined('SFWP2L_HIDE_ADS') )
 										$content .= '<br/><br/><small>'.__('<b>Daddy Analytics</b> will populate the Lead Source field with the web source of the Lead (such as Organic - Google, Paid - Bing, or Google Adwords). Daddy Analytics will also populate the Salesforce Address field with the estimated GeoLocation of your Leads. <br><i>Leave the Lead Source field blank if you have a subscription to <a href="'.$this->get_ad_link( 'da_ls', 'text' ).'">Daddy Analytics.</a></i>').'</small>';
