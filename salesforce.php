@@ -669,11 +669,10 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 
 			$label = $options['forms'][$form_id]['inputs'][$name]['label'];
 
-			if( trim( $label ) != '' )
+			if( trim( $label ) != '' && $name != 'lead_source' )
 				$message .= stripslashes($label).': '. salesforce_maybe_implode( ',', $value)."\r\n";
 		}
 	}
-
 
 	if ( $post['lead_source'] ) {
 		$message .= "\r\n".'Lead Source: '.$post['lead_source']."\r\n";
