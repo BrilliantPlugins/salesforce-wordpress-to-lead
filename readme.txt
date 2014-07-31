@@ -397,6 +397,7 @@ function salesforce_w2l_post_args_example( $args ){
 
 = 2.4 =
 * Allow lead_source to be a form field (i.e. don't overwrite value if it already exists)
+* Fix regression bug where checkboxes turn to text fields due to capitalization of option label
 
 = 2.3.9 =
 * Allow filtering of wp_remote_post arguments

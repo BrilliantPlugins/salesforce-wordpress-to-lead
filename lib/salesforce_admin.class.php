@@ -567,7 +567,7 @@ if( $form_id && !isset($options['forms'][$form_id]) ){
 										$content .= '<option value="hidden" '.selected($input['type'],'hidden',false).'>Hidden</option>';
 										$content .= '<option value="select" '.selected($input['type'],'select',false).'>Select (picklist)</option>';
 										$content .= '<option value="multi-select" '.selected($input['type'],'multi-select',false).'>Multi-Select (picklist)</option>';
-										$content .= '<option '.selected($input['type'],'checkbox',false).'>Checkbox</option>';
+										$content .= '<option value="checkbox" '.selected($input['type'],'checkbox',false).'>Checkbox</option>';
 										//$content .= '<option '.selected($input['type'],'current_date',false).'>current_date</option>';
 										$content .= '<option value="html" '.selected($input['type'],'html',false).'>HTML</option>';
 										$content .= '</select></td>';
