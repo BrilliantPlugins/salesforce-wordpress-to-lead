@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 3.9.1
-Stable tag: 2.4.1
+Stable tag: 2.4.2
 License: GPLv2
 Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
 
@@ -394,6 +394,9 @@ function salesforce_w2l_post_args_example( $args ){
 `
 
 == Changelog ==
+
+= 2.4.2 =
+* Fix bug where "0" (zero) was not considered a valid value for required fields
 
 = 2.4.1 =
 * Fix regression bug where checkboxes turn to text fields due to capitalization of option label
