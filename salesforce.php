@@ -4,7 +4,7 @@ Plugin Name: WordPress-to-Lead for Salesforce CRM
 Plugin URI: http://wordpress.org/plugins/salesforce-wordpress-to-lead/
 Description: Easily embed a contact form into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM. Also supports Web to Case and Comments to leads.
 Author: Daddy Analytics & Thought Refinery
-Version: 2.4.2
+Version: 2.4.3
 Author URI: http://try.daddyanalytics.com/wordpress-to-lead-general?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP2L_Plugin_01&utm_content=da1_author_uri
 License: GPL2
 */
@@ -636,7 +636,7 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 function salesforce_maybe_implode( $delimiter, $data ){
 
 	if( is_array($data) )
-		return implode( $delimiter, $data );
+		return trim( implode( $delimiter, $data ) );
 
 	return $data;
 
@@ -753,7 +753,7 @@ function salesforce_form_shortcode($atts) {
 				'message' => $options['errormsg'],
 			);
 
-			if ( $input['show'] && $input['required'] && strlen( $val ) == 0 ) {
+			if ( $input['show'] && $input['required'] && strlen( salesforce_maybe_implode( ';', $val ) ) == 0 ) {
 				$error['valid'] = false;
 			}else{
 				$error['valid'] = true;
@@ -777,7 +777,7 @@ function salesforce_form_shortcode($atts) {
 
 			$errors[$id] = $error;
 
-			if ( $input['required'] && strlen( $val ) == 0 ) {
+			if ( $input['required'] && strlen( salesforce_maybe_implode( ';', $val ) ) == 0 ) {
 
 			//$options['forms'][$form]['inputs'][$id]['error'] = true;
 

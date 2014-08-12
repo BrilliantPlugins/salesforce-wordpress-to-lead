@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 3.9.1
-Stable tag: 2.4.2
+Stable tag: 2.4.3
 License: GPLv2
 Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
 
@@ -37,6 +37,9 @@ Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hn
 1. Enter your Salesforce.com Organization ID on the WordPress-to-Lead plugin configuration page.
 
 == Frequently Asked Questions ==
+
+= I'm not seeing any errors, but the entry didn't get added to Salesforce! =
+Please check the box "Enable Salesforce debugging emails" in the Web-to-Lead settings page, then submit a new lead. Salesforce will send an email with a reason the lead or case wasn't added.
 
 = How do I setup Web to Lead/Case for my SalesForce Account? =
 
@@ -103,6 +106,23 @@ e.g. `TestPicklist: <select  id="00Nd0000007p1Ej" name="00Nd0000007p1Ej" title="
 2. Enter HTML code in the options box.
 
 _Note: You cannot use the HTML box to enter a custom field, as only "known" fields are submitted to salesforce and HTML fields are not submitted (just displayed). Be careful to avoid the `<form>` or `</form>` tags in an HTML field as they will likely break your form._
+
+= How do I use a lookup field with a picklist field in the plugin? =
+
+Since it's a lookup field the value of the options has to be SalesForce's <strong>internal id</strong>, not the value you'd think it would be. Otherwise when Jane Doe gets married and becomes Jane Smith you'd break all the links to her user.
+
+Basically, you need to generate a Web to Lead form in Salesforce and grab the option values from the HTML it generates.
+
+e.g.
+
+Find the lookup field. This is the bit you're looking for:
+`<option value="00Nd0000007p1Ej">Joe Schmoe</option>`
+`<option value="00Nd0000007p1aB">Jane Doe</option>`
+...
+
+00Nd0000007p1Ej (just an example) is the SF internal ID for that choive. Enter that as the value in your pick list field options like this:
+
+`00Nd0000007p1Ej:Joe Schmoe|00Nd0000007p1aB:Jane Doe`
 
 = How do I change the order of input fields? =
 Right now, the only way of ordering input fields is by changing the position numbers on the right hand side of the input fields table in the admin settings. Drag and drop re-ordering is on the roadmap.
@@ -394,6 +414,9 @@ function salesforce_w2l_post_args_example( $args ){
 `
 
 == Changelog ==
+
+= 2.4.3 =
+* Fix PHP warnings due to switch to strlen for required field validation
 
 = 2.4.2 =
 * Fix bug where "0" (zero) was not considered a valid value for required fields
