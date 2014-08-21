@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 3.9.1
-Stable tag: 2.4.3
+Stable tag: 2.4.4
 License: GPLv2
 Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
 
@@ -39,7 +39,62 @@ Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hn
 == Frequently Asked Questions ==
 
 = I'm not seeing any errors, but the entry didn't get added to Salesforce! =
-Please check the box "Enable Salesforce debugging emails" in the Web-to-Lead settings page, then submit a new lead. Salesforce will send an email with a reason the lead or case wasn't added.
+
+To turn on in browser debugging, add a hidden field (enabled) named `debug` and set the value to `1`.
+
+To turn on debugging via email,  add a hidden field (enabled) named `debugEmail` and set the value to `you@yourdomain.com` (your email address).
+
+= What are the built in field names? Not all the fields are working when I use the Field Label in the lead edit screen? =
+
+SalesForce is inconsistent in naming built in fields, and even misreports the names of some fields (like `MobilePhone`, which is actually `mobile`). Generating a Web to Lead form gets you the real names, but the list below should help as well.
+
+<strong>Built in fields</strong>
+
+`
+First Name	first_name
+Last Name 	last_name
+
+Title		title
+Website		URL
+
+Phone		phone
+Mobile		mobile
+Fax	        fax
+Email		email
+
+Address		street
+City		city
+State/Prov.	state
+Zip		zip
+Country 	country
+
+Description 	description
+Industry 	industry
+Rating		rating
+Annual Rev. 	revenue
+Employees	employees
+`
+<strong>Other Fields</strong>
+`
+Lead Source 	lead_source
+Email Opt Out 	emailOptOut
+Fax Opt Out	faxOptOut
+Do Not Call	doNotCall
+
+Lead Record Type recordType
+
+Campaign 	Campaign_ID
+Campaign Member Status		member_status
+`
+<strong>Name may vary (these are lookup fields), generate a Web-to-Lead form with these fields included for the actual value</strong>
+
+`
+SIC Code
+Product Interest
+Primary
+Current Generator(s)
+Number of Locations
+`
 
 = How do I setup Web to Lead/Case for my SalesForce Account? =
 
@@ -414,6 +469,11 @@ function salesforce_w2l_post_args_example( $args ){
 `
 
 == Changelog ==
+
+= 2.4.4 =
+* Allow debug mode to be set (was getting set to 0 before submit)
+* Remove debugEmail from user email fields
+* Update debug info and add built in field name info on FAQ
 
 = 2.4.3 =
 * Fix PHP warnings due to switch to strlen for required field validation

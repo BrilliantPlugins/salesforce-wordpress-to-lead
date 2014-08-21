@@ -4,7 +4,7 @@ Plugin Name: WordPress-to-Lead for Salesforce CRM
 Plugin URI: http://wordpress.org/plugins/salesforce-wordpress-to-lead/
 Description: Easily embed a contact form into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM. Also supports Web to Case and Comments to leads.
 Author: Daddy Analytics & Thought Refinery
-Version: 2.4.3
+Version: 2.4.4
 Author URI: http://try.daddyanalytics.com/wordpress-to-lead-general?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP2L_Plugin_01&utm_content=da1_author_uri
 License: GPL2
 */
@@ -513,7 +513,7 @@ function submit_salesforce_form( $post, $options ) {
 
 	$post['lead_source'] = apply_filters('salesforce_w2l_lead_source', $post['lead_source'], $form_id);
 
-	$post['debug']	= 0;
+	//$post['debug']	= 0;
 
 /*
 	$body = '';
@@ -606,7 +606,7 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 		unset($post['lead_source']);
 	}
 
-	$remove_keys = apply_filters( 'salesforce_w2l_cc_user_suppress_fields', array('debug','oid','orgid',$options['da_token'],$options['da_url']) );
+	$remove_keys = apply_filters( 'salesforce_w2l_cc_user_suppress_fields', array('debug','debugEmail','oid','orgid',$options['da_token'],$options['da_url']) );
 
 	foreach( $remove_keys as $key ){
 		unset($post[$key]);
@@ -661,7 +661,8 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 
 	$message = '';
 
-	unset($post['debug']);
+	//unset($post['debug']);
+	//unset($post['debugEmail']);
 
 	//format message
 	foreach($post as $name=>$value){
