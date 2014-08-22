@@ -46,7 +46,7 @@ To turn on debugging via email,  add a hidden field (enabled) named `debugEmail`
 
 = What are the built in field names? Not all the fields are working when I use the Field Label in the lead edit screen? =
 
-SalesForce is inconsistent in naming built in fields, and even misreports the names of some fields (like `MobilePhone`, which is actually `mobile`). Generating a Web to Lead form gets you the real names, but the list below should help as well.
+SalesForce is inconsistent in naming built in fields, and even misreports the names of some fields (like `MobilePhone`, which is actually `mobile`) in the customize fields screen. Generating a Web to Lead form gets you the real names, but the list below should help as well.
 
 <strong>Built in fields</strong>
 
@@ -65,26 +65,27 @@ Email		email
 Address		street
 City		city
 State/Prov.	state
-Zip		zip
+Zip			zip
 Country 	country
 
 Description 	description
-Industry 	industry
-Rating		rating
+Industry 		industry
+Rating			rating
 Annual Rev. 	revenue
-Employees	employees
+Employees		employees
 `
 <strong>Other Fields</strong>
 `
 Lead Source 	lead_source
 Email Opt Out 	emailOptOut
-Fax Opt Out	faxOptOut
-Do Not Call	doNotCall
+Fax Opt Out		faxOptOut
+Do Not Call		doNotCall
 
 Lead Record Type recordType
 
-Campaign 	Campaign_ID
-Campaign Member Status		member_status
+Campaign	Campaign_ID
+
+Campaign Member Status	member_status
 `
 <strong>Name may vary (these are lookup fields), generate a Web-to-Lead form with these fields included for the actual value</strong>
 
@@ -155,6 +156,8 @@ e.g. `https://na14.salesforce.com/00Nd0000007p1Ej/...`
 
 2. Generate a Web to Lead form with your field included and it'll be in the HTML
 e.g. `TestPicklist: <select  id="00Nd0000007p1Ej" name="00Nd0000007p1Ej" title="TestPicklist">`
+
+Then take the "name" you get (00Nd0000007p1Ej in this example) and enter that as the *field name* in your form editor. Yes, you enter this obtuse string of digits instead of the human readable field name (i.e. MyCustomField__c).
 
 = How do I use the HTML field? =
 1. Optionally enter a label (field will display full width if a label is not entered.
@@ -469,6 +472,9 @@ function salesforce_w2l_post_args_example( $args ){
 `
 
 == Changelog ==
+
+= 2.4.5 =
+* FAQ: Clarify the mess that is picklist fields/names
 
 = 2.4.4 =
 * Allow debug mode to be set (was getting set to 0 before submit)
