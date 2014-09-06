@@ -470,6 +470,9 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 <?php } else if ( isset( $_GET['tab'] ) && $_GET['tab'] == 'form') {
 
+if( !isset($form_id) ||  !$form_id )
+	$form_id = absint( $_GET['id'] );
+
 if(isset($_POST['mode']) && $_POST['mode'] == 'delete' && $form_id != 1 ){
 
 echo '<div id="message" class="updated"><p>' . __('Deleted Form #','salesforce') . $form_id . '</p></div>';

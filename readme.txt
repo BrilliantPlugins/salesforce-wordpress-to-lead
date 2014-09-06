@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 3.9.1
-Stable tag: 2.4.4
+Stable tag: 2.4.5
 License: GPLv2
 Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
 
@@ -475,6 +475,9 @@ function salesforce_w2l_post_args_example( $args ){
 
 = 2.4.5 =
 * FAQ: Clarify the mess that is picklist fields/names
+* Fix label with when using top aligned labels
+* Add clearfix to sf_field container
+* Fix PHP notice when deleting a form
 
 = 2.4.4 =
 * Allow debug mode to be set (was getting set to 0 before submit)
