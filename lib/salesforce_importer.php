@@ -1,5 +1,6 @@
 <?php
 
+/*
 add_action('admin_menu', 'sfwtli_menu');
 
 function sfwtli_menu() {
@@ -16,6 +17,7 @@ function sfwtli_importer_page(){
 	echo '</div>';
 
 }
+*/
 
 function sfwtli_importer_ui(){
 
