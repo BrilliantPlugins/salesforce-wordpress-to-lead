@@ -171,7 +171,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		if( !$current )
 			$current = 'forms';
 
-	    $tabs = array( 'forms' => 'Forms', 'settings' => 'Settings', 'css' => 'Styling', 'form' => 'Form Editor' );
+	    $tabs = array( 'forms' => 'Forms', 'settings' => 'Settings', 'css' => 'Styling', 'form' => 'Form Editor', 'import' => 'Import' );
 	    //echo '<div id="icon-themes" class="icon32"><br></div>';
 	    echo '<h2 class="nav-tab-wrapper">';
 	    foreach( $tabs as $tab => $name ){
@@ -468,163 +468,168 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 						?>
 
-<?php } else if ( isset( $_GET['tab'] ) && $_GET['tab'] == 'form') {
+<?php } else if ( isset( $_GET['tab'] ) && $_GET['tab'] == 'import') {
 
-if( !isset($form_id) ||  !$form_id )
-	$form_id = absint( $_GET['id'] );
+	require_once 'salesforce_importer.php';
+	sfwtli_importer_ui();
 
-if(isset($_POST['mode']) && $_POST['mode'] == 'delete' && $form_id != 1 ){
+} else if ( isset( $_GET['tab'] ) && $_GET['tab'] == 'form') {
 
-echo '<div id="message" class="updated"><p>' . __('Deleted Form #','salesforce') . $form_id . '</p></div>';
+					if( !isset($form_id) ||  !$form_id )
+						$form_id = absint( $_GET['id'] );
 
-} else if(isset($_POST['mode']) && $_POST['mode'] == 'clone' && $form_id != 1 ) {
+					if(isset($_POST['mode']) && $_POST['mode'] == 'delete' && $form_id != 1 ){
 
-echo '<div id="message" class="updated"><p>' . __('Duplicated Form #','salesforce') . $form_id . '</p></div>';
+					echo '<div id="message" class="updated"><p>' . __('Deleted Form #','salesforce') . $form_id . '</p></div>';
+
+					} else if(isset($_POST['mode']) && $_POST['mode'] == 'clone' && $form_id != 1 ) {
+
+					echo '<div id="message" class="updated"><p>' . __('Duplicated Form #','salesforce') . $form_id . '</p></div>';
 
 }else{
 
-if(!isset($form_id) && isset($_GET['id']))
-	$form_id = (int) $_GET['id'];
+	if(!isset($form_id) && isset($_GET['id']))
+		$form_id = (int) $_GET['id'];
 
-if( isset($_POST['form_id']) )
-	$form_id = (int) $_POST['form_id'];
+	if( isset($_POST['form_id']) )
+		$form_id = (int) $_POST['form_id'];
 
-if( !isset($form_id) || $form_id == 0 ){
-	//generate a new default form
-	end( $options['forms'] );
-	$form_id = key( $options['forms'] ) + 1;
-	$options['forms'][$form_id] = $this->default_form();
-}
+	if( !isset($form_id) || $form_id == 0 ){
+		//generate a new default form
+		end( $options['forms'] );
+		$form_id = key( $options['forms'] ) + 1;
+		$options['forms'][$form_id] = $this->default_form();
+	}
 
-//check for deleted forms
-if( $form_id && !isset($options['forms'][$form_id]) ){
-	echo '<div id="message" class="error"><p>' . __('This form could not be found.','salesforce') . '</p></div>';
-}else{
+	//check for deleted forms
+	if( $form_id && !isset($options['forms'][$form_id]) ){
+		echo '<div id="message" class="error"><p>' . __('This form could not be found.','salesforce') . '</p></div>';
+	}else{
 
-	if(isset($_POST['submit']) && $_POST['submit'])
-		echo '<div id="message" class="updated"><p>' . __('Form settings updated.','salesforce') . '</p></div>';
-?>
+		if(isset($_POST['submit']) && $_POST['submit'])
+			echo '<div id="message" class="updated"><p>' . __('Form settings updated.','salesforce') . '</p></div>';
+	?>
 
-						<form action="" method="post" id="salesforce-conf">
-							<?php if (function_exists('wp_nonce_field')) { wp_nonce_field('salesforce-udpatesettings'); } ?>
-							<input type="hidden" value="<?php echo $options['version']; ?>" name="version"/>
-							<input type="hidden" value="editform" name="mode"/>
-							<?php
+							<form action="" method="post" id="salesforce-conf">
+								<?php if (function_exists('wp_nonce_field')) { wp_nonce_field('salesforce-udpatesettings'); } ?>
+								<input type="hidden" value="<?php echo $options['version']; ?>" name="version"/>
+								<input type="hidden" value="editform" name="mode"/>
+								<?php
 
-								//$this->postbox('options','Options','<pre>'.print_r($options,true).'</pre>'); //DEBUG
+									//$this->postbox('options','Options','<pre>'.print_r($options,true).'</pre>'); //DEBUG
 
-									$content = '<p>';
-									$content .= '<input type="text" name="form_name" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['form_name']).'">';
-									//$content .= '<br/><small>'.__('').'</small>';
-									$content .= '</p>';
+										$content = '<p>';
+										$content .= '<input type="text" name="form_name" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['form_name']).'">';
+										//$content .= '<br/><small>'.__('').'</small>';
+										$content .= '</p>';
 
-									$this->postbox('sfformtitle',__('Form Name', 'salesforce'),$content);
+										$this->postbox('sfformtitle',__('Form Name', 'salesforce'),$content);
 
-									$loc = 'banner-main';
-									$ad = $this->get_ad_code( $loc );
-									if( $ad ){
-										$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
-										echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
-									}
+										$loc = 'banner-main';
+										$ad = $this->get_ad_code( $loc );
+										if( $ad ){
+											$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
+											echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
+										}
 
-									$content = '<table id="salesforce_form_editor" class="wp-list-table widefat fixed">';
-									$content .= '<tr>'
-									.'<th width="10%">'.__('Field','salesforce').'</th>'
-									.'<th width="15%">'.__('Operations','salesforce').'</th>'
-									.'<th width="12%">'.__('Type','salesforce').'</th>'
-									.'<th width="13%">'.__('Label/Value','salesforce').'</th>'
-									//.'<th width="15%">'.__('Value','salesforce').'</th>'
-									.'<th width="20%">'.__('Options','salesforce').'</th>'
-									.'<th width="8%">'.__('Order','salesforce').'</th>'
-									.'</tr>';
-									$i = 1;
+										$content = '<table id="salesforce_form_editor" class="wp-list-table widefat fixed">';
+										$content .= '<tr>'
+										.'<th width="10%">'.__('Field','salesforce').'</th>'
+										.'<th width="15%">'.__('Operations','salesforce').'</th>'
+										.'<th width="12%">'.__('Type','salesforce').'</th>'
+										.'<th width="13%">'.__('Label/Value','salesforce').'</th>'
+										//.'<th width="15%">'.__('Value','salesforce').'</th>'
+										.'<th width="20%">'.__('Options','salesforce').'</th>'
+										.'<th width="8%">'.__('Order','salesforce').'</th>'
+										.'</tr>';
+										$i = 1;
 
 
-									foreach ($options['forms'][$form_id]['inputs'] as $field => $input) {
+										foreach ($options['forms'][$form_id]['inputs'] as $field => $input) {
 
-									$trclass= 'disabled';
-									if( $input['show'] )
-										$trclass= 'enabled';
+										$trclass= 'disabled';
+										if( $input['show'] )
+											$trclass= 'enabled';
 
-										if (empty($input['pos']))
-											$input['pos'] = $i;
-										$content .= '<tr class="' .$trclass.' '. (($i % 2) ? 'alternate' : '') . '">';
-										$content .= '<th>'.$field.'</th>';
-										$content .= '<td>';
-										$content .= '<table>';
-										$content .= '<tr>';
-										$content .= '<td><label for="inputs['.$field.'_show]">Enabled</label></td>';
-										$content .= '<td><input type="checkbox" name="inputs['.$field.'_show]" id="inputs['.$field.'_show]" '.checked($input['show'],true,false).'/></td>';
-										$content .= '</tr><tr>';
-										$content .= '<td><label for="inputs['.$field.'_required]">Required</label></td>';
-										$content .= '<td><input type="checkbox" name="inputs['.$field.'_required]" id="inputs['.$field.'_required]" '.checked($input['required'],true,false).'/></td>';
-										$content .= '</tr><tr>';
-										$content .= '<td><label for="inputs['.$field.'_delete]">Delete</label></td>';
-										$content .= '<td><input type="checkbox" name="inputs['.$field.'_delete]" id="inputs['.$field.'_delete]" /></td>';
-										$content .= '</tr>';
+											if (empty($input['pos']))
+												$input['pos'] = $i;
+											$content .= '<tr class="' .$trclass.' '. (($i % 2) ? 'alternate' : '') . '">';
+											$content .= '<th>'.$field.'</th>';
+											$content .= '<td>';
+											$content .= '<table>';
+											$content .= '<tr>';
+											$content .= '<td><label for="inputs['.$field.'_show]">Enabled</label></td>';
+											$content .= '<td><input type="checkbox" name="inputs['.$field.'_show]" id="inputs['.$field.'_show]" '.checked($input['show'],true,false).'/></td>';
+											$content .= '</tr><tr>';
+											$content .= '<td><label for="inputs['.$field.'_required]">Required</label></td>';
+											$content .= '<td><input type="checkbox" name="inputs['.$field.'_required]" id="inputs['.$field.'_required]" '.checked($input['required'],true,false).'/></td>';
+											$content .= '</tr><tr>';
+											$content .= '<td><label for="inputs['.$field.'_delete]">Delete</label></td>';
+											$content .= '<td><input type="checkbox" name="inputs['.$field.'_delete]" id="inputs['.$field.'_delete]" /></td>';
+											$content .= '</tr>';
+											$content .= '</table>';
+											$content .= '</td>';
+											$content .= '<td><select name="inputs['.$field.'_type]">';
+											$content .= '<option value="text" '.selected($input['type'],'text',false).'>Text</option>';
+											$content .= '<option value="textarea" '.selected($input['type'],'textarea',false).'>Textarea</option>';
+											$content .= '<option value="hidden" '.selected($input['type'],'hidden',false).'>Hidden</option>';
+											$content .= '<option value="select" '.selected($input['type'],'select',false).'>Select (picklist)</option>';
+											$content .= '<option value="multi-select" '.selected($input['type'],'multi-select',false).'>Multi-Select (picklist)</option>';
+											$content .= '<option value="checkbox" '.selected($input['type'],'checkbox',false).'>Checkbox</option>';
+											//$content .= '<option '.selected($input['type'],'current_date',false).'>current_date</option>';
+											$content .= '<option value="html" '.selected($input['type'],'html',false).'>HTML</option>';
+											$content .= '</select></td>';
+											$content .= '<td><small>Label:</small> <input size="10" name="inputs['.$field.'_label]" type="text" value="'.esc_html(stripslashes($input['label'])).'"/>'; //</td>'.'<td>';
+
+											$content .= '<br><small>Value:</small> <input size="10" name="inputs['.$field.'_value]" type="text" value="';
+											if( isset($input['value']) ) $content .= esc_html(stripslashes($input['value']));
+											$content .= '"/></td>';
+
+											$opts = '';
+											if( isset( $input['opts'] ) )
+												$opts = $input['opts'];
+
+											$content .= '<td><textarea rows="4" name="inputs['.$field.'_opts]"  >'.esc_textarea(stripslashes( $opts )).'</textarea></td>';
+											$content .= '<td><input size="2" name="inputs['.$field.'_pos]" type="text" value="'.esc_html($input['pos']).'"/></td>';
+											$content .= '</tr>';
+											$i++;
+										}
+
 										$content .= '</table>';
-										$content .= '</td>';
-										$content .= '<td><select name="inputs['.$field.'_type]">';
-										$content .= '<option value="text" '.selected($input['type'],'text',false).'>Text</option>';
-										$content .= '<option value="textarea" '.selected($input['type'],'textarea',false).'>Textarea</option>';
-										$content .= '<option value="hidden" '.selected($input['type'],'hidden',false).'>Hidden</option>';
-										$content .= '<option value="select" '.selected($input['type'],'select',false).'>Select (picklist)</option>';
-										$content .= '<option value="multi-select" '.selected($input['type'],'multi-select',false).'>Multi-Select (picklist)</option>';
-										$content .= '<option value="checkbox" '.selected($input['type'],'checkbox',false).'>Checkbox</option>';
-										//$content .= '<option '.selected($input['type'],'current_date',false).'>current_date</option>';
-										$content .= '<option value="html" '.selected($input['type'],'html',false).'>HTML</option>';
-										$content .= '</select></td>';
-										$content .= '<td><small>Label:</small> <input size="10" name="inputs['.$field.'_label]" type="text" value="'.esc_html(stripslashes($input['label'])).'"/>'; //</td>'.'<td>';
 
-										$content .= '<br><small>Value:</small> <input size="10" name="inputs['.$field.'_value]" type="text" value="';
-										if( isset($input['value']) ) $content .= esc_html(stripslashes($input['value']));
-										$content .= '"/></td>';
+										?>
+	<script>
 
-										$opts = '';
-										if( isset( $input['opts'] ) )
-											$opts = $input['opts'];
+	var pos = <?php echo $i; ?>;
+	var i = 1;
+	function salesforce_add_field(){
+	pos++;
 
-										$content .= '<td><textarea rows="4" name="inputs['.$field.'_opts]"  >'.esc_textarea(stripslashes( $opts )).'</textarea></td>';
-										$content .= '<td><input size="2" name="inputs['.$field.'_pos]" type="text" value="'.esc_html($input['pos']).'"/></td>';
-										$content .= '</tr>';
-										$i++;
-									}
+	var row = '<tr>';
+	row += '<td><input type="text" size="10" name="add_inputs['+i+'][field_name]"></td>';
+	row += '<td><table>'
+	row += '<tr><td><label for="add_inputs['+i+'][show]">Enabled</label></td><td><input type="checkbox" name="add_inputs['+i+'][show]"></td></tr>';
+	row += '<tr><td><label for="add_inputs['+i+'][required]">Required</label></td><td><input type="checkbox" name="add_inputs['+i+'][required]"></td></tr>';
+	row += '</table></td>';
+	row += '<td><select name="add_inputs['+i+'][type]">'
+		+ '<option value="text">Text</option>'
+		+ '<option value="textarea">Textarea</option>'
+		+ '<option valur="hidden">Hidden</option>'
+		+ '<option value="select">Select (picklist)</option>'
+		+ '<option value="multi-select">Multi-Select (picklist)</option>'
+		+ '<option value="checkbox">Checkbox</option>'
+		//+ '<option value="current_date">current_date</option>'
+		+ '<option value="html">HTML</option>'
+		+ '</select></td>';
+	row += '<td><small>Label:</small><input size="10" type="text" name="add_inputs['+i+'][label]">';
+	row += '<small>Value:</small><input size="14" type="text" name="add_inputs['+i+'][value]"></td>';
+	row += '<td><textarea rows="4" name="add_inputs['+i+'][opts]"></textarea></td>';
+	row += '<td><input type="text" size="2" name="add_inputs['+i+'][pos]" value="'+pos+'"></td>';
+	row += '</tr>';
 
-									$content .= '</table>';
+	jQuery('#salesforce_form_editor > tbody').append(row);
 
-									?>
-<script>
-
-var pos = <?php echo $i; ?>;
-var i = 1;
-function salesforce_add_field(){
-pos++;
-
-var row = '<tr>';
-row += '<td><input type="text" size="10" name="add_inputs['+i+'][field_name]"></td>';
-row += '<td><table>'
-row += '<tr><td><label for="add_inputs['+i+'][show]">Enabled</label></td><td><input type="checkbox" name="add_inputs['+i+'][show]"></td></tr>';
-row += '<tr><td><label for="add_inputs['+i+'][required]">Required</label></td><td><input type="checkbox" name="add_inputs['+i+'][required]"></td></tr>';
-row += '</table></td>';
-row += '<td><select name="add_inputs['+i+'][type]">'
-	+ '<option value="text">Text</option>'
-	+ '<option value="textarea">Textarea</option>'
-	+ '<option valur="hidden">Hidden</option>'
-	+ '<option value="select">Select (picklist)</option>'
-	+ '<option value="multi-select">Multi-Select (picklist)</option>'
-	+ '<option value="checkbox">Checkbox</option>'
-	//+ '<option value="current_date">current_date</option>'
-	+ '<option value="html">HTML</option>'
-	+ '</select></td>';
-row += '<td><small>Label:</small><input size="10" type="text" name="add_inputs['+i+'][label]">';
-row += '<small>Value:</small><input size="14" type="text" name="add_inputs['+i+'][value]"></td>';
-row += '<td><textarea rows="4" name="add_inputs['+i+'][opts]"></textarea></td>';
-row += '<td><input type="text" size="2" name="add_inputs['+i+'][pos]" value="'+pos+'"></td>';
-row += '</tr>';
-
-jQuery('#salesforce_form_editor > tbody').append(row);
-
-i++;
+	i++;
 
 }
 

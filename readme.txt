@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 3.9.1
-Stable tag: 2.4.5
+Stable tag: 2.5
 License: GPLv2
 Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
 
@@ -473,11 +473,12 @@ function salesforce_w2l_post_args_example( $args ){
 
 == Changelog ==
 
-= 2.4.5 =
+= 2.5 =
 * FAQ: Clarify the mess that is picklist fields/names
 * Fix label with when using top aligned labels
 * Add clearfix to sf_field container
 * Fix PHP notice when deleting a form
+* Added importer option (finally) to make it easier to generate W2L forms at SF then auto import them
 
 = 2.4.4 =
 * Allow debug mode to be set (was getting set to 0 before submit)
@@ -662,6 +663,9 @@ function salesforce_w2l_post_args_example( $args ){
 * Initial release.
 
 == Upgrade Notice ==
+
+= 2.5 =
+Now features an importer: Generate your Web-to-Lead form at Salesforce, provide the HTML code to the plugin, then automatically import it into WordPress to Lead in a *single click*!
 
 = 2.2 =
 Includes new CSS rules: make sure to update any custom CSS files with the new *.sf_field span.error_message* rule.
