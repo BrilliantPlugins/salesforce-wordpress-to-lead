@@ -270,6 +270,7 @@ See also: [How many leads can we capture from our website?](https://help.salesfo
 == Filters and Hooks ==
 
 **Note:**
+
 * These should be placed in your active theme functions.php or a functionality plugin.
 * Never edit a plugin directly (unless you understand the implications of doing so).
 * You can use Pluginception to create a custom plugin for these to make them independent of your theme: https://wordpress.org/plugins/pluginception/
