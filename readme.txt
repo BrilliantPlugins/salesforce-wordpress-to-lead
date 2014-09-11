@@ -496,6 +496,8 @@ function salesforce_w2l_post_data_example( $post, $form_id, $form_type ){
 }
 `
 
+= Actions =
+
 **salesforce_w2l_before_submit**
 
 Allows you to do something (read only) with the post data before it's submitted to SalesForce.
