@@ -542,8 +542,8 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 == Changelog ==
 
 = 2.5.1 =
-* Refactor salesforce_cc_admin to allow a customizable subject (translators: affects localization strings)
-* CC Admin on submission errors as well as successes, append result data
+* Refactor `salesforce_cc_admin` to allow a customizable subject (translators: affects localization strings)
+* Email admin on submission errors as well as successes, append result data
 * Add `salesforce_w2l_post_data` filter (see 'Other Notes')
 * Add `salesforce_w2l_before_submit`, `salesforce_w2l_error_submit`, `salesforce_w2l_after_submit` actions (see 'Other Notes')
 
