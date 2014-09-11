@@ -4,7 +4,7 @@ Plugin Name: WordPress-to-Lead for Salesforce CRM
 Plugin URI: http://wordpress.org/plugins/salesforce-wordpress-to-lead/
 Description: Easily embed a contact form into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM. Also supports Web to Case and Comments to leads.
 Author: Daddy Analytics & Thought Refinery
-Version: 2.5
+Version: 2.5.1
 Author URI: http://try.daddyanalytics.com/wordpress-to-lead-general?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP2L_Plugin_01&utm_content=da1_author_uri
 License: GPL2
 */
@@ -532,6 +532,11 @@ function submit_salesforce_form( $post, $options ) {
 	$body = substr( $body, 1 );
 */
 
+	$form_type = $options['forms'][$form_id]['type'];
+
+	// Filter arguments before generating POST to SF
+	$post = apply_filters( 'salesforce_w2l_post_data', $post, $form_id, $form_type );
+
 	$body = preg_replace('/%5B[0-9]+%5D/simU', '', http_build_query($post) ); // remove php style arrays for array values [1]
 	//echo $body .'<hr>';
 
@@ -546,24 +551,41 @@ function submit_salesforce_form( $post, $options ) {
 
 	$args = apply_filters( 'salesforce_w2l_post_args', $args );
 
-	$form_type = $options['forms'][$form_id]['type'];
-
 	if( $form_type == 'case' ){
 		$url = 'https://www.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8';
 	}else{
 		$url = 'https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
 	}
 
+	// Do we need to change the URL we're submitting to?
 	$url = apply_filters( 'salesforce_w2l_api_url', $url, $form_type );
+
+	// Pre submit actions
+	do_action( 'salesforce_w2l_before_submit', $post, $form_id, $form_type );
 
 	$result = wp_remote_post( $url, $args );
 
+	// Test broken submit
+	//$result = new WP_Error( 'broke', __( "I've fallen and can't get up", "my_textdomain" ) );
+
 	if( is_wp_error($result) ) {
 		error_log( "Salesforce HTTP error: " . print_r( $result, true ) );
+
+		do_action( 'salesforce_w2l_error_submit', $result, $post, $form_id, $form_type );
+
+		if( isset( $options['ccadmin'] ) && $options['ccadmin'] ){
+			$subject = __( 'Salesforce Web to %%type%% Error', 'salesforce' );
+			$append = print_r( $result, 1 );
+			salesforce_cc_admin( $post, $options, $form_id, $subject, $append );
+		}
+
 		return false;
 	}
 
 	if ($result['response']['code'] == 200){
+
+		// Post submit actions
+		do_action( 'salesforce_w2l_after_submit', $post, $form_id, $form_type );
 
 		unset( $_POST['oid'] );
 		unset( $_POST['org_id'] );
@@ -642,7 +664,10 @@ function salesforce_maybe_implode( $delimiter, $data ){
 
 }
 
-function salesforce_cc_admin($post, $options, $form_id = 1){
+function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $append = '' ){
+
+	if( !$subject )
+		$subject = __( 'Salesforce Web to %%type%% Submission', 'salesforce' );
 
 	$from_name = apply_filters('salesforce_w2l_cc_admin_from_name', get_bloginfo('name'));
 	$from_email = apply_filters('salesforce_w2l_cc_admin_from_email', get_option('admin_email'));
@@ -654,10 +679,11 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 	$headers .= 'Reply-to: '.$from_name.' <' . $from_email . ">\r\n";
 
 	if( $options['forms'][$form_id]['type'] == 'case' ){
-		$subject = __('Salesforce Web to Case Submission','salesforce');
+		$form_type = __( 'Case', 'salesforce' );
 	}else{
-		$subject = __('Salesforce Web to Lead Submission','salesforce');
+		$form_type = __( 'Lead', 'salesforce' );
 	}
+	$subject = str_replace( '%%type%%', $form_type,  $subject );
 
 	$message = '';
 
@@ -679,6 +705,10 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 		$message .= "\r\n".'Lead Source: '.salesforce_maybe_implode( ';', $post['lead_source'] )."\r\n";
 	}
 
+	if( $append ){
+		$message .= "\r\n".'= Addditional Information ='."\r\n\r\n".$append."\r\n";
+	}
+
 	$emails = array( get_option('admin_email') );
 
 	$emails = apply_filters( 'salesforce_w2l_cc_admin_email_list', $emails );
@@ -686,9 +716,10 @@ function salesforce_cc_admin($post, $options, $form_id = 1){
 	//print_r( $emails );
 
 	$message = apply_filters('salesforce_w2l_cc_admin_email_content', $message );
+	$subject = apply_filters('salesforce_w2l_cc_admin_email_subject', $subject, $form_type );
 
 	if( WP_DEBUG )
-		error_log( 'salesforce_cc_admin:'.print_r( array($emails,$message),1 ) );
+		error_log( 'salesforce_cc_admin:'.print_r( array($emails,$message,$subject),1 ) );
 
 	if( $message ){
 		foreach( $emails as $email ){

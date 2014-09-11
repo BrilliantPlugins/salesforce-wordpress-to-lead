@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 3.9.1
-Stable tag: 2.5
+Stable tag: 2.5.1
 License: GPLv2
 Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
 
@@ -123,11 +123,14 @@ To find your Organization ID, do the following steps:
 1. Save your changes -- new submissions will now post that custom field to SalesForce.
 
 = How do I use the checkbox field? =
-Like any other field. Note that it is a single checkbox, not a checkbox list.
+Like any other field. Note that it is a single checkbox, not a checkbox list (yet).
 
 _Checkbox lists and radio buttons will be in a future update._
 
 = How do I use the select (picklist) field? =
+
+**Hint: Use the form importer!**
+
 Use it like any other field -- however you'll need to specify the options (and optional values) for each field using the options box (far right). You'll also need to use the "internal name" from Salesforce as your field name (see next FAQ).
 
 The value box for a select list is the default value (the one selected on a fresh form).
@@ -147,6 +150,8 @@ _Note: Leading & trailing whitespace is trimmed when names and values are displa
 
 = How do I find the "internal name" of my picklist field? =
 
+**Hint: Use the form importer!**
+
 Picklists in SalesForce (Web to Lead at least) are a strange beast -- you'd think you could pass the field name and SF would map it on their end... but they don't make it that easy. Instead you need to use the internal SF ID of the picklist... which looks more like: `00Nd0000007p1Ej` (this is just en example, this is not the id of your field).
 
 Where do you find this cryptic value? You can find it in two places (that I know of):
@@ -160,12 +165,15 @@ e.g. `TestPicklist: <select  id="00Nd0000007p1Ej" name="00Nd0000007p1Ej" title="
 Then take the "name" you get (00Nd0000007p1Ej in this example) and enter that as the *field name* in your form editor. Yes, you enter this obtuse string of digits instead of the human readable field name (i.e. MyCustomField__c).
 
 = How do I use the HTML field? =
+
 1. Optionally enter a label (field will display full width if a label is not entered.
 2. Enter HTML code in the options box.
 
 _Note: You cannot use the HTML box to enter a custom field, as only "known" fields are submitted to salesforce and HTML fields are not submitted (just displayed). Be careful to avoid the `<form>` or `</form>` tags in an HTML field as they will likely break your form._
 
 = How do I use a lookup field with a picklist field in the plugin? =
+
+**Hint: Use the form importer!**
 
 Since it's a lookup field the value of the options has to be SalesForce's <strong>internal id</strong>, not the value you'd think it would be. Otherwise when Jane Doe gets married and becomes Jane Smith you'd break all the links to her user.
 
@@ -192,7 +200,9 @@ Instructions for disabling or overriding the CSS are included on the plugin sett
 This option adds the WPCF7 classes to the form fields so you get the WPCF7 CSS styles applied (if that plugin is also activated).
 
 = Is it possible to make multiple forms with this plugin? =
-Yes, version 2.0 introduces this feature. Version 2.1 allows you to duplicate forms to reduce re-entering data.
+Yes, version 2.0 introduces this feature.
+Version 2.1 allows you to duplicate forms to reduce re-entering data.
+Version 2.5 allows you to import Web-to-Lead forms from Salesforce.
 
 = How do I change the Lead Source that shows up in Salesforce? =
 You can easily change this by going into the WordPress-to-Lead admin panel and, under form settings, changing the Lead Source for that form. Daddy Analytics uers can set this to blank to have it automatically filled.
@@ -471,7 +481,71 @@ function salesforce_w2l_post_args_example( $args ){
 }
 `
 
+**salesforce_w2l_post_data**
+
+Allows filtering of the post data before it is sent to SalesForce.
+
+`
+add_filter( 'salesforce_w2l_post_data', 'salesforce_w2l_post_data_example', 10, 3 );
+
+function salesforce_w2l_post_data_example( $post, $form_id, $form_type ){
+	error_log( 'POST ARGS = '.print_r( $post, 1 ) );
+	$post['test'] = 'test';
+	return $post;
+}
+`
+
+**salesforce_w2l_before_submit**
+
+Allows you to do something (read only) with the post data before it's submitted to SalesForce.
+
+e.g. Send it to another API, log it to a database, etc.
+
+If you need to change the data, use the _salesforce_w2l_post_data_ filter.
+
+`
+add_action('salesforce_w2l_before_submit', 'salesforce_w2l_before_submit_example', 10, 3 );
+
+function salesforce_w2l_before_submit_example( $post, $form_id, $form_type ){
+	error_log( 'BEFORE SUBMIT '.print_r($post,1) );
+}
+`
+
+**salesforce_w2l_error_submit**
+
+Allows you to do something (read only) with the post data when there is an error submitting to SalesForce.
+
+e.g. Notify someone via email, log it somewhere, etc.
+
+`
+add_action('salesforce_w2l_error_submit', 'salesforce_w2l_error_submit_example', 10, 4 );
+
+function salesforce_w2l_error_submit_example( $result, $post, $form_id, $form_type ){
+	error_log( 'ERROR SUBMIT ' . print_r($result,1) );
+}
+`
+
+**salesforce_w2l_after_submit**
+
+Allows you to do something (read only) with the post data after it's submitted to SalesForce.
+
+e.g. Send it to another API, log it to a database, etc.
+
+`
+add_action('salesforce_w2l_after_submit', 'salesforce_w2l_after_submit_example', 10, 3 );
+
+function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
+	error_log( 'AFTER SUBMIT '.print_r($post,1) );
+}
+`
+
 == Changelog ==
+
+= 2.5.1 =
+* Refactor salesforce_cc_admin to allow a customizable subject (translators: affects localization strings)
+* CC Admin on submission errors as well as successes, append result data
+* Add `salesforce_w2l_post_data` filter (see 'Other Notes')
+* Add `salesforce_w2l_before_submit`, `salesforce_w2l_error_submit`, `salesforce_w2l_after_submit` actions (see 'Other Notes')
 
 = 2.5 =
 * FAQ: Clarify the mess that is picklist fields/names
