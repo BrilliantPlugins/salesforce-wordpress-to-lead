@@ -36,6 +36,22 @@ function salesforce_w2l_post_data_example( $post, $form_id, $form_type ){
 	return $post;
 }
 
+
+add_filter( 'salesforce_w2l_post_data', 'salesforce_w2l_post_data_date_example', 10, 3 );
+
+function salesforce_w2l_post_data_date_example( $post, $form_id, $form_type ){
+
+	$date_fields = array( 'your_field_name', 'your_other_field_name' );
+
+	foreach( $post as $key=>$val ){
+		if( in_array( $key, $date_fields )  )
+			$post[$key] = date( 'm/d/Y', strtotime( $val ) );
+	}
+
+	return $post;
+}
+
+
 add_action('salesforce_w2l_before_submit', 'salesforce_w2l_before_submit_example', 10, 3 );
 
 function salesforce_w2l_before_submit_example( $post, $form_id, $form_type ){
