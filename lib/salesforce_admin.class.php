@@ -269,9 +269,10 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 			}elseif( isset( $_POST['mode'] ) && $_POST['mode'] == 'clone'){
 
-				if( isset( $_POST['form_id'] ) && $_POST['form_id'] != 1 ) {
+				if( isset( $_POST['form_id'] ) ) {
 					$new_id = max(array_keys($options['forms'])) + 1;
 					$options['forms'][$new_id] = $options['forms'][$_POST['form_id']];
+					$options['forms'][$new_id]['form_name'] .= ' (copy)';
 				}
 
 			}else{
@@ -475,18 +476,21 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 } else if ( isset( $_GET['tab'] ) && $_GET['tab'] == 'form') {
 
-					if( !isset($form_id) ||  !$form_id )
+					if( (!isset($form_id) || !$form_id ) && isset( $_GET['id'] ) ){
 						$form_id = absint( $_GET['id'] );
+					}else{
+						$form_id = 0;
+					}
 
 					if(isset($_POST['mode']) && $_POST['mode'] == 'delete' && $form_id != 1 ){
 
-					echo '<div id="message" class="updated"><p>' . __('Deleted Form #','salesforce') . $form_id . '</p></div>';
+						echo '<div id="message" class="updated"><p>' . __('Deleted Form #','salesforce') . $form_id . '</p></div>';
 
-					} else if(isset($_POST['mode']) && $_POST['mode'] == 'clone' && $form_id != 1 ) {
+					} else if(isset($_POST['mode']) && $_POST['mode'] == 'clone'  ) {
 
-					echo '<div id="message" class="updated"><p>' . __('Duplicated Form #','salesforce') . $form_id . '</p></div>';
+						echo '<div id="message" class="updated"><p>' . __('Duplicated Form #','salesforce') . $form_id . '</p></div>';
 
-}else{
+					}else{
 
 	if(!isset($form_id) && isset($_GET['id']))
 		$form_id = (int) $_GET['id'];
@@ -739,6 +743,9 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								<input type="hidden" value="<?php echo $form_id; ?>" name="form_id"/>
 								<input type="submit" name="submit" class="button-secondary" value="Delete this form">
 							</form>
+							<?php } ?>
+
+							<?php if( !empty($_GET['id']) ){ ?>
 							<form action="" method="post" id="salesforce-clone">
 							<?php if (function_exists('wp_nonce_field')) { wp_nonce_field('salesforce-udpatesettings'); } ?>
 								<input type="hidden" value="clone" name="mode"/>
