@@ -884,16 +884,22 @@ function salesforce_form_shortcode($atts) {
 			}else{
 
 				if( !empty($options['forms'][$form]['returl']) ){
-					//wp_redirect( $options['forms'][$form]['returl'] );
-					//exit;
+                    
+                    if ($options['forms'][$form]['returl_php'] === 'on') {
+    					wp_redirect( $options['forms'][$form]['returl'] );
+    					exit;
+                    } else {
+    					?>
+    					<script type="text/javascript">
+    				   <!--
+    				      window.location= <?php echo "'" . $options['forms'][$form]['returl'] . "'"; ?>;
+    				   //-->
+    				   </script>
+    					<?php
+                    }
+					
 
-					?>
-					<script type="text/javascript">
-				   <!--
-				      window.location= <?php echo "'" . $options['forms'][$form]['returl'] . "'"; ?>;
-				   //-->
-				   </script>
-					<?php
+					
 				}
 
 				$success_message = salesforce_get_option( 'successmsg', $form, $options );

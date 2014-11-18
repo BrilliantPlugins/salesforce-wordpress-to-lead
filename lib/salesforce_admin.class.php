@@ -49,7 +49,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		$dform['labellocation'] = '';
 
 		$dform['returl'] = '';
-
+        
 		$dform['type'] = 'lead';
 
 		$dform['inputs'] = array(
@@ -254,7 +254,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				w2l_sksort($newinputs,'pos',true);
 				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
 
-				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id') as $option_name) {
+				foreach (array('form_name','source','returl','returl_php','successmsg','captchaform','labellocation','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options['forms'][$form_id][$option_name] = $_POST[$option_name];
 					}
@@ -639,6 +639,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 </script>
 									<?php
+                                    
+                                    echo "<pre>"; print_r( $options['forms'][$form_id] ); echo "</pre>" ;
 
 									$content .= '<p><a class="button-secondary" href="javascript:salesforce_add_field();">Add a field</a></p>';
 
@@ -673,6 +675,12 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 									$content .= '<label>'.__('Return/Thanks URL:','salesforce').'</label><br/>';
 									$content .= '<input type="text" name="returl" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['returl']).'">';
 									$content .= '<br/><small>'.__('e.g.http://yoursite.com/thanks/').'</small>';
+									$content .= '</p>';
+                                    
+									$content .= '<p>';
+									$content .= '<label>'.__('Redirection technique','salesforce').'</label><br/>';
+									$content .= '<input type="radio" name="returl_php" value=""'.checked( $options['forms'][$form_id]['returl_php'],'',false).'> Redirect with Javascript <br>';
+									$content .= '<input type="radio" name="returl_php" value="on"'.checked( $options['forms'][$form_id]['returl_php'],'on',false).'> Redirect with PHP <br>';
 									$content .= '</p>';
 
 									$content .= '<p>';
