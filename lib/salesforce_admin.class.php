@@ -640,7 +640,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 </script>
 									<?php
                                     
-                                    echo "<pre>"; print_r( $options['forms'][$form_id] ); echo "</pre>" ;
+                                    // DEBUG
+                                    // echo "<pre>"; print_r( $options['forms'][$form_id] ); echo "</pre>" ;
 
 									$content .= '<p><a class="button-secondary" href="javascript:salesforce_add_field();">Add a field</a></p>';
 
