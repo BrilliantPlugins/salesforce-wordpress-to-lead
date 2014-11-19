@@ -680,8 +680,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
                                     
 									$content .= '<p>';
 									$content .= '<label>'.__('Redirection technique','salesforce').'</label><br/>';
-									$content .= '<input type="radio" name="returl_php" value=""'.checked( $options['forms'][$form_id]['returl_php'],'',false).'> Redirect with Javascript <br>';
-									$content .= '<input type="radio" name="returl_php" value="on"'.checked( $options['forms'][$form_id]['returl_php'],'on',false).'> Redirect with PHP <br>';
+									$content .= '<input type="radio" name="returl_php" value=""'.checked( $options['forms'][$form_id]['returl_php'],'',false).'>'.__("Redirect with Javscript").'<br>';
+									$content .= '<input type="radio" name="returl_php" value="on"'.checked( $options['forms'][$form_id]['returl_php'],'on',false).'>'.__("Redirect with PHP").'<br>';
 									$content .= '</p>';
 
 									$content .= '<p>';
