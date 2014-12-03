@@ -136,6 +136,24 @@ Use it like any other field -- however you'll need to specify the options (and o
 The value box for a select list is the default value (the one selected on a fresh form).
 
 `
+/* Preferred format: */
+
+// Use same data for display and value passed to SF
+one
+two
+three
+
+// Use different data for display and value passed to SF, require user to select something (assuming field is required)
+Select One|
+name1|value1
+name2|value2
+
+// Use different data for display and value passed to SF
+name1|value1
+name2|value2
+
+/* Legacy Format (does not allow the use of colons in names or values): */
+
 //Use same data for display and value passed to SF
 one|two|three
 
@@ -543,6 +561,10 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 `
 
 == Changelog ==
+
+= 2.5.3 =
+* Added a new picklist options format: newlines and pipes (vs pipes and colons) to allow colons to be used in names/values (and make it easier to read)
+* Make all input tags self closing e.g. `<input />` for xhtml compatibility
 
 = 2.5.2 =
 * Tested up to 4.0
