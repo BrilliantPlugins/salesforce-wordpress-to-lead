@@ -326,11 +326,24 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 				$values = array( $val );
 			}
 
-			if (strpos($input['opts'], '|') !== false) {
-				$opts = explode('|', $input['opts']);
-				foreach ($opts AS $opt) {
-					if (strpos($opt,':') !== false) {
-						list ($k, $v) = explode(':', $opt);
+			// remove excess whitespace to avoid false positive checks for newlines
+			$input['opts'] = trim( $input['opts'] );
+
+			if (strpos($input['opts'], "\n") !== false) {
+				// Newlines and pipes
+				$delim1 = "\n";
+				$delim2 = "|";
+			}else{
+				// pipes and colons
+				$delim1 = "|";
+				$delim2 = ":";
+			}
+
+			if (strpos( $input['opts'], $delim1) !== false ) {
+				$opts = explode( $delim1, $input['opts'] );
+				foreach ( $opts AS $opt ) {
+					if (strpos( $opt, $delim2 ) !== false) {
+						list ($k, $v) = explode($delim2, $opt);
 					} else {
 						$k = $v = $opt;
 					}
@@ -344,6 +357,8 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 				}
 			}
+
+
 			$content .= '</select>'."\n\n";
 			//$content .= '<pre>'.print_r( $values, 1 ).'</pre>';
 
