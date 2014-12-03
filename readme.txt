@@ -565,6 +565,7 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 = 2.5.3 =
 * Added a new picklist options format: newlines and pipes (vs pipes and colons) to allow colons to be used in names/values (and make it easier to read)
 * Make all input tags self closing e.g. `<input />` for xhtml compatibility
+* Disable W3TC object caching when captcha is used (until a cache friendly captcha solution is added)
 
 = 2.5.2 =
 * Tested up to 4.0

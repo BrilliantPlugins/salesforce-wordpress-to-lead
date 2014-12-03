@@ -381,6 +381,8 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		// attempt to disable caching
 		if ( !defined( 'DONOTCACHEPAGE' ) )
 			define( 'DONOTCACHEPAGE', true );
+		if ( !defined( 'DONOTCACHEOBJECT' ) )
+			define( 'DONOTCACHEOBJECT', true );
 
 		include("lib/captcha/captcha.php");
 		$captcha = captcha();
