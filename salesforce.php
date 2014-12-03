@@ -561,6 +561,7 @@ function submit_salesforce_form( $post, $options ) {
 	$args = array(
 		'body' 		=> $body,
 		'headers' 	=> array(
+			'Content-Type' => 'application/x-www-form-urlencoded',
 			'user-agent' => 'WordPress-to-Lead for Salesforce plugin - WordPress/'.$wp_version.'; '.get_bloginfo('url'),
 		),
 		'sslverify'	=> false,
