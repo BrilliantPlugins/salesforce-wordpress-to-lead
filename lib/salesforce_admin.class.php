@@ -593,8 +593,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 											if( isset( $input['opts'] ) )
 												$opts = $input['opts'];
 
-											$content .= '<td><textarea rows="4" name="inputs['.$field.'_opts]"  >'.esc_textarea(stripslashes( $opts )).'</textarea></td>';
-											$content .= '<td><input size="2" name="inputs['.$field.'_pos]" type="text" value="'.esc_html($input['pos']).'"/></td>';
+											$content .= '<td><textarea rows="4" name="inputs['.$field.'_opts]"  >'.esc_textarea( stripslashes( $opts ) ).'</textarea></td>';
+											$content .= '<td><input size="2" name="inputs['.$field.'_pos]" type="text" value="'.esc_html( $input['pos'] ).'"/></td>';
 											$content .= '</tr>';
 											$i++;
 										}
@@ -618,7 +618,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	row += '<td><select name="add_inputs['+i+'][type]">'
 		+ '<option value="text">Text</option>'
 		+ '<option value="textarea">Textarea</option>'
-		+ '<option valur="hidden">Hidden</option>'
+		+ '<option value="hidden">Hidden</option>'
 		+ '<option value="select">Select (picklist)</option>'
 		+ '<option value="multi-select">Multi-Select (picklist)</option>'
 		+ '<option value="checkbox">Checkbox</option>'

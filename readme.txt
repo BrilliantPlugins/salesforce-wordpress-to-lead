@@ -564,6 +564,7 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 
 = 2.5.4 =
 * Improve importer to allow forms that have been modified to be imported (thanks Mark Loeffler)
+* Fix new hidden fields becoming text fields upon save (typo)
 
 = 2.5.3 =
 * Added a new picklist options format: newlines and pipes (vs pipes and colons) to allow colons to be used in names/values (and make it easier to read)
