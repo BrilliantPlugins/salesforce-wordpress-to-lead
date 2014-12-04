@@ -1,9 +1,9 @@
 === WordPress-to-lead for Salesforce CRM ===
-Contributors: stonydaddydonkeylabscom, nickciske
+Contributors: stonydaddydonkeylabscom, nickciske, cimbura.com
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 4.0.1
-Stable tag: 2.5.3
+Stable tag: 2.5.4
 License: GPLv2
 Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
 
@@ -561,6 +561,9 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 `
 
 == Changelog ==
+
+= 2.5.4 =
+* Improve importer to allow forms that have been modified to be imported (thanks Mark Loeffler)
 
 = 2.5.3 =
 * Added a new picklist options format: newlines and pipes (vs pipes and colons) to allow colons to be used in names/values (and make it easier to read)
