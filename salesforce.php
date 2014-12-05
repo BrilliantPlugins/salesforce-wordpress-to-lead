@@ -329,7 +329,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 			// remove excess whitespace to avoid false positive checks for newlines
 			$input['opts'] = trim( $input['opts'] );
 
-			if (strpos($input['opts'], "\n") !== false) {
+			if ( strpos($input['opts'], "\n") !== false && strpos($input['opts'], "|\n") === false && strpos($input['opts'], "|\r\n") === false ) {
 				// Newlines and pipes
 				$delim1 = "\n";
 				$delim2 = "|";
@@ -340,7 +340,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 			}
 
 			if (strpos( $input['opts'], $delim1) !== false ) {
-				$opts = explode( $delim1, $input['opts'] );
+				$opts = explode( $delim1, trim( $input['opts'] ) );
 				foreach ( $opts AS $opt ) {
 					if (strpos( $opt, $delim2 ) !== false) {
 						list ($k, $v) = explode($delim2, $opt);
