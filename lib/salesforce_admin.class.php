@@ -254,7 +254,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				w2l_sksort($newinputs,'pos',true);
 				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
 
-				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id') as $option_name) {
+				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id', 'cc_email_subject') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options['forms'][$form_id][$option_name] = $_POST[$option_name];
 					}
@@ -692,6 +692,14 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 									$content .= '<input type="text" name="requiredfieldstext" style="width:50%;" value="'.esc_html(stripslashes( salesforce_get_option('requiredfieldstext',$form_id,$options) )).'">';
 									$content .= '<br/><small>'.__('Overrides the default message for this form (leave blank to use the global setting).').'</small>';
 									$content .= '</p>';
+
+									/* Add a Subject line to the User email on a per-form basis */
+									$content .= '<p>';
+									$content .= '<label>' . __( 'User CC email subject:', 'salesforce' ) . '</label><br/>';
+									$content .= '<input type="text" name="cc_email_subject" style="width:50%;" value="' . esc_html( salesforce_get_option( 'cc_email_subject', $form_id, $options ) ) . '">';
+									$content .= '<br/><small>' . __( 'Subject of the email when sending out a copy to the user.(leave blank to use the global setting)' ) . '</small>';
+									$content .= '</p>';
+
 
 									$content .= '<p>';
 									$content .= '<label>'.__('Captcha:','salesforce').'</label><br/>';

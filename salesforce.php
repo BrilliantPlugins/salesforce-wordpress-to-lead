@@ -632,7 +632,11 @@ function salesforce_cc_user($post, $options, $form_id = 1){
 
 	$headers = 'From: '.$from_name.' <' . $from_email . ">\r\n";
 
-	$subject = str_replace('%BLOG_NAME%', get_bloginfo('name'), $options['subject']);
+	if (!empty($options['forms'][$form_id]['cc_email_subject'])) {
+		$subject = str_replace('%BLOG_NAME%', get_bloginfo('name'), $options['forms'][$form_id]['cc_email_subject']);
+	} else {
+		$subject = str_replace('%BLOG_NAME%', get_bloginfo('name'), $options['subject']);
+	}
 	if( empty($subject) ) $subject = __('Thank you for contacting','salesforce').' '.get_bloginfo('name');
 
 
