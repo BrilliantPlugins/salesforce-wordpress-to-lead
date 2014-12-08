@@ -4,7 +4,7 @@ Plugin Name: WordPress-to-Lead for Salesforce CRM
 Plugin URI: http://wordpress.org/plugins/salesforce-wordpress-to-lead/
 Description: Easily embed a contact form into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM. Also supports Web to Case and Comments to leads.
 Author: Daddy Analytics & Thought Refinery
-Version: 2.5.5
+Version: 2.5.6
 Author URI: http://try.daddyanalytics.com/wordpress-to-lead-general?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP2L_Plugin_01&utm_content=da1_author_uri
 License: GPL2
 */
@@ -329,7 +329,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 			// remove excess whitespace to avoid false positive checks for newlines
 			$input['opts'] = trim( $input['opts'] );
 
-			if ( strpos($input['opts'], "\n") !== false && strpos($input['opts'], "|\n") === false && strpos($input['opts'], "|\r\n") === false ) {
+			if ( strpos($input['opts'], "\n") !== false && substr_count($input['opts'], "|\n") <= 1 && substr_count($input['opts'], "|\r\n") <= 1) {
 				// Newlines and pipes
 				$delim1 = "\n";
 				$delim2 = "|";
