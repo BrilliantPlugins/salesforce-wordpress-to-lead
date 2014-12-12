@@ -69,3 +69,15 @@ add_action('salesforce_w2l_after_submit', 'salesforce_w2l_after_submit_example',
 function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 	error_log( 'AFTER SUBMIT '.print_r($post,1) );
 }
+
+
+add_filter( 'salesforce_w2l_post_args', 'salesforce_w2l_post_args_timeout_example', 10, 1 );
+
+function salesforce_w2l_post_args_timeout_example( $args ){
+	$args['timeout'] = 10;
+	return $args;
+}
+
+//add_filter( 'salesforce_w2l_show_admin_nag_message', '__return_false', 10, 1 );
+
+

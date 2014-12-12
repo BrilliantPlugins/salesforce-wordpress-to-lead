@@ -283,7 +283,15 @@ _The daily limit for Web-to-Lead requests is 500. If your organization exceeds i
 
 See also: [How many leads can we capture from our website?](https://help.salesforce.com/apex/HTViewHelpDoc?id=faq_leads_how_many_leads.htm&language=en_US#faq_leads_how_many_leads)
 
+= Can I hide the admin message insisting I enter my organization id? =
 
+Yes. Be careful -- that's there to remind you that the plugin doesn't do much without one.
+
+Add this to functions.php or a custom plugin (see other notes for more detailed instructions):
+
+`
+add_filter( 'salesforce_w2l_show_admin_nag_message', '__return_false', 10, 1 );
+`
 
 == Filters and Hooks ==
 
@@ -514,6 +522,14 @@ function salesforce_w2l_post_data_example( $post, $form_id, $form_type ){
 }
 `
 
+**salesforce_w2l_show_admin_nag_message**
+
+Suppress the organization id missing nag message (return false).
+
+`
+add_filter( 'salesforce_w2l_show_admin_nag_message', '__return_false', 10, 1 );
+`
+
 = Actions =
 
 **salesforce_w2l_before_submit**
@@ -561,6 +577,9 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 `
 
 == Changelog ==
+
+= 2.5.7 =
+* Add filter to allow suppression of the admin screen nag about a missing organization id
 
 = 2.5.6 =
 * Further improve auto detection of new options format
