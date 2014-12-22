@@ -46,7 +46,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 			$dform['source'] = __('Lead form on ','salesforce').get_bloginfo('name');
 		}
 
-		$dform['labellocation'] = '';
+		$dform['labellocation'] = 'top-aligned';
+		$dform['labellocationsidebar'] = 'top-aligned';
 
 		$dform['returl'] = '';
 
@@ -257,7 +258,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				w2l_sksort($newinputs,'pos',true);
 				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
 
-				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id', 'cc_email_subject') as $option_name) {
+				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','labellocationsidebar','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id', 'cc_email_subject') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options['forms'][$form_id][$option_name] = $_POST[$option_name];
 					}
@@ -725,11 +726,30 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 
 									$content .= '<p>';
-									$content .= '<label>'.__('Label Location:','salesforce').'</label><br/>';
-									$content .= '<input type="radio" name="labellocation" value="top-aligned" '.checked($options['forms'][$form_id]['labellocation'],'',false).'> Top Aligned <br>';
-									$content .= '<input type="radio" name="labellocation" value="left-aligned"'.checked($options['forms'][$form_id]['labellocation'],'left-aligned',false).'> Left Aligned <br>';
-									$content .= '<input type="radio" name="labellocation" value="placeholders"'.checked($options['forms'][$form_id]['labellocation'],'placeholders',false).'> Placeholders';
+									$content .= '<label>'.__('Label Location (Content):','salesforce').'</label><br/>';
+
+									$label_location = trim( $options['forms'][$form_id]['labellocation'] );
+
+									if( !$label_location )
+										$label_location = 'top-aligned';
+
+									$content .= '<input type="radio" name="labellocation" value="top-aligned" '.checked( $label_location, 'top-aligned', false ).'> Top Aligned <br>';
+									$content .= '<input type="radio" name="labellocation" value="left-aligned"'.checked( $label_location, 'left-aligned', false ).'> Left Aligned <br>';
+									$content .= '<input type="radio" name="labellocation" value="placeholders"'.checked( $label_location, 'placeholders', false ).'> Placeholders';
 									$content .= '</p>';
+
+									$content .= '<p>';
+									$content .= '<label>'.__('Label Location (Sidebar):','salesforce').'</label><br/>';
+
+									$label_location_sidebar = trim( $options['forms'][$form_id]['labellocationsidebar'] );
+									if( !$label_location_sidebar )
+										$label_location_sidebar = 'top-aligned';
+
+									$content .= '<input type="radio" name="labellocationsidebar" value="top-aligned" '.checked( $label_location_sidebar, 'top-aligned', false ).'> Top Aligned <br>';
+									$content .= '<input type="radio" name="labellocationsidebar" value="left-aligned"'.checked( $label_location_sidebar, 'left-aligned', false ).'> Left Aligned <br>';
+									$content .= '<input type="radio" name="labellocationsidebar" value="placeholders"'.checked( $label_location_sidebar, 'placeholders', false ).'> Placeholders';
+									$content .= '</p>';
+
 
 									$content .= '<input type="hidden" name="form_id" id="form_id" value="'.$form_id.'">';
 
