@@ -255,12 +255,15 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 				}
 
+				// normal options
 				w2l_sksort($newinputs,'pos',true);
 				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
 
-				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','labellocationsidebar','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id', 'cc_email_subject') as $option_name) {
+				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','labellocationsidebar','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id', 'cc_email_subject','donotautoaddcolontolabels') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options['forms'][$form_id][$option_name] = $_POST[$option_name];
+					}else{
+						$options['forms'][$form_id][$option_name] = '';
 					}
 				}
 
@@ -748,6 +751,16 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 									$content .= '<input type="radio" name="labellocationsidebar" value="top-aligned" '.checked( $label_location_sidebar, 'top-aligned', false ).'> Top Aligned <br>';
 									$content .= '<input type="radio" name="labellocationsidebar" value="left-aligned"'.checked( $label_location_sidebar, 'left-aligned', false ).'> Left Aligned <br>';
 									$content .= '<input type="radio" name="labellocationsidebar" value="placeholders"'.checked( $label_location_sidebar, 'placeholders', false ).'> Placeholders';
+									$content .= '</p>';
+
+									$content .= '<p>';
+									$content .= '<label>'.__('Auto Formatting:','salesforce').'</label><br/>';
+
+									$label_location_sidebar = trim(  );
+									if( !$label_location_sidebar )
+										$label_location_sidebar = 'top-aligned';
+
+									$content .= '<input type="checkbox" name="donotautoaddcolontolabels" value="1" '.checked( $options['forms'][$form_id]['donotautoaddcolontolabels'], '1', false ).'> Do not automatically add a colon to labels <br>';
 									$content .= '</p>';
 
 

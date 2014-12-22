@@ -4,7 +4,7 @@ Plugin Name: WordPress-to-Lead for Salesforce CRM
 Plugin URI: http://wordpress.org/plugins/salesforce-wordpress-to-lead/
 Description: Easily embed a contact form into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM. Also supports Web to Case and Comments to leads.
 Author: Daddy Analytics & Thought Refinery
-Version: 2.6
+Version: 2.6.1
 Author URI: http://try.daddyanalytics.com/wordpress-to-lead-general?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP2L_Plugin_01&utm_content=da1_author_uri
 License: GPL2
 */
@@ -200,7 +200,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 	$content .= "\n".'<form id="sf_form_'.$sf_form_id.'" class="'.($options['wpcf7css'] ? 'wpcf7-form' : 'w2llead'.$sidebar ).' '.$label_location.'" method="post" action="'.$action.'">'."\n";
 
-	$reqtext = stripslashes( salesforce_get_option('requiredfieldstext',$form_id,$options));
+	$reqtext = stripslashes( salesforce_get_option('requiredfieldstext',$form_id,$options) );
 
 	if (!empty($reqtext) && salesforce_get_option('requiredfieldstextpos',$form_id,$options) == 'top' )
 		$content .= '<p class="sf_required_fields_msg" id="requiredfieldsmsg"><sup><span class="required">*</span></sup> '.esc_html( $reqtext ).'</p>';
@@ -268,7 +268,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 				if (!empty($input['label'])) {
 					$content .= "\t".'<label class="w2llabel '.$required.' '.$error.$input['type'].($input['type'] == 'checkbox' ? ' w2llabel-checkbox-label' : '').'" for="sf_'.$id.'">'.( $input['opts'] == 'html' && $input['type'] == 'checkbox' ? stripslashes($input['label']) : esc_html(stripslashes($input['label'])));
-					if (!in_array($input['type'], array('checkbox', 'html'))) {
+					if ( ! in_array($input['type'], array('checkbox', 'html') ) && ! salesforce_get_option('donotautoaddcolontolabels', $form_id, $options ) ) {
 						$content .= ':';
 					}
 				}
@@ -475,7 +475,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		$content .= '</section>';
 	}
 
-	if(  $label_location )
+	if(  $label_location == 'placeholder' )
 		$content .= '<script>jQuery( document ).ready( function($) { $(".salesforce_w2l_lead input, .salesforce_w2l_lead textarea").placeholder(); } );
 		</script>';
 

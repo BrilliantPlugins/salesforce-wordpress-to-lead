@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske, cimbura.com
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 4.0.1
-Stable tag: 2.6
+Stable tag: 2.6.1
 License: GPLv2
 Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
 
@@ -579,6 +579,10 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 == Changelog ==
 
 = 2.6 =
+* Fix javascript error when not using placeholder label layout
+* Make colons after labels optional (see form settings near the bottom to disable)
+
+= 2.6 =
 * Add filter to allow suppression of the admin screen nag about a missing organization id
 * Fix bug that was adding a colon after checkboxes and HTML field labels
 * Fix checkbox label alignment on top-aligned forms
@@ -806,6 +810,9 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 * Initial release.
 
 == Upgrade Notice ==
+
+= 2.6.1 =
+The default CSS changed in the 2.6 release. If you've customized the form output, double check your form styling after upgrade.
 
 = 2.6 =
 The default CSS changed in this release. If you've customized the form output, double check your form styling after upgrade.
