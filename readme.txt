@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske, cimbura.com
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 4.0.1
-Stable tag: 2.5.6
+Stable tag: 2.5.7
 License: GPLv2
 Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
 
@@ -580,6 +580,7 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 
 = 2.5.7 =
 * Add filter to allow suppression of the admin screen nag about a missing organization id
+* Fix bug that was adding a colon after checkboxes and HTML field labels
 
 = 2.5.6 =
 * Further improve auto detection of new options format
