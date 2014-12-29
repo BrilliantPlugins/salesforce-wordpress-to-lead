@@ -756,13 +756,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 									$content .= '<p>';
 									$content .= '<label>'.__('Auto Formatting:','salesforce').'</label><br/>';
 
-									$label_location_sidebar = trim(  );
-									if( !$label_location_sidebar )
-										$label_location_sidebar = 'top-aligned';
-
 									$content .= '<input type="checkbox" name="donotautoaddcolontolabels" value="1" '.checked( $options['forms'][$form_id]['donotautoaddcolontolabels'], '1', false ).'> Do not automatically add a colon to labels <br>';
 									$content .= '</p>';
-
 
 									$content .= '<input type="hidden" name="form_id" id="form_id" value="'.$form_id.'">';
 
