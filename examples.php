@@ -4,7 +4,7 @@
 add_filter( 'salesforce_w2l_form_action', 'salesforce_w2l_form_action_example', 10, 1 );
 function salesforce_w2l_form_action_example(  $action ){
 
-	return '';
+	return $action;
 
 }
 
@@ -80,4 +80,59 @@ function salesforce_w2l_post_args_timeout_example( $args ){
 
 //add_filter( 'salesforce_w2l_show_admin_nag_message', '__return_false', 10, 1 );
 
+add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_referrer_example', 10, 3 );
+
+function salesforce_w2l_field_value_referrer_example( $val, $field, $form ){
+
+	$form_id = 1; // form id to act upon
+	$field_name = 'referrer__c'; // API Name of the field your want to autofill
+
+	if( $form == $form_id && $field_name == $field ){
+		if( isset( $_SERVER['HTTP_REFERER'] ) ){
+			return $_SERVER['HTTP_REFERER'];
+		}
+	}
+
+	return $val;
+
+}
+
+add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_querystring_example', 10, 3 );
+
+function salesforce_w2l_field_value_querystring_example( $val, $field, $form ){
+
+	$form_id = 1; // form id to act upon
+	$field_name = 'source__c'; // API Name of the field your want to autofill
+	$qs_var = 'source'; // e.g. ?source=foo
+
+	if( $form == $form_id && $field_name == $field ){
+		if( isset( $_GET[ $qs_var ] ) ){
+			return $_GET[ $qs_var ];
+		}
+	}
+
+	return $val;
+
+}
+
+add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_geoip_example', 10, 3 );
+
+function salesforce_w2l_field_value_geoip_example( $val, $field, $form ){
+
+	if( !function_exists( 'geoip_detect2_get_info_from_current_ip' ) ) return;
+
+	$form_id = 1; // form id to act upon
+	$field_name = 'country__c'; // API Name of the field your want to autofill
+
+	if( $form == $form_id && $field_name == $field ){
+
+		$userInfo = geoip_detect2_get_info_from_current_ip();
+		//$val = $userInfo->country->isoCode; // e.g. US
+		$val = $userInfo->country->name; // e.g. United States
+
+	}
+
+	return $val;
+
+}
 
