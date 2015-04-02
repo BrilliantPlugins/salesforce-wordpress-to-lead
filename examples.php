@@ -136,3 +136,18 @@ function salesforce_w2l_field_value_geoip_example( $val, $field, $form ){
 
 }
 
+// salesforce_w2l_returl_{Form ID}
+//add_filter( 'salesforce_w2l_returl_1', 'salesforce_w2l_returl_1_tester_example', 10, 1 );
+function salesforce_w2l_returl_1_tester_example(  $returl ){
+
+	return 'http://123.com';
+
+}
+
+// salesforce_w2l_success_message_{Form ID}
+add_filter( 'salesforce_w2l_success_message_1', 'salesforce_w2l_success_message_1_tester_example', 10, 1 );
+function salesforce_w2l_success_message_1_tester_example(  $success ){
+
+	return 'Testing 123';
+
+}

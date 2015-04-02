@@ -5,7 +5,7 @@ Requires at least: 3.5.2
 Tested up to: 4.0.1
 Stable tag: 2.6.3
 License: GPLv2
-Donate link: http://daddyanalytics.com/donate-wordpress-lead-salesforce-plugin/
+Donate link: https://donate.charitywater.org/donate
 
 WordPress-to-Lead for Salesforce CRM creates a solid integration between your WordPress install(s) and your Salesforce.com account!
 
@@ -43,6 +43,8 @@ Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hn
 To turn on in browser debugging, add a hidden field (enabled) named `debug` and set the value to `1`.
 
 To turn on debugging via email,  add a hidden field (enabled) named `debugEmail` and set the value to `you@yourdomain.com` (your email address).
+
+Also check for debug logs at SalesForce to see if a validation rule is the culprit: `Administration Setup | Monitoring | Debug Logs`.
 
 = What are the built in field names? Not all the fields are working when I use the Field Label in the lead edit screen? =
 
@@ -165,6 +167,33 @@ name1:value1 | name2:value2
 `
 
 _Note: Leading & trailing whitespace is trimmed when names and values are displayed, so feel free to use spaces to make things more readable._
+
+= How do I use the Date field? =
+
+Choose it from the dropdown, that's all you *have* to do.
+
+If you want to customize the date format or display/functionality of the datepicker UI, you can set the options by entering a list of options in the Options box of the field editor, one per line. Note that you must end each option with a comma, or you'll end up with a javascript error instead of a datepicker.
+
+e.g.
+
+Default date format - Year, Month, Day
+`dateFormat : 'yy-mm-dd',`
+
+Month, Day, Year
+`dateFormat : 'mm-dd-yy',`
+
+Day, Month, Year
+`dateFormat : 'dd-mm-yy',`
+
+Day, Month, Year + Show the button panel
+`
+dateFormat : 'dd-mm-yy',
+showButtonPanel: true,
+`
+
+More information about the datepicker options can be found here:
+# Examples: http://jqueryui.com/datepicker/
+# API Reference: http://api.jqueryui.com/datepicker/
 
 = How do I find the "internal name" of my picklist field? =
 
@@ -415,6 +444,46 @@ function salesforce_filter_admin_message( $message ){
 }
 `
 
+**salesforce_w2l_returl**
+
+**salesforce_w2l_returl_{Form ID}**
+
+Allows you to filter the value of a field before it is output to dynamically populate it with a value, auto set it based on another value, etc.
+
+Examples:
+
+`
+
+// Filter Return/Success URL on a specific form
+// salesforce_w2l_returl_{Form ID}
+add_filter( 'salesforce_w2l_returl_1_tester', 'salesforce_w2l_returl_1_tester_example', 10, 1 );
+function salesforce_w2l_returl_1_tester_example(  $returl ){
+
+	return 'http://123.com';
+
+}
+`
+
+**salesforce_w2l_success_message**
+
+**salesforce_w2l_success_message_{Form ID}**
+
+Allows you to filter the contents of the success message before it is output to dynamically populate it with a value, auto set it based on another value, etc.
+
+Examples:
+
+`
+
+// Filter Success Message on a specific form
+// salesforce_w2l_success_message_{Form ID}
+add_filter( 'salesforce_w2l_success_message_1_tester', 'salesforce_w2l_success_message_1_tester_example', 10, 1 );
+function salesforce_w2l_success_message_1_tester_example(  $success ){
+
+	return 'Testing 123';
+
+}
+`
+
 **salesforce_w2l_field_value**
 
 **salesforce_w2l_field_value_{Form ID}_{Field Name}**
@@ -431,36 +500,6 @@ If you need access to the field or form settings in your filter you can use:
 
 Examples:
 
-`
-// Filter all field of all forms
-add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_example', 10, 3 );
-function salesforce_w2l_field_value_example( $val, $field, $form ){
-
-	// Target a specific form
-	if( $form == 1 )
-		$val = 'TEST';
-
-	// Target a specific field on all forms
-	if( $field == 'test_field' )
-		$val = 'TEST3';
-
-	// Target a specific field on a form
-	if( $form == 1 && $field == 'test_field' )
-		$val = 'TEST2';
-
-	return $val;
-
-}
-
-// Filter a specific field on a specific form
-// salesforce_w2l_field_value_{Form ID}_{Field Name}
-add_filter( 'salesforce_w2l_field_value_1_tester', 'salesforce_w2l_field_value_1_tester_example', 10, 1 );
-function salesforce_w2l_field_value_1_tester_example(  $val ){
-
-	return '123';
-
-}
-`
 
 **salesforce_w2l_form_action**
 
@@ -577,6 +616,12 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 `
 
 == Changelog ==
+
+= 2.7 =
+* Add Date field with jQuery Datepicker functionality
+* Update ad artwork
+* Add filter for retUrl (redirect URL)
+* Add filter for success message
 
 = 2.6.3 =
 * Fix incorrect form id/anchor bug that broke scrolling to the form after submit

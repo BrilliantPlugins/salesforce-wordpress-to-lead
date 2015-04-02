@@ -588,6 +588,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 											$content .= '<option value="multi-select" '.selected($input['type'],'multi-select',false).'>Multi-Select (picklist)</option>';
 											$content .= '<option value="checkbox" '.selected($input['type'],'checkbox',false).'>Checkbox</option>';
 											//$content .= '<option '.selected($input['type'],'current_date',false).'>current_date</option>';
+											$content .= '<option value="date" '.selected($input['type'],'date',false).'>Date</option>';
 											$content .= '<option value="html" '.selected($input['type'],'html',false).'>HTML</option>';
 											$content .= '</select></td>';
 											$content .= '<td><small>Label:</small> <input size="10" name="inputs['.$field.'_label]" type="text" value="'.esc_html(stripslashes($input['label'])).'"/>'; //</td>'.'<td>';
@@ -630,6 +631,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		+ '<option value="multi-select">Multi-Select (picklist)</option>'
 		+ '<option value="checkbox">Checkbox</option>'
 		//+ '<option value="current_date">current_date</option>'
+		+ '<option value="date">Date</option>'
 		+ '<option value="html">HTML</option>'
 		+ '</select></td>';
 	row += '<td><small>Label:</small><input size="10" type="text" name="add_inputs['+i+'][label]">';

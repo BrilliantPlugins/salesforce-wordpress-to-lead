@@ -4,7 +4,7 @@ Plugin Name: WordPress-to-Lead for Salesforce CRM
 Plugin URI: http://wordpress.org/plugins/salesforce-wordpress-to-lead/
 Description: Easily embed a contact form into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM. Also supports Web to Case and Comments to leads.
 Author: Daddy Analytics & Thought Refinery
-Version: 2.6.3
+Version: 2.7
 Author URI: http://try.daddyanalytics.com/wordpress-to-lead-general?utm_source=ThoughtRefinery&utm_medium=link&utm_campaign=WP2L_Plugin_01&utm_content=da1_author_uri
 License: GPL2
 */
@@ -202,12 +202,15 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 	$reqtext = stripslashes( salesforce_get_option('requiredfieldstext',$form_id,$options) );
 
+	$date_fields = array();
+
 	if (!empty($reqtext) && salesforce_get_option('requiredfieldstextpos',$form_id,$options) == 'top' )
 		$content .= '<p class="sf_required_fields_msg" id="requiredfieldsmsg"><sup><span class="required">*</span></sup> '.esc_html( $reqtext ).'</p>';
 
 	foreach ($options['forms'][$form_id]['inputs'] as $id => $input) {
 		if (!$input['show'])
 			continue;
+
 		$val = '';
 		if ( isset( $_POST[$id] ) ){
 			$val = $_POST[$id];
@@ -233,6 +236,10 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		$error 	= ' ';
 		if (isset($input['error']) && $input['error']) {
 			$error 	= ' error ';
+		}
+
+		if( $input['type'] == 'date' ){
+			$date_fields[$id] = $input;
 		}
 
 		if($input['type'] != 'hidden' && $input['type'] != 'current_date') {
@@ -288,21 +295,32 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		}
 
 		if ($input['type'] == 'text') {
-			$content .= "\t".'<input placeholder="'.$placeholder.'" value="'.$val.'" id="sf_'.$id.'" class="';
+			$content .= "\t".'<input type="text" placeholder="'.$placeholder.'" value="'.$val.'" id="sf_'.$id.'" class="';
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-text' : 'w2linput text';
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
-			$content .= '" name="'.$id.'" type="text"'.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' />'."\n\n";
+			$content .= '" name="'.$id.'" '.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' />'."\n\n";
+
+		}else if ($input['type'] == 'date') {
+			$content .= "\t".'<input type="date" placeholder="'.$placeholder.'" value="'.$val.'" id="sf_'.$id.'" class="';
+			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-text' : 'w2linput text';
+			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
+			$content .= '" name="'.$id.'" />'."\n\n";
+
 		} else if ($input['type'] == 'textarea') {
 			$content .= "\t".( !$options['wpcf7css'] ? "\n\n" : '' )."\n\t".'<textarea id="sf_'.$id.'" class="';
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-textarea' : 'w2linput textarea';
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
 			$content .= '" name="'.$id.'"'.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' placeholder="'.$placeholder.'">'.$val.'</textarea>'."\n\n";
+
 		} else if ($input['type'] == 'hidden') {
 			$content .= "\t\n\t".'<input type="hidden" id="sf_'.$id.'" class="w2linput hidden" name="'.$id.'" value="'.$val.'" />'."\n\n";
+
 		} else if ($input['type'] == 'current_date') {
 			$content .= "\t\n\t".'<input type="hidden" id="sf_'.$id.'" class="w2linput hidden" name="'.$id.'" value="'.date($input['opts']).'" />'."\n\n";
+
 		} else if ($input['type'] == 'html'){
 			$content .= '<br>'.stripslashes($input['opts'])."\n\n";
+
 		} else if ($input['type'] == 'select' || $input['type'] == 'multi-select' ) {
 			$content .= "\t\n\t".'<select id="sf_'.$id.'" class="';
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-select style-select' : 'w2linput select';
@@ -482,6 +500,32 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 	if( true )
 		$content = str_replace("\n",'', $content);
 
+	if( $date_fields ){
+		wp_enqueue_script('jquery-ui-datepicker');
+		wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
+
+		$content .= "<script>jQuery(document).ready(function() {";
+
+		foreach( $date_fields as $id => $date_field ){
+
+			$options = trim( stripslashes( $date_field['opts'] ) );
+
+			if( !$options ){
+				$options = "dateFormat : 'yy-mm-dd',";
+			}
+
+			$content .= "
+			    jQuery('#sf_".$id."').datepicker({
+			        ".$options."
+			    });
+				";
+
+		}
+
+		$content .= "});</script>";
+
+	}
+
 	$content = apply_filters('salesforce_w2l_form_html', $content);
 
 	return $content;
@@ -628,7 +672,7 @@ function submit_salesforce_form( $post, $options ) {
 	}
 }
 
-function salesforce_cc_user($post, $options, $form_id = 1){
+function salesforce_cc_user( $post, $options, $form_id = 1 ){
 
 	$from_name = apply_filters('salesforce_w2l_cc_user_from_name', get_bloginfo('name'));
 	$from_email = apply_filters('salesforce_w2l_cc_user_from_email', get_option('admin_email'));
@@ -908,22 +952,28 @@ function salesforce_form_shortcode($atts) {
 				$content = '<strong class="error_message">'.esc_html(stripslashes($options['sferrormsg'])).'</strong>';
 			}else{
 
-				if( !empty($options['forms'][$form]['returl']) ){
-					//wp_redirect( $options['forms'][$form]['returl'] );
-					//exit;
+				// Return / Success URL
+				$returl = apply_filters( 'salesforce_w2l_returl', $options['forms'][$form]['returl'], $form );
+				$returl = apply_filters( 'salesforce_w2l_returl_'.absint( $form_id ), $returl, $form );
+				$returl = sanitize_url( $returl );
 
+				if( $returl ){
 					?>
 					<script type="text/javascript">
 				   <!--
-				      window.location= <?php echo "'" . $options['forms'][$form]['returl'] . "'"; ?>;
+				      window.location= <?php echo "'" . $returl . "'"; ?>;
 				   //-->
 				   </script>
 					<?php
 				}
 
-				$success_message = salesforce_get_option( 'successmsg', $form, $options );
+				// Success message
+				$success_message = apply_filters( 'salesforce_w2l_success_message', salesforce_get_option( 'successmsg', $form, $options ), $form );
+				$success_message = apply_filters( 'salesforce_w2l_success_message_'.absint( $form_id ), $success_message, $form );
 
-				$content = '<strong class="success_message">'.esc_html(stripslashes( $success_message )).'</strong>';
+				if( $success_message )
+					$content = '<strong class="success_message">'.esc_html( stripslashes( $success_message ) ).'</strong>';
+
 			}
 
 			$sf_form_id = get_salesforce_form_id( $form_id, $sidebar );
