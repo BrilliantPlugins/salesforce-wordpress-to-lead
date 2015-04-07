@@ -582,6 +582,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 											$content .= '</td>';
 											$content .= '<td><select name="inputs['.$field.'_type]">';
 											$content .= '<option value="text" '.selected($input['type'],'text',false).'>Text</option>';
+											$content .= '<option value="email" '.selected($input['type'],'email',false).'>Email</option>';
 											$content .= '<option value="textarea" '.selected($input['type'],'textarea',false).'>Textarea</option>';
 											$content .= '<option value="hidden" '.selected($input['type'],'hidden',false).'>Hidden</option>';
 											$content .= '<option value="select" '.selected($input['type'],'select',false).'>Select (picklist)</option>';
@@ -625,6 +626,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	row += '</table></td>';
 	row += '<td><select name="add_inputs['+i+'][type]">'
 		+ '<option value="text">Text</option>'
+		+ '<option value="email">Email</option>'
 		+ '<option value="textarea">Textarea</option>'
 		+ '<option value="hidden">Hidden</option>'
 		+ '<option value="select">Select (picklist)</option>'
