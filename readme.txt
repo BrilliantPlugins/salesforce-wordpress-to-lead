@@ -2,8 +2,8 @@
 Contributors: stonydaddydonkeylabscom, nickciske, cimbura.com
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
-Tested up to: 4.0.1
-Stable tag: 2.6.4
+Tested up to: 4.2.2
+Stable tag: 2.6.5
 License: GPLv2
 Donate link: https://donate.charitywater.org/donate
 
@@ -616,6 +616,10 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 `
 
 == Changelog ==
+
+= 2.6.5 =
+* Use esc_url_raw instead of sanitize_url
+* Update tested with version
 
 = 2.6.4 =
 * Add Date field with jQuery datepicker functionality
