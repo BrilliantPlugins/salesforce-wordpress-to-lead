@@ -102,7 +102,6 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 			$term = $this->get_ad_term();
 
 		$link = $url . '?utm_source=%s&utm_medium=%s&utm_campaign=%s&utm_term=%s&utm_content=%s';
-
 		return sprintf( $link, $source, $medium, $campaign, $term, $content  );
 
 	}
@@ -128,9 +127,10 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 			),
 
 			'banner-main' => array(
-				array( 'id' => 'da04', 'url' => 'http://try.daddyanalytics.com/marketing-roi-wp2l/', 'content' => 'assets/ads/main-prove-marketing-roi.png' ),
-				array( 'id' => 'da1_5', 'url' => 'http://try.daddyanalytics.com/integrate-salesforce-and-adwords-wp2l/', 'content' => 'assets/ads/main-track-google-adwords.png' ),
-				array( 'id' => 'da1_6', 'url' => 'http://try.daddyanalytics.com/track-lead-source-wp2l/', 'content' => 'assets/ads/main-track-lead-source-offer.png' ),
+				array( 'id' => 'da1_4', 'url' => 'https://breadwinnerhq.com/quickbooks-online-salesforce/', 'content' => 'assets/ads/QBO_SF_Banner_Images/Breadwinner-SF-Q-v1-connect-salesforce-QB.png' , "utm_source" => "wp_plugin", "utm_medium" => "banner" , "utm_content" => "connect", "utm_campaign" => "BW%20QBO%20Wordpress%20Banner"),
+				array( 'id' => 'da1_5', 'url' => 'https://breadwinnerhq.com/quickbooks-online-salesforce/', 'content' => 'assets/ads/QBO_SF_Banner_Images/Breadwinner-SF-Q-v1-create-invoices-in-QB.png', "utm_source" => "wp_plugin", "utm_medium" => "banner" , "utm_content" => "create", "utm_campaign" => "BW%20QBO%20Wordpress%20Banner" ),
+				array( 'id' => 'da1_7', 'url' => 'https://breadwinnerhq.com/xero-salesforce/', 'content' => 'assets/ads/Xero_SF_Banner_Images/Breadwinner-SF-X-v1-connect-salesforce-xero.png', "utm_source" => "wp_plugin", "utm_medium" => "banner" , "utm_content" => "connect", "utm_campaign" => "BW%20Xero%20Wordpress%20Banner"),
+				array( 'id' => 'da1_8', 'url' => 'https://breadwinnerhq.com/xero-salesforce/', 'content' => 'assets/ads/Xero_SF_Banner_Images/Breadwinner-SF-X-v1-create-invoices-in-xero.png',"utm_source" => "wp_plugin", "utm_medium" => "banner" , "utm_content" => "create", "utm_campaign" => "BW%20Xero%20Wordpress%20Banner" ),
 			),
 
 			'text' => array(
@@ -358,7 +358,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								$loc = 'banner-main';
 								$ad = $this->get_ad_code( $loc );
 								if( $ad ){
-									$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
+									$link = $this->get_ad_link( $ad['utm_content'], $ad['utm_medium'], $ad['url'], '',$ad['utm_source'],$ad['utm_campaign']);
 									echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
 								}
 
@@ -381,7 +381,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 							$loc = 'banner-main';
 							$ad = $this->get_ad_code( $loc );
 							if( $ad ){
-								$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
+//								$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
+                                                                $link = $this->get_ad_link( $ad['utm_content'], $ad['utm_medium'], $ad['url'], '',$ad['utm_source'],$ad['utm_campaign']);
 								echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
 							}
 							$loc = 'text';
@@ -539,7 +540,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 										$loc = 'banner-main';
 										$ad = $this->get_ad_code( $loc );
 										if( $ad ){
-											$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
+//											$link = $this->get_ad_link( $ad['id'], $loc, $ad['url'] );
+                                                                                        $link = $this->get_ad_link( $ad['utm_content'], $ad['utm_medium'], $ad['url'], '',$ad['utm_source'],$ad['utm_campaign']);
 											echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
 										}
 
