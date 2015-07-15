@@ -298,7 +298,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 					}
 				}
 
-		        foreach (array('successmsg','errormsg','emailerrormsg','captchaerrormsg','sferrormsg','org_id','submitbutton','subject','ccusermsg','requiredfieldstext', 'da_token', 'da_url', 'da_site') as $option_name) {
+		        foreach (array('successmsg','errormsg','emailerrormsg','captchaerrormsg','sferrormsg','org_id','submitbutton','subject','ccusermsg','requiredfieldstext', 'ccothers', 'emailfromname', 'emailfromaddress',  'da_token', 'da_url', 'da_site') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options[$option_name] = $_POST[$option_name];
 					}
@@ -419,8 +419,14 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								$content .= $this->textinput('ccusermsg',__('Request a copy text', 'salesforce') );
 								$content .= $this->textinput('subject',__('Email subject', 'salesforce'), __('Use %BLOG_NAME% to auto-insert the blog title into the subject','salesforce') );
 
-								$content .= $this->checkbox('ccadmin',__('Send blog admin an email notification', 'salesforce') );
 								//$content .= $this->checkbox('email_sender',__('Use this sender', 'salesforce') );
+								$content .= $this->textinput('ccothers',__('Email new submissions to', 'salesforce'), __('Separate multiple addresses with commas.','salesforce') );
+
+								$content .= $this->textinput('emailfromname',__('Email from name', 'salesforce') );
+								$content .= $this->textinput('emailfromaddress',__('Email from address', 'salesforce') );
+
+								$content .= $this->checkbox('ccadmin',__('Send blog admin an email notification', 'salesforce') );
+
 								$this->postbox('sfsettings',__('Email Settings', 'salesforce'),$content);
 
 								$content = $this->textinput('submitbutton',__('Submit button text', 'salesforce') );
