@@ -307,7 +307,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 			$content .= '" name="'.$id.'" '.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' />'."\n\n";
 
 		}else if ($input['type'] == 'date') {
-			$content .= "\t".'<input type="date" placeholder="'.$placeholder.'" value="'.$val.'" id="sf_'.$id.'" class="';
+			$content .= "\t".'<input type="text" placeholder="'.$placeholder.'" value="'.$val.'" id="sf_'.$id.'" class="';
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-text' : 'w2linput text';
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
 			$content .= '" name="'.$id.'" />'."\n\n";
