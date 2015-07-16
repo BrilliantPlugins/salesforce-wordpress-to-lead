@@ -18,7 +18,7 @@ WordPress-to-Lead for Salesforce CRM creates a solid integration between your Wo
 
 You can fully configure all the different settings for the form, and then use a shortcode to insert the form into your posts or pages, or you can use the widget that comes with the plugin and insert the form into your sidebar!
 
-Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hnMzkxPUIyc) to get a full grasp of the power this plugin holds, and visit the [Salesforce WordPress page]( http://www.salesforce.com/form/signup/wordpress-to-lead.jsp?d=70130000000F4Mw). Check out this page to learn more about [CRM for Small Business](http://www.salesforce.com/smallbusinesscenter/).
+Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hnMzkxPUIyc) to get a full grasp of some of the power this plugin holds (though it's a bit outdated!).
 
 #### Previous contributors:
 * Joost de Valk (http://profiles.wordpress.org/joostdevalk/)
@@ -192,8 +192,9 @@ showButtonPanel: true,
 `
 
 More information about the datepicker options can be found here:
-# Examples: http://jqueryui.com/datepicker/
-# API Reference: http://api.jqueryui.com/datepicker/
+
+1. Examples: http://jqueryui.com/datepicker/
+1. API Reference: http://api.jqueryui.com/datepicker/
 
 = How do I find the "internal name" of my picklist field? =
 
@@ -323,6 +324,8 @@ add_filter( 'salesforce_w2l_show_admin_nag_message', '__return_false', 10, 1 );
 `
 
 == Filters and Hooks ==
+
+= Filters and Hooks =
 
 **Note:**
 
