@@ -21,8 +21,8 @@ You can fully configure all the different settings for the form, and then use a 
 Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hnMzkxPUIyc) to get a full grasp of some of the power this plugin holds (though it's a bit outdated!).
 
 #### Previous contributors:
-* Joost de Valk (http://profiles.wordpress.org/joostdevalk/)
-* ModernTribe (http://profiles.wordpress.org/moderntribe/)
+* [Joost de Valk](http://profiles.wordpress.org/joostdevalk/)
+* [ModernTribe](http://profiles.wordpress.org/moderntribe/)
 
 == Screenshots ==
 
@@ -37,6 +37,12 @@ Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hn
 1. Enter your Salesforce.com Organization ID on the WordPress-to-Lead plugin configuration page.
 
 == Frequently Asked Questions ==
+
+= Does this plugin have any hooks or filters? Is there documentation? =
+
+Yes, quite a few.
+
+[Hooks & Filters Documentation](https://wordpress.org/plugins/salesforce-wordpress-to-lead/other_notes/)
 
 = I'm not seeing any errors, but the entry didn't get added to Salesforce! =
 
@@ -324,8 +330,6 @@ add_filter( 'salesforce_w2l_show_admin_nag_message', '__return_false', 10, 1 );
 `
 
 == Filters and Hooks ==
-
-= Filters and Hooks =
 
 **Note:**
 
