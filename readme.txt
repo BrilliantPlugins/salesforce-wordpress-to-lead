@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske, cimbura.com
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 4.2.2
-Stable tag: 2.6.5
+Stable tag: 2.6.6
 License: GPLv2
 Donate link: https://donate.charitywater.org/donate
 
@@ -500,6 +500,94 @@ If you need access to the field or form settings in your filter you can use:
 
 Examples:
 
+`
+// Pre-check a checkbox
+
+add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_precheck_example', 10, 3 );
+
+function salesforce_w2l_field_value_precheck_example( $val, $field, $form ){
+
+	$form_id = 1; // form id to act upon
+	$field_name = 'checkboxfield__c'; // API Name of the field you want to auto check
+
+	if( $form == $form_id && $field_name == $field && ! $_POST )
+		return 1; // or whatever the value of your checkbox is
+
+	return $val;
+
+}
+`
+
+`
+// Store HTTP referrer in a field (this is not 100% reliable as the browser sends this value to the server)
+
+add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_referrer_example', 10, 3 );
+
+function salesforce_w2l_field_value_referrer_example( $val, $field, $form ){
+
+	$form_id = 1; // form id to act upon
+	$field_name = 'referrer__c'; // API Name of the field you want to autofill
+
+	if( $form == $form_id && $field_name == $field ){
+		if( isset( $_SERVER['HTTP_REFERER'] ) ){
+			return $_SERVER['HTTP_REFERER'];
+		}
+	}
+
+	return $val;
+
+}
+`
+
+`
+// Autofill fields based on thew query string (using Google Analytics tracking variables in this example)
+
+add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_querystring_example', 10, 3 );
+
+function salesforce_w2l_field_value_querystring_example( $val, $field, $form ){
+
+	$form_id = 1; // form id to act upon
+	$field_name = 'source__c'; // API Name of the field you want to autofill
+	$qs_var = 'source'; // e.g. ?source=foo
+
+	if( $form == $form_id && $field_name == $field ){
+		if( isset( $_GET[ $qs_var ] ) ){
+			return $_GET[ $qs_var ];
+		}
+	}
+
+	return $val;
+
+}
+`
+
+`
+// Autofill a user's country based on IP
+
+add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_geoip_example', 10, 3 );
+
+function salesforce_w2l_field_value_geoip_example( $val, $field, $form ){
+
+	// Based on this plugin: https://wordpress.org/plugins/geoip-detect/
+	// Adjust this code to the one used by your geo detection plugin
+
+	if( !function_exists( 'geoip_detect2_get_info_from_current_ip' ) ) return;
+
+	$form_id = 1; // form id to act upon
+	$field_name = 'country__c'; // API Name of the field you want to autofill
+
+	if( $form == $form_id && $field_name == $field ){
+
+		$userInfo = geoip_detect2_get_info_from_current_ip();
+		//$val = $userInfo->country->isoCode; // e.g. US
+		$val = $userInfo->country->name; // e.g. United States
+
+	}
+
+	return $val;
+
+}
+`
 
 **salesforce_w2l_form_action**
 
@@ -616,6 +704,12 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 `
 
 == Changelog ==
+
+= 2.6.6 =
+* Add setting to make it easier to CC multiple people on new submissions
+* Add settings to specify the from name & from email for emails sent by the plugin (note: other plugins may override these settings via filters)
+* Add examples for filtering field values
+* New ad artwork/links
 
 = 2.6.5 =
 * Use esc_url_raw instead of sanitize_url
