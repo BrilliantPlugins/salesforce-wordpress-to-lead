@@ -508,7 +508,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 	if( $date_fields ){
 		wp_enqueue_script('jquery-ui-datepicker');
-		wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
+		wp_enqueue_style('jquery-style', '//ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 
 		$content .= "<script>jQuery(document).ready(function() {";
 
