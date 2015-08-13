@@ -629,7 +629,7 @@ function submit_salesforce_form( $post, $options ) {
 	}
 
 	// Do we need to change the URL we're submitting to?
-	$url = apply_filters( 'salesforce_w2l_api_url', $url, $form_type );
+	$url = apply_filters( 'salesforce_w2l_api_url', $url, $form_type, $post );
 
 	// Pre submit actions
 	do_action( 'salesforce_w2l_before_submit', $post, $form_id, $form_type );
@@ -819,7 +819,7 @@ function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $app
 	//print_r( $emails );
 
 	$message = apply_filters('salesforce_w2l_cc_admin_email_content', $message );
-	$subject = apply_filters('salesforce_w2l_cc_admin_email_subject', $subject, $form_type );
+	$subject = apply_filters('salesforce_w2l_cc_admin_email_subject', $subject, $form_type, $post );
 
 	if( WP_DEBUG )
 		error_log( 'salesforce_cc_admin:'.print_r( array($emails,$message,$subject),1 ) );
