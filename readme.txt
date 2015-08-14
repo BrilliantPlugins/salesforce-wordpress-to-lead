@@ -596,6 +596,26 @@ function salesforce_w2l_field_value_geoip_example( $val, $field, $form ){
 }
 `
 
+`
+// Autofill a date
+// https://codex.wordpress.org/Function_Reference/current_time
+// http://php.net/manual/en/function.date.php
+
+add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_date_example', 10, 3 );
+
+function salesforce_w2l_field_value_date_example( $val, $field, $form ){
+
+    $form_id = 1; // form id to act upon
+    $field_name = 'mydatefield__c'; // API Name of the field you want to auto check
+
+    if( $form == $form_id && $field_name == $field && ! $_POST )
+        return current_time('Y-m-d'); // or whatever date format you want
+
+    return $val;
+
+}
+`
+
 **salesforce_w2l_form_action**
 
 Allows you to remove the form action.
