@@ -732,6 +732,10 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 
 == Changelog ==
 
+= 2.6.7 =
+* Add setting to remove WP CF7 javascript to fix it hijacking forms with WP CF7 CSS integration turned on
+* Add setting to enable SSL verification of SalesForce SSL cert when connecting to the API
+
 = 2.6.6 =
 * Add setting to make it easier to CC multiple people on new submissions
 * Add settings to specify the from name & from email for emails sent by the plugin (note: other plugins may override these settings via filters)

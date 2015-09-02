@@ -290,7 +290,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				if (!current_user_can('manage_options')) die(__('You cannot edit the WordPress-to-Lead options.', 'salesforce'));
 				check_admin_referer('salesforce-udpatesettings');
 
-				foreach (array('usecss','showccuser','ccadmin','captcha','wpcf7css','hide_salesforce_link', 'commentstoleads', 'commentsnamefields') as $option_name) {
+				foreach (array('usecss','showccuser','ccadmin','captcha','wpcf7css','wpcf7jsfix','sslverify','hide_salesforce_link', 'commentstoleads', 'commentsnamefields') as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options[$option_name] = true;
 					} else {
@@ -427,7 +427,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 								$content .= $this->checkbox('ccadmin',__('Send blog admin an email notification', 'salesforce') );
 
-								$this->postbox('sfsettings',__('Email Settings', 'salesforce'),$content);
+								$this->postbox('sfsettings',__('Email Settings', 'salesforce'), $content);
 
 								$content = $this->textinput('submitbutton',__('Submit button text', 'salesforce') );
 								$content .= $this->textinput('requiredfieldstext',__('Required fields text', 'salesforce') );
@@ -435,20 +435,25 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								$content .= $this->checkbox('captcha',__('Use CAPTCHA?', 'salesforce') );
 								$content .= '<br/><small><a href="http://en.wikipedia.org/wiki/CAPTCHA" target="_blank">'.__('Learn more about CAPTCHAs at Wikipedia').'</a></small>';
 
-								$this->postbox('formsettings',__('Form Settings', 'salesforce'),$content);
+								$this->postbox('formsettings',__('Form Settings', 'salesforce'), $content);
 
 								$content = $this->checkbox('usecss',__('Use Default CSS?', 'salesforce') );
-								$content .= $this->checkbox('wpcf7css',__('Use WPCF7 CSS integration?', 'salesforce') );
+								$content .= $this->checkbox('wpcf7css',__('Use WP CF7 CSS integration?', 'salesforce') );
+								$content .= $this->checkbox('wpcf7jsfix',__('Remove WP CF7 Javascript on SFWP2L pages? <i>(fixes CF7 hijacking form submits, may break CF7 forms on the same page)</i>', 'salesforce') );
 								//$content .= $this->checkbox('hide_salesforce_link',__('Hide "Powered by Salesforce CRM" on form?', 'salesforce') );
 								$content .= '<br/><small><a href="'.$this->plugin_options_url().'&amp;tab=css">'.__('Read how to override the default CSS with your own CSS file').'</a></small><br><br>';
 
-								$this->postbox('csssettings',__('Style Settings', 'salesforce'),$content);
+								$this->postbox('csssettings',__('Style Settings', 'salesforce'), $content);
+
+								$content = $this->checkbox('sslverify',__('Enable verification of SalesForce SSL certificate when connecting <i>(fixes connection issues on some sites behind F7 firewalls and BigIP load balancers)</i>', 'salesforce') );
+
+								$this->postbox('sslsettings',__('SSL Settings', 'salesforce'), $content);
 
 								$content = $this->checkbox('commentstoleads',__('Create a lead when an approved comment is published', 'salesforce') );
 								$content .= $this->checkbox('commentsnamefields',__('Replace the "Name" field on the comment form with "First Name" and "Last Name"', 'salesforce') );
 								$content .= sprintf( '<p class="description">%s</p>', __( '<small>Using first and last name fields allows for cleaner Salesforce leads, otherwise the "first name" on the lead will contain the full name, but it may create issues with some WordPress themes.</small>', 'salesforce' ) );
 
-								$this->postbox('commentsettings',__('Comment Settings', 'salesforce'),$content);
+								$this->postbox('commentsettings',__('Comment Settings', 'salesforce'), $content);
 
 								?>
 								<div class="submit"><input type="submit" class="button-primary" name="submit" value="<?php _e("Save WordPress-to-Lead Settings", 'salesforce'); ?>" /></div>

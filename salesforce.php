@@ -184,6 +184,9 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 	if( $label_location == 'placeholders' )
 		wp_enqueue_script( 'sfwp2ljqph', plugins_url('/assets/js/jquery-placeholder/jquery.placeholder.js', __FILE__)  );
 
+	if( $options['wpcf7css'] && $options['wpcf7jsfix'] )
+		wp_dequeue_script( 'contact-form-7');
+
 	$custom_css = '/salesforce-wordpress-to-lead/custom.css';
 
 	if( file_exists( get_stylesheet_directory() . $custom_css ) )
@@ -510,7 +513,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		wp_enqueue_script('jquery-ui-datepicker');
 		wp_enqueue_style('jquery-style', '//ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 
-		$content .= "<script>jQuery(document).ready(function() {";
+		$content .= "<script>jQuery(document).ready(function( $ ) {";
 
 		foreach( $date_fields as $id => $date_field ){
 
@@ -610,14 +613,20 @@ function submit_salesforce_form( $post, $options ) {
 	$body = preg_replace('/%5B[0-9]+%5D/simU', '', http_build_query($post) ); // remove php style arrays for array values [1]
 	//echo $body .'<hr>';
 
-	// Set SSL verify to false because of server issues.
+	$sslverify = false;
+
+	// setting to override
+	if( !empty( $options['sslverify'] ) )
+		$sslverify = (bool) $options['sslverify'];
+
+	// Set SSL verify to false because of server issues, unless setting is set... a filter can also be used to override arguments
 	$args = array(
 		'body' 		=> $body,
 		'headers' 	=> array(
 			'Content-Type' => 'application/x-www-form-urlencoded',
 			'user-agent' => 'WordPress-to-Lead for Salesforce plugin - WordPress/'.$wp_version.'; '.get_bloginfo('url'),
 		),
-		'sslverify'	=> false,
+		'sslverify'	=> $sslverify,
 	);
 
 	$args = apply_filters( 'salesforce_w2l_post_args', $args );
