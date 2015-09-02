@@ -164,3 +164,12 @@ return current_time('Y-m-d'); // or whatever date format you want
 
 return $val;
 }
+
+add_filter( 'salesforce_w2l_post_args', 'example_salesforce_enable_ssl_verify', 10, 1 );
+
+function example_salesforce_enable_ssl_verify( $args ){
+
+	$args['sslverify'] = true;
+	return $args;
+
+}
