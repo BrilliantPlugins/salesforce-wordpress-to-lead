@@ -726,16 +726,22 @@ function salesforce_cc_user( $post, $options, $form_id = 1 ){
 
 	//format message
 	foreach($post as $name => $value){
-		if( !empty($name) && !empty($value) && isset($options['forms'][$form_id]['inputs'][$name]['label']) )
-			$label = $options['forms'][$form_id]['inputs'][$name]['label'];
 
-			if( trim( $label ) != '' )
-				$message .= stripslashes($label).': '.salesforce_maybe_implode(',', $value)."\r\n";
+		if( isset( $options['forms'][$form_id]['inputs'][$name]['label'] ) ){
+			$label = trim( $options['forms'][$form_id]['inputs'][$name]['label'] );
+		}else{
+			$label = '';
+		}
+
+		if( !empty( $name ) && !empty( $value ) && !empty( $label ) ){
+			$message .= stripslashes($label).': '.salesforce_maybe_implode(',', $value)."\r\n";
+		}
+
 	}
 
 	$message = apply_filters('salesforce_w2l_cc_user_email_content', $message );
 
-	if( WP_DEBUG )
+	if( defined( WP_DEBUG )  && WP_DEBUG )
 		error_log( 'salesforce_cc_user:'.print_r( array($message),1 ) );
 
 	if( $message )
@@ -788,11 +794,16 @@ function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $app
 
 	//format message
 	foreach($post as $name=>$value){
-		if( !empty($value) && isset($options['forms'][$form_id]['inputs'][$name]['label']) ){
 
-			$label = $options['forms'][$form_id]['inputs'][$name]['label'];
+		if( isset( $options['forms'][$form_id]['inputs'][$name]['label'] ) ){
+			$label = trim( $options['forms'][$form_id]['inputs'][$name]['label'] );
+		}else{
+			$label = '';
+		}
 
-			if( trim( $label ) != '' && $name != 'lead_source' )
+		if( !empty($value) && ! empty( $label ) ){
+
+			if( $label != '' && $name != 'lead_source' )
 				$message .= stripslashes($label).': '. salesforce_maybe_implode( ';', $value)."\r\n";
 		}
 	}
