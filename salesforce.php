@@ -761,7 +761,11 @@ function salesforce_maybe_implode( $delimiter, $data ){
 function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $append = '' ){
 
 	if( !$subject )
-		$subject = __( 'Salesforce Web to %%type%% Submission', 'salesforce' );
+		$subject = '[' . __( 'Salesforce Web to %%type%% Submission', 'salesforce' ) . ']';
+
+	$subject = str_replace( '%%type%%', $form_type,  $subject );
+
+	$subject .= ' ' . $options['forms'][$form_id]['form_name'];
 
 	$from_name = salesforce_get_option( 'emailfromname', $form_id, $options );
 	if( !$from_name )
@@ -785,7 +789,6 @@ function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $app
 	}else{
 		$form_type = __( 'Lead', 'salesforce' );
 	}
-	$subject = str_replace( '%%type%%', $form_type,  $subject );
 
 	$message = '';
 
@@ -804,13 +807,16 @@ function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $app
 		if( !empty($value) && ! empty( $label ) ){
 
 			if( $label != '' && $name != 'lead_source' )
-				$message .= stripslashes($label).': '. salesforce_maybe_implode( ';', $value)."\r\n";
+				$message .= stripslashes($label).': '. salesforce_maybe_implode( ';', $value ) . "\r\n";
 		}
 	}
 
 	if ( $post['lead_source'] ) {
 		$message .= "\r\n".'Lead Source: '.salesforce_maybe_implode( ';', $post['lead_source'] )."\r\n";
 	}
+
+	// add form info
+	$message .= "\r\n".'Form ID: '. $form_id . "\r\n".'Form Editor: ' . add_query_arg( array( 'page' => 'salesforce-wordpress-to-lead', 'tab' => 'form', 'id' => $form_id ), admin_url( 'options-general.php' ) ) ."\r\n";
 
 	if( $append ){
 		$message .= "\r\n".'= Addditional Information ='."\r\n\r\n".$append."\r\n";
