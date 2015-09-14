@@ -133,7 +133,14 @@ To find your Organization ID, do the following steps:
 = How do I use the checkbox field? =
 Like any other field. Note that it is a single checkbox, not a checkbox list (yet).
 
+*Note:* You must provide a value for your checkbox. Generally `1` is what you want (unless you're expecting something other than true/false in SalesForce). If you don't provide a value, your checkbox will never get sent with the form data (and even if it did, it won’t "check" the box at SalesForce as "empty" = unchecked).
+
 _Checkbox lists and radio buttons will be in a future update._
+
+= How do I pre-check a checkbox? =
+Before you do, consider if a pre-checked checkbox (opt-out) is [really what you want to do](http://sethgodin.typepad.com/seths_blog/2002/03/opt_in_matters_.html).
+
+If you insist on proceeding anyways: see the _Pre-check a checkbox_ example in [Other Notes](https://wordpress.org/plugins/salesforce-wordpress-to-lead/other_notes/).
 
 = How do I use the select (picklist) field? =
 
