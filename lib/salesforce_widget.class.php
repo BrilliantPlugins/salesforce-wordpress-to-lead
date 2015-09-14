@@ -4,7 +4,7 @@ class Salesforce_WordPress_to_Lead_Widgets extends WP_Widget {
 	function Salesforce_WordPress_to_Lead_Widgets() {
 		$widget_ops = array( 'classname' => 'salesforce', 'description' => __('Displays a WordPress-to-Lead for Salesforce Form','salesforce') );
 		$control_ops = array( 'width' => 200, 'height' => 250, 'id_base' => 'salesforce' );
-		$this->WP_Widget( 'salesforce', 'Salesforce', $widget_ops, $control_ops );
+		parent::__construct( 'salesforce', 'Salesforce', $widget_ops, $control_ops );
 	}
 
 	function widget( $args, $instance ) {
