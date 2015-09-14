@@ -739,6 +739,10 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 
 == Changelog ==
 
+= 2.7 =
+* Fix widget constructor to be compatible with WP 4.3 (thanks Steven Stevenson)
+* Store form configuration data in one (non auto-loaded) option per form to avoid option trimming and memory issues for larger installs (sponsored by SPS commerce)
+
 = 2.6.7 =
 * Add setting to remove WP CF7 javascript to fix it hijacking forms with WP CF7 CSS integration turned on
 * Add setting to enable SSL verification of SalesForce SSL cert when connecting to the API
@@ -1000,6 +1004,9 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 * Initial release.
 
 == Upgrade Notice ==
+
+= 2.7 =
+This version changes how option data is stored (it will auto migrate data to the new format leaving the old format available in case a rollback is needed).
 
 = 2.6.1 =
 The default CSS changed in the 2.6 release. If you've customized the form output, double check your form styling after upgrade.
