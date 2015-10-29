@@ -256,7 +256,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				}
 
 				// normal options
-				w2l_sksort($newinputs,'pos',true);
+				salesforce_sksort($newinputs,'pos',true);
 				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
 
 				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','labellocationsidebar','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id', 'cc_email_subject','donotautoaddcolontolabels') as $option_name) {

@@ -83,7 +83,7 @@ function salesforce_back_link($url){
  * Sort input array by $subkey
  * Taken from: http://php.net/manual/en/function.ksort.php
  */
-function w2l_sksort(&$array, $subkey="id", $sort_ascending=false) {
+function salesforce_sksort(&$array, $subkey="id", $sort_ascending=false) {
 
 	if( !is_array( $array ) )
 		return $array;
@@ -1132,7 +1132,7 @@ function salesforce_activate(){
 			}
 
 		//sort merged inputs
-		w2l_sksort($newinputs,'pos',true);
+		salesforce_sksort($newinputs,'pos',true);
 
 		//save merged and sorted inputs
 		$options['forms'][1]['inputs'] = $newinputs;
