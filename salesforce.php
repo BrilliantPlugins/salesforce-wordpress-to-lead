@@ -874,7 +874,7 @@ function salesforce_form_shortcode($atts) {
 	$sidebar = (bool) $sidebar;
 
 	$options = get_option("salesforce2");
-	if (!is_array($options))
+	if ( ! is_array( $options ) )
 		$options = salesforce_default_settings();
 
 	//don't submit unless we're in the right shortcode
