@@ -10,7 +10,9 @@ License: GPL2
 */
 
 // Yoast Plugin Helper Functions
-require_once('lib/ov_plugin_tools.php');
+require_once( plugin_dir_path( __FILE__ ) . 'lib/ov_plugin_tools.php' );
+
+require_once( plugin_dir_path( __FILE__ ) . 'lib/salesforce_post_type.php' );
 
 // Filter Examples
 if( defined('TR_DEVELOPMENT') && TR_DEVELOPMENT )
