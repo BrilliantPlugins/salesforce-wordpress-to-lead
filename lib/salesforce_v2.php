@@ -36,7 +36,7 @@ function salesforce_shortcode( $atts ) {
 	}
 
 	//this is the right form, continue
-	if (isset($_POST['w2lsubmit'])) {
+	if ( isset( $_POST['w2lsubmit'] ) ) {
 		$error = false;
 		$post = array();
 
