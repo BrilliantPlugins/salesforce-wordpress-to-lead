@@ -12,6 +12,8 @@ License: GPL2
 // Yoast Plugin Helper Functions
 require_once( plugin_dir_path( __FILE__ ) . 'lib/ov_plugin_tools.php' );
 
+require_once( plugin_dir_path( __FILE__ ) . 'lib/salesforce_functions.php' );
+
 require_once( plugin_dir_path( __FILE__ ) . 'lib/salesforce_post_type.php' );
 
 // Filter Examples
@@ -150,13 +152,13 @@ function salesforce_captcha(){
 
 function get_salesforce_form_id( $form_id, $sidebar ){
 
-	return 'salesforce_w2l_lead_'.$form_id.str_replace(' ','_',$sidebar);
+	return 'salesforce_w2l_form_'.$form_id.str_replace(' ','_',$sidebar);
 
 }
 
-function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id = 1) {
+function salesforce_form( $options, $is_sidebar = false, $errors = null, $form_id = 1 ) {
 
-	if( !isset($options['forms'][$form_id]) )
+	if( !isset( $options['forms'][$form_id] ) )
 		return;
 
 	$content = '';
@@ -200,7 +202,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 	$sf_form_id = get_salesforce_form_id( $form_id, $sidebar );
 
-	$action	= '#sf_form_'.$sf_form_id;
+	$action	= '#'.$sf_form_id;
 	$action = apply_filters( 'salesforce_w2l_form_action', $action );
 
 	$content .= "\n".'<form id="sf_form_'.$sf_form_id.'" class="'.($options['wpcf7css'] ? 'wpcf7-form' : 'w2llead'.$sidebar ).' '.$label_location.'" method="post" action="'.$action.'">'."\n";
@@ -455,7 +457,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 	$content .= "\t".'<input type="text" name="message" class="w2linput" value="" style="display: none;" />'."\n";
 
 	//form id
-	$content .= "\t".'<input type="hidden" name="form_id" class="w2linput" value="'.$form_id.'" />'."\n";
+	$content .= "\t".'<input type="hidden" name="submitted_form_id" class="w2linput" value="'.$form_id.'" />'."\n";
 
 	//daddy analytics
 	if( isset( $options['da_token'] ) && $options['da_token'] && isset( $options['da_url'] ) && $options['da_url'] ){
@@ -859,10 +861,11 @@ function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $app
 	}
 }
 
-function salesforce_form_shortcode($atts) {
+function salesforce_form_shortcode( $atts ) {
 
 	extract( shortcode_atts( array(
 		'form' => '1',
+		'form_id' => null,
 		'sidebar' => false,
 	), $atts ) );
 
@@ -870,7 +873,8 @@ function salesforce_form_shortcode($atts) {
 	$captchaerror = '';
 	$content = '';
 
-	$form = (int) $form;
+	$form = absint( $form );
+	$form_id = absint( $form_id );
 	$sidebar = (bool) $sidebar;
 
 	$options = get_option("salesforce2");
@@ -878,14 +882,23 @@ function salesforce_form_shortcode($atts) {
 		$options = salesforce_default_settings();
 
 	//don't submit unless we're in the right shortcode
-	if( isset( $_POST['form_id'] ) ){
-		$form_id = intval( $_POST['form_id'] );
+	if( isset( $_POST['submitted_form_id'] ) ){
+		$submitted_form_id = intval( $_POST['form_id'] );
 
-		if( $form_id != $form ){
-			$content = salesforce_form($options, $sidebar, null, $form);
-			return '<div class="salesforce_w2l_lead">'.$content.'</div>';
+			if( $form_id ){
+				if( $submitted_form_id != $form_id ){
+					$content = salesforce_form( $options, $sidebar, null, null, $form_id );
+					return '<div class="salesforce_w2l_lead">'.$content.'</div>';
+				}
+			}
 
-		}
+			if( $form ){
+				if( $submitted_form_id != $form ){
+					$content = salesforce_form( $options, $sidebar, null, $form );
+					return '<div class="salesforce_w2l_lead">'.$content.'</div>';
+				}
+			}
+
 	}
 
 	//this is the right form, continue
@@ -1004,7 +1017,7 @@ function salesforce_form_shortcode($atts) {
 */
 
 		if (!$has_error) {
-			$result = submit_salesforce_form($post, $options, $form);
+			$result = submit_salesforce_form( $post, $options, $form );
 
 			//echo 'RESULT='.$result;
 			//if($result) echo 'true';
@@ -1045,7 +1058,7 @@ function salesforce_form_shortcode($atts) {
 		} else {
 			$errormsg = esc_html( stripslashes($options['errormsg']) ) ;
 
-			$content .= salesforce_form($options, $sidebar, $errors, $form);
+			$content .= salesforce_form( $options, $sidebar, $errors, $form );
 		}
 	} else {
 		$content = salesforce_form($options, $sidebar, null, $form);
@@ -1182,9 +1195,20 @@ function salesforce_add_plugin_meta( $plugin_meta, $plugin_file, $plugin_data, $
 }
 add_filter( 'plugin_row_meta', 'salesforce_add_plugin_meta', 10, 4);
 
-
 function salesforce_init() {
 	load_plugin_textdomain( 'salesforce', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+
+	// Do we need to migrate data from 2.6.x to 2.7+ ?
+	// Check for 2.7+ option - named salesforce3
+	$option_check = get_option( 'salesforce3' );
+
+	if( ! is_array( $option_check ) ){
+
+		// run upgrade script
+		require_once( plugin_dir_path( __FILE__ ) . 'lib/salesforce_upgrade_to_v3.php' );
+
+	}
+
 }
 add_action('plugins_loaded', 'salesforce_init');
 
