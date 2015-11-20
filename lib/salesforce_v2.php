@@ -8,7 +8,6 @@ function salesforce_shortcode( $atts ) {
 
 	extract( shortcode_atts( array(
 		'form' => '1',
-		'form_id' => null,
 		'sidebar' => false,
 	), $atts ) );
 
@@ -17,7 +16,6 @@ function salesforce_shortcode( $atts ) {
 	$content = '';
 
 	$form = absint( $form );
-	$form_id = absint( $form_id );
 	$sidebar = (bool) $sidebar;
 
 	$options = get_option("salesforce2");
@@ -25,15 +23,8 @@ function salesforce_shortcode( $atts ) {
 		$options = salesforce_default_settings();
 
 	//don't submit unless we're in the right shortcode
-	if( isset( $_POST['submitted_form_id'] ) ){
+	if( isset( $_POST['form_id'] ) ){
 		$submitted_form_id = intval( $_POST['form_id'] );
-
-			if( $form_id ){
-				if( $submitted_form_id != $form_id ){
-					$content = salesforce_form( $options, $sidebar, null, null, $form_id );
-					return '<div class="salesforce_w2l_lead">'.$content.'</div>';
-				}
-			}
 
 			if( $form ){
 				if( $submitted_form_id != $form ){
@@ -261,7 +252,7 @@ function salesforce_form( $options, $is_sidebar = false, $errors = null, $form_i
 */
 
 	if ($options['usecss']) {
-		wp_enqueue_style( 'sfwp2lcss', plugins_url('/assets/css/sfwp2l.css', __FILE__) );
+		wp_enqueue_style( 'sfwp2lcss', plugins_url('../assets/css/sfwp2l.css', __FILE__) );
 	}
 
 	$label_location = salesforce_get_option('labellocation', $form_id, $options);
@@ -278,7 +269,7 @@ function salesforce_form( $options, $is_sidebar = false, $errors = null, $form_i
 		$label_location = salesforce_get_option('labellocationsidebar', $form_id, $options);
 
 	if( $label_location == 'placeholders' )
-		wp_enqueue_script( 'sfwp2ljqph', plugins_url('/assets/js/jquery-placeholder/jquery.placeholder.js', __FILE__)  );
+		wp_enqueue_script( 'sfwp2ljqph', plugins_url('../assets/js/jquery-placeholder/jquery.placeholder.js', __FILE__)  );
 
 	if( $options['wpcf7css'] && $options['wpcf7jsfix'] )
 		wp_dequeue_script( 'contact-form-7');
@@ -549,7 +540,7 @@ function salesforce_form( $options, $is_sidebar = false, $errors = null, $form_i
 	$content .= "\t".'<input type="text" name="message" class="w2linput" value="" style="display: none;" />'."\n";
 
 	//form id
-	$content .= "\t".'<input type="hidden" name="submitted_form_id" class="w2linput" value="'.$form_id.'" />'."\n";
+	$content .= "\t".'<input type="hidden" name="form_id" class="w2linput" value="'.$form_id.'" />'."\n";
 
 	//daddy analytics
 	if( isset( $options['da_token'] ) && $options['da_token'] && isset( $options['da_url'] ) && $options['da_url'] ){
