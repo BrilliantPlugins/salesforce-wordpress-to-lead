@@ -96,7 +96,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 	}
 
-	function get_ad_link( $content, $medium, $url = 'http://daddyanalytics.com/', $term='', $source = 'ThoughtRefinery', $campaign = 'WP2L_Plugin_01' ){
+	public function get_ad_link( $content, $medium, $url = 'http://daddyanalytics.com/', $term='', $source = 'ThoughtRefinery', $campaign = 'WP2L_Plugin_01' ){
 
 		if( !$term )
 			$term = $this->get_ad_term();
@@ -106,9 +106,9 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 	}
 
-	function get_ad_code( $type, $id = null, $num = null ){
+	public function get_ad_code( $type, $id = null, $num = null ){
 
-		$options  = get_option($this->optionname);
+		$options  = get_option( $this->optionname );
 
 		if( defined( 'SFWP2L_HIDE_ADS' ) && SFWP2L_HIDE_ADS == true ){
 			return; // hide ads due to constant
@@ -186,6 +186,34 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	    echo '</h2>';
 	}
 
+	function save_options() {
+
+			// SAVE GENERAL PLUGIN SETTINGS
+
+			$options  = get_option($this->optionname);
+
+			if (!current_user_can('manage_options')) die(__('You cannot edit the WordPress-to-Lead options.', 'salesforce'));
+			check_admin_referer('salesforce-udpatesettings');
+
+			foreach (array('usecss','showccuser','ccadmin','captcha','wpcf7css','wpcf7jsfix','sslverify','hide_salesforce_link', 'commentstoleads', 'commentsnamefields') as $option_name) {
+				if (isset($_POST[$option_name])) {
+					$options[$option_name] = true;
+				} else {
+					$options[$option_name] = false;
+				}
+			}
+
+	        foreach (array('successmsg','errormsg','emailerrormsg','captchaerrormsg','sferrormsg','org_id','submitbutton','subject','ccusermsg','requiredfieldstext', 'ccothers', 'emailfromname', 'emailfromaddress',  'da_token', 'da_url', 'da_site') as $option_name) {
+				if (isset($_POST[$option_name])) {
+					$options[$option_name] = $_POST[$option_name];
+				}
+			}
+
+			// SAVE OPTION(S) TO DB
+			update_option($this->optionname, $options);
+
+	}
+
 	function config_page() {
 
 		wp_enqueue_style( 'sfwp2lcssadmin', plugins_url('assets/css/sfwp2l-admin.css', dirname(__FILE__) ) );
@@ -194,123 +222,9 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 		if ( isset($_POST['submit']) ) {
 
-			//die('<pre>'.print_r($_POST,true)); //DEBUG
-
-			if( isset( $_POST['mode'] ) && $_POST['mode'] == 'editform' ){
-
-				$form_id = (int) $_POST['form_id'];
-
-				if(!isset($options['forms'][$form_id]))
-					$options['forms'][$form_id] = $this->default_form();
-
-				//Begin Save Form Data
-				$newinputs = array();
-				foreach ($options['forms'][$form_id]['inputs'] as $id => $input) {
-					if (!empty($_POST['inputs'][$id.'_delete'])) {
-						continue;
-					}
-
-					foreach (array('show','required') as $option_name) {
-						if (isset($_POST['inputs'][$id.'_'.$option_name])) {
-							$newinputs[$id][$option_name] = true;
-							unset($_POST['inputs'][$id.'_'.$option_name]);
-						} else {
-							$newinputs[$id][$option_name] = false;
-						}
-					}
-					foreach (array('type','label','value','pos','opts') as $option_name) {
-						if (isset($_POST['inputs'][$id.'_'.$option_name])) {
-							$newinputs[$id][$option_name] = $_POST['inputs'][$id.'_'.$option_name];
-							unset($_POST['inputs'][$id.'_'.$option_name]);
-						}
-					}
-				}
-
-				//add any new fields
-
-				if( isset($_POST['add_inputs']) ){
-
-					foreach ($_POST['add_inputs'] as $key=>$input) {
-
-						$id = $input['field_name'];
-
-						if( !empty($id) ){
-							foreach (array('show','required') as $option_name) {
-								if (isset($_POST['add_inputs'][$key][$option_name])) {
-									$newinputs[$id][$option_name] = true;
-									unset($_POST['add_inputs'][$key][$option_name]);
-								} else {
-									$newinputs[$id][$option_name] = false;
-								}
-							}
-
-							foreach (array('type','label','value','pos','opts') as $option_name) {
-								if (isset($_POST['add_inputs'][$key][$option_name])) {
-									$newinputs[$id][$option_name] = $_POST['add_inputs'][$key][$option_name];
-									unset($_POST['add_inputs'][$key][$option_name]);
-								}
-							}
-						}
-					}
-
-				}
-
-				// normal options
-				salesforce_sksort($newinputs,'pos',true);
-				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
-
-				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','labellocationsidebar','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id', 'cc_email_subject','donotautoaddcolontolabels') as $option_name) {
-					if (isset($_POST[$option_name])) {
-						$options['forms'][$form_id][$option_name] = $_POST[$option_name];
-					}else{
-						$options['forms'][$form_id][$option_name] = '';
-					}
-				}
-
-				//End Save Form Data
-
-			}elseif( isset( $_POST['mode'] ) && $_POST['mode'] == 'delete'){
-
-				if( isset( $_POST['form_id'] ) && $_POST['form_id'] != 1 )
-					unset( $options['forms'][$_POST['form_id']] );
-
-			}elseif( isset( $_POST['mode'] ) && $_POST['mode'] == 'clone'){
-
-				if( isset( $_POST['form_id'] ) ) {
-					$new_id = max(array_keys($options['forms'])) + 1;
-					$options['forms'][$new_id] = $options['forms'][$_POST['form_id']];
-					$options['forms'][$new_id]['form_name'] .= ' (copy)';
-				}
-
-			}else{
-
-				//Save general settings
-
-				$options  = get_option($this->optionname);
-				if (!current_user_can('manage_options')) die(__('You cannot edit the WordPress-to-Lead options.', 'salesforce'));
-				check_admin_referer('salesforce-udpatesettings');
-
-				foreach (array('usecss','showccuser','ccadmin','captcha','wpcf7css','wpcf7jsfix','sslverify','hide_salesforce_link', 'commentstoleads', 'commentsnamefields') as $option_name) {
-					if (isset($_POST[$option_name])) {
-						$options[$option_name] = true;
-					} else {
-						$options[$option_name] = false;
-					}
-				}
-
-		        foreach (array('successmsg','errormsg','emailerrormsg','captchaerrormsg','sferrormsg','org_id','submitbutton','subject','ccusermsg','requiredfieldstext', 'ccothers', 'emailfromname', 'emailfromaddress',  'da_token', 'da_url', 'da_site') as $option_name) {
-					if (isset($_POST[$option_name])) {
-						$options[$option_name] = $_POST[$option_name];
-					}
-				}
-			}
-
-			//save changes to DB
-			update_option($this->optionname, $options);
+			$this->save_options();
 
 		}
-
-		//$options = get_option($this->optionname);
 
 		if (empty($options))
 			$options = salesforce_default_settings();
