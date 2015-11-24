@@ -56,9 +56,9 @@ function salesforce_setup_metaboxes(){
 
 function salesforce_form_id_metabox( $post ){
 
-	echo '<p>To embed this form, copy the following shortcode into a post or page:</p><p><code> [salesforce post_id="' . $post->ID . '"] </code></p>';
+	echo '<p>To embed this form, copy the following shortcode into a post or page:</p><p><code> [salesforce_form id="' . $post->ID . '"] </code></p>';
 
-	echo '<p>You can also use the widget and choose your form from the dropdown.</p>';
+	echo '<p>You can also use the widget and choose from the dropdown.</p>';
 
 	//echo '<p>Legacy Shortcode<br>[salesforce form="' . salesforce_get_form_id_by_post_id( $post->ID ) . '"]</p>';
 
