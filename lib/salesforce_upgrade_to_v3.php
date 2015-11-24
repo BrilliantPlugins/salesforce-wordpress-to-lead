@@ -6,6 +6,8 @@ function salesforce_migrate_option(){
 
 	$form_mapping = array();
 
+	$post_id = null;
+
 	//if we have options to migrate, do so
 	if( is_array( $options_v2 ) ){
 
@@ -28,11 +30,13 @@ function salesforce_migrate_option(){
 
 		}
 
+		error_log( 'SALESFORCE $form_mapping = ' . print_r( $form_mapping, 1 ) );
+
 		// copy options
 		$options_v3 = $options_v2;
 
 		// update superfluous option version
-		$options_v3['version'] = 3.0;
+		$options_v3['version'] = '3.0';
 
 		// create form mapping 'legacy_id' => 'post_id'
 		$options_v3['form_mapping'] = $form_mapping;
@@ -40,10 +44,13 @@ function salesforce_migrate_option(){
 		//clear out old form data
 		unset( $options_v3['forms'] );
 
+		error_log( 'SALESFORCE $options_v3 = ' . print_r( $options_v3, 1 ) );
+
 		// save new option to indicate successful upgrade
 		update_option( 'salesforce3', $options_v3 );
 
 	}
+
 }
 
 // Adds a new form (CPT)
@@ -79,8 +86,8 @@ function salesforce_migrate_form( $form_data, $form_title = null, $form_id = nul
 		unset( $form_data['form_name'] ); // name is redundant
 		update_post_meta( $post_id, '_salesforce_form_data', $form_data );
 
-	}
+		return $post_id;
 
-	return $post_id;
+	}
 
 }
