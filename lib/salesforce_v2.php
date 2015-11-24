@@ -721,9 +721,9 @@ function submit_salesforce_form( $post, $options ) {
 	$args = apply_filters( 'salesforce_w2l_post_args', $args );
 
 	if( $form_type == 'case' ){
-		$url = 'https://www.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8';
+		$url = 'https://login.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8';
 	}else{
-		$url = 'https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
+		$url = 'https://login.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
 	}
 
 	// Do we need to change the URL we're submitting to?
