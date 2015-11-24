@@ -18,7 +18,12 @@ function salesforce_shortcode( $atts ) {
 	$form = absint( $form );
 	$sidebar = (bool) $sidebar;
 
-	$options = get_option("salesforce2");
+	$options = get_option( salesforce_get_option_name() );
+
+	//load form data via legacy id
+	$options['forms'][ $form ] = salesforce_get_meta_data( salesforce_map_legacy_id( $form ) );
+
+
 	if ( ! is_array( $options ) )
 		$options = salesforce_default_settings();
 
@@ -195,7 +200,7 @@ function salesforce_shortcode( $atts ) {
 			$content .= salesforce_form( $options, $sidebar, $errors, $form );
 		}
 	} else {
-		$content = salesforce_form($options, $sidebar, null, $form);
+		$content = salesforce_form( $options, $sidebar, null, $form );
 	}
 
 	return '<div class="salesforce_w2l_lead">'.$content.'</div>';
@@ -203,7 +208,7 @@ function salesforce_shortcode( $atts ) {
 
 function salesforce_get_form( $form ){
 
-	$options = get_option("salesforce2");
+	$options = get_option( salesforce_get_option_name() );
 
 	if( isset( $options['forms'][$form] ) )
 		return $options['forms'][$form];
@@ -213,7 +218,7 @@ function salesforce_get_form( $form ){
 
 function salesforce_get_field( $name, $form ){
 
-	$options = get_option("salesforce2");
+	$options = get_option( salesforce_get_option_name() );
 
 	if( isset( $options['forms'][$form]['inputs'][$name] ) )
 		return $options['forms'][$form]['inputs'][$name];
@@ -224,7 +229,7 @@ function salesforce_get_field( $name, $form ){
 function salesforce_get_option( $name, $form, $options = null ){
 
 	if( !$options ){
-		$options = get_option("salesforce2");
+		$options = get_option( salesforce_get_option_name() );
 		if (!is_array($options))
 			$options = salesforce_default_settings();
 	}
