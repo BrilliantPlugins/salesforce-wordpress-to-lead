@@ -369,7 +369,12 @@ function salesforce_form( $options, $is_sidebar = false, $errors = null, $form_i
 					$required = 'required';
 
 				if (!empty($input['label'])) {
-					$content .= "\t".'<label class="w2llabel '.$required.' '.$error.$input['type'].($input['type'] == 'checkbox' ? ' w2llabel-checkbox-label' : '').'" for="sf_'.$id.'">'.( $input['opts'] == 'html' && $input['type'] == 'checkbox' ? stripslashes($input['label']) : esc_html(stripslashes($input['label'])));
+
+					$opts = null;
+					if( isset( $input['opts'] ) )
+						$opts = $input['opts'];
+
+					$content .= "\t".'<label class="w2llabel '.$required.' '.$error.$input['type'].($input['type'] == 'checkbox' ? ' w2llabel-checkbox-label' : '').'" for="sf_'.$id.'">'.( $opts == 'html' && $input['type'] == 'checkbox' ? stripslashes($input['label']) : esc_html(stripslashes($input['label'])));
 					if ( ! in_array($input['type'], array('checkbox', 'html') ) && ! salesforce_get_option('donotautoaddcolontolabels', $form_id, $options ) ) {
 						$content .= ':';
 					}
