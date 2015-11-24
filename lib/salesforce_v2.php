@@ -127,7 +127,7 @@ function salesforce_shortcode( $atts ) {
 
 		//check captcha if enabled
 
-		if( salesforce_get_option('captchaform',$form_id,$options) == 'enabled' || ( salesforce_get_option('captchaform',$form_id,$options) == '' && $options['captcha']) ){
+		if( salesforce_get_option('captchaform',$form,$options) == 'enabled' || ( salesforce_get_option('captchaform',$form,$options) == '' && $options['captcha']) ){
 
 			if( $_POST['captcha_hash'] != sha1( $_POST['captcha_text'].NONCE_SALT )){
 				$has_error = true;
