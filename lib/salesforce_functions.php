@@ -36,7 +36,7 @@ function salesforce_map_legacy_id( $form ){
 		// fallback to meta
 		$form = salesforce_get_form_by_legacy_meta_id( $form );
 
-		print_r( $form );
+		//print_r( $form );
 
 		if( isset( $form->ID ) )
 			return $form->ID;
