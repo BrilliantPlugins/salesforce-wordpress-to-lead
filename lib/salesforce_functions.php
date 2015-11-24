@@ -79,9 +79,8 @@ function salesforce_get_form_id_by_post_id( $post_id ){
 		$map = array_flip( $options[ 'form_mapping' ] );
 
 	if( $map && isset( $map[ $post_id ] ) ){
-
 		// check for mapping
-		$post_id = $map[ $post_id ];
+		$form_id = $map[ $post_id ];
 
 	}else{
 
