@@ -168,14 +168,18 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 	}
 
-	function admin_tabs( $current = 'forms' ) {
+	function admin_tabs( $current = 'settings' ) {
 		if( isset( $_GET['tab'] ) )
 			$current = $_GET['tab'];
 
 		if( !$current )
 			$current = 'forms';
 
-	    $tabs = array( 'forms' => 'Forms', 'settings' => 'Settings', 'css' => 'Styling', 'form' => 'Form Editor', 'import' => 'Import' );
+	    $tabs = array(
+	    	'settings' => 'Settings',
+	    	'css' => 'Styling',
+	    	//'import' => 'Import',
+	    );
 	    //echo '<div id="icon-themes" class="icon32"><br></div>';
 	    echo '<h2 class="nav-tab-wrapper">';
 	    foreach( $tabs as $tab => $name ){
@@ -249,37 +253,9 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				<div class="metabox-holder col-wrap">
 					<div class="meta-box-sortables">
 
-						<?php if (!isset($_GET['tab']) || $_GET['tab'] == 'forms') {
+						<?php
 
-								$content = '<table border="0" cellspacing="0" cellpadding="4">';
-								$content .= '<tr><th>ID</th><th>Name</th></tr>';
-								foreach($options['forms'] as $key=>$form){
-
-									$name = $form['form_name'];
-
-									if( !$name )
-										$name = '(Blank)';
-
-									$content .= '<tr><td>'.$key.'</td><td><a href="'.$this->plugin_options_url().'&tab=form&id='.$key.'">'.$name.'</a><td></tr>';
-
-								}
-								$content .= '</table>';
-
-								$content .= '<p><a class="button-secondary" href="'.$this->plugin_options_url().'&tab=form">'.__('Add a new form','salesforce').' &raquo;</a></p>';
-
-								$this->postbox('sfforms',__('Forms', 'salesforce'),$content);
-
-								$loc = 'banner-main';
-								$ad = $this->get_ad_code( $loc );
-								if( $ad ){
-									$link = $this->get_ad_link( $ad['utm_content'], $ad['utm_medium'], $ad['url'], '',$ad['utm_source'],$ad['utm_campaign']);
-									echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
-								}
-
-
-						}
-
-						 if (isset($_GET['tab']) && $_GET['tab'] == 'settings') { ?>
+						 if ( ! isset($_GET['tab'] ) || $_GET['tab'] == 'settings' ) { ?>
 						<form action="" method="post" id="salesforce-conf">
 							<?php if (function_exists('wp_nonce_field')) { wp_nonce_field('salesforce-udpatesettings'); } ?>
 							<input type="hidden" value="<?php echo $options['version']; ?>" name="version"/>
