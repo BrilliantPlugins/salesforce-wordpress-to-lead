@@ -40,10 +40,21 @@ if( defined('TR_DEVELOPMENT') && TR_DEVELOPMENT )
 
 function salesforce_activate(){
 
+	// v3 no longer requires activation like this
+	$options = get_option('salesforce3');
+
+	if( $options['version'] == '3.0' ){
+		return;
+	}
+
+	// v2 doesn't need this either
 	$options = get_option('salesforce2');
 
-	if( $options['version'] == '2.0' )
+	if( $options['version'] == '2.0' ){
 		return;
+	}
+
+	// migrate to v2 from v1
 
 	$oldoptions = get_option('salesforce');
 
@@ -120,23 +131,41 @@ function salesforce_add_plugin_meta( $plugin_meta, $plugin_file, $plugin_data, $
 
 	return $plugin_meta;
 }
+
 add_filter( 'plugin_row_meta', 'salesforce_add_plugin_meta', 10, 4);
+
+//add_filter('post_row_actions', 'salesforce_add_post_row_actions', 10, 2);
 
 function salesforce_init() {
 	load_plugin_textdomain( 'salesforce', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
-	// Do we need to migrate data from 2.6.x to 2.7+ ?
-	// Check for 2.7+ option - named salesforce3
-	$option_check = get_option( 'salesforce3' );
+	// Do we need to migrate data from 2.6.x to 3.0+ ?
+	// Check for 3.0+ option - named salesforce3
+	$option_check_v3 = get_option( 'salesforce3' );
 
-	if( ! is_array( $option_check ) ){
+	$option_check_v2 = get_option( 'salesforce2' );
+
+	if( is_array( $option_check_v3 ) ){
+
+		// we’re already upgraded
+
+	}elseif( ! is_array( $option_check_v3 ) ){
 
 		// run upgrade script
-		require_once( plugin_dir_path( __FILE__ ) . 'lib/salesforce_upgrade_to_v3.php' );
+		if( is_array( $option_check_v2 ) ){
+			error_log( 'SALESFORCE: Starting upgrading from "salesforce2" to "salesforce3"' );
+			require_once( plugin_dir_path( __FILE__ ) . 'lib/salesforce_upgrade_to_v3.php' );
+			salesforce_migrate_option();
+			error_log( 'SALESFORCE: Finished upgrading from "salesforce2" to "salesforce3"' );
+		}else{
+			// not sure what happened here?
+			error_log( 'SALESFORCE: option "salesforce2" does not exist, cannot migrate to "salesforce3"' );
+		}
 
 	}
 
 }
+
 add_action('plugins_loaded', 'salesforce_init');
 
 register_activation_hook( __FILE__, 'salesforce_activate' );
