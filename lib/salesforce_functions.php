@@ -69,7 +69,28 @@ function salesforce_get_form_by_legacy_meta_id( $form ){
 
 function salesforce_get_form_id_by_post_id( $post_id ){
 
-	return absint( get_post_meta( $post_id, '_salesforce_form_id', true  ) );
+	$form_id = null;
+	$map = null;
+
+	// check mapping
+	$options = get_option( salesforce_get_option_name() );
+
+	if( isset( $options[ 'form_mapping' ] ) )
+		$map = array_flip( $options[ 'form_mapping' ] );
+
+	if( $map && isset( $map[ $post_id ] ) ){
+
+		// check for mapping
+		$post_id = $map[ $post_id ];
+
+	}else{
+
+		// fall back to meta
+		$form_id = absint( get_post_meta( $post_id, '_salesforce_form_id', true  ) );
+
+	}
+
+	return $form_id;
 
 }
 
