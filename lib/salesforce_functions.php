@@ -1,42 +1,5 @@
 <?php
 
-// Adds a new form (CPT)
-function salesforce_add_form( $form_data, $form_title = null, $form_id = null ){
-
-	if( ! $form_title ){
-		$form_title = salesforce_get_default_form_title();
-	}
-
-	if( ! $form_id ){
-		$form_id = salesforce_get_next_form_id();
-	}
-
-	$form = array(
-		'post_type' => salesforce_get_post_type_slug(),
-		'post_title' => $form_data['form_name'],
-		'post_content' => '',
-		'post_status' => 'publish',
-		'comment_status' => 'closed',
-	);
-
-	//echo '<pre>'.print_r( $form_data , 1).'</pre>';
-
-	$post_id = wp_insert_post( $form );
-
-	if( $post_id ){
-		// add metadata
-
-		// form id
-		update_post_meta( $post_id, '_salesforce_form_id', $form_id );
-
-		// data
-		unset( $form_data['form_name'] ); // name is redundant
-		update_post_meta( $post_id, '_salesforce_form_data', $form_data );
-
-	}
-
-}
-
 function salesforce_get_next_form_id(){
 
 	global $wpdb;
@@ -60,7 +23,31 @@ function salesforce_get_default_form_title(){
 
 }
 
-function salesforce_get_form_by_id( $form_id ){
+function salesforce_map_legacy_id( $form ){
+
+	$options = get_option( salesforce_get_option_name() );
+
+	if( isset( $options[ 'form_mapping' ][ $form ] ) ){
+		// check for mapping
+
+		$post_id = $options[ 'form_mapping' ][ $form ];
+
+	}else{
+		// fallback to meta
+		$form = salesforce_get_form_by_legacy_meta_id( $form );
+
+		print_r( $form );
+
+		if( isset( $form->ID ) )
+			return $form->ID;
+
+	}
+
+	return $post_id;
+
+}
+
+function salesforce_get_form_by_legacy_meta_id( $form ){
 
 	$args = array(
 
@@ -68,10 +55,9 @@ function salesforce_get_form_by_id( $form_id ){
 		'meta_query' => array(
 			array(
 				'key' => '_salesforce_form_id',
-				'value' => absint( $form_id ),
+				'value' => absint( $form ),
 			),
 		),
-
 	);
 
 	$forms = get_posts( $args );
@@ -104,10 +90,15 @@ function salesforce_get_meta_key(){
 	return '_salesforce_form_data';
 }
 
+function salesforce_get_meta_data( $form_id ){
+	return get_post_meta( $form_id, salesforce_get_meta_key(), true );
+}
+
+
 // Add Daddy Analytics JS tracking to all pages
 function salesforce_da_js(  ){
 
-	$options = get_option("salesforce2");
+	$options = get_option( salesforce_get_option_name() );
 
 	if( isset( $options['da_token'] ) && $options['da_token'] && isset( $options['da_url'] ) && $options['da_url'] && isset( $options['da_site'] ) && $options['da_site'] ){
 
@@ -193,7 +184,12 @@ function salesforce_back_link($url){
  */
 function salesforce_sksort( &$array, $subkey="id", $sort_ascending=false ) {
 
-	if( !is_array( $array ) )
+	// can't sort a non array
+	if( ! is_array( $array ) )
+		return $array;
+
+	// can't sort on an index that doesn't exist
+	if( ! isset( $array[ $subkey ] ) )
 		return $array;
 
 	$temp_array = array();
@@ -202,11 +198,13 @@ function salesforce_sksort( &$array, $subkey="id", $sort_ascending=false ) {
         $temp_array[key($array)] = array_shift($array);
 
     foreach($array as $key => $val){
+
         $offset = 0;
         $found = false;
-        foreach($temp_array as $tmp_key => $tmp_val)
-        {
-            if(!$found and strtolower($val[$subkey]) > strtolower($tmp_val[$subkey])) {
+
+        foreach( $temp_array as $tmp_key => $tmp_val ){
+
+            if( ! $found and strtolower( $val[ $subkey] ) > strtolower( $tmp_val[ $subkey ] ) ) {
                 $temp_array = array_merge(    (array)array_slice($temp_array,0,$offset),
                                             array($key => $val),
                                             array_slice($temp_array,$offset)
@@ -215,7 +213,7 @@ function salesforce_sksort( &$array, $subkey="id", $sort_ascending=false ) {
             }
             $offset++;
         }
-        if(!$found) $temp_array = array_merge($temp_array, array($key => $val));
+        if( ! $found ) $temp_array = array_merge( $temp_array, array( $key => $val ) );
     }
 
     if ($sort_ascending) $array = array_reverse($temp_array);
@@ -242,4 +240,15 @@ function salesforce_maybe_implode( $delimiter, $data ){
 
 function salesforce_clean_field( $value ){
 	return trim(strip_tags(stripslashes( $value )));
+}
+
+function salesforce_add_post_row_actions( $actions, $post ){
+
+	if( $post->post_type != salesforce_get_post_type_slug() )
+		return $actions;
+
+    $actions['salesforce_duplicate'] = '<a href="#" class="salesforce_duplicate_link">' . __('Duplicate') . '</a>';
+
+   return $actions;
+
 }
