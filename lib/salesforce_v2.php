@@ -50,17 +50,22 @@ function salesforce_shortcode( $atts ) {
 		// field validation
 		foreach ($options['forms'][$form]['inputs'] as $id => $input) {
 
-			if( isset( $_POST[$id] ) ){
+			$field_name_attr = 'sf_'.$id;
 
-				$val = $_POST[$id];
+			if( isset( $_POST[ $field_name_attr ] ) ){
+
+				$val = $_POST[ $field_name_attr ];
 
 				if( is_array($val) ){
 					$val = array_map( 'trim', $val );
 				}else{
 					$val = trim( $val );
 				}
+
 			}else{
+
 				$val = '';
+
 			}
 
 			$error = array(
@@ -97,15 +102,15 @@ function salesforce_shortcode( $atts ) {
 			//$options['forms'][$form]['inputs'][$id]['error'] = true;
 
 			//	$error = true;
-			//} else if ($id == 'email' && $input['required'] && !is_email($_POST[$id]) ) {
+			//} else if ($id == 'email' && $input['required'] && !is_email($_POST[$field_name_attr]) ) {
 			//	$error = true;
 			//	$emailerror = true;
 			} else {
-				if( isset( $_POST[$id] ) ){
-					if( is_array( $_POST[$id] ) ){
-						$post[$id] = array_map( 'salesforce_clean_field', $_POST[$id] );
+				if( isset( $_POST[$field_name_attr] ) ){
+					if( is_array( $_POST[$field_name_attr] ) ){
+						$post[$id] = array_map( 'salesforce_clean_field', $_POST[$field_name_attr] );
 					}else{
-						$post[$id] = salesforce_clean_field( $_POST[$id] );
+						$post[$id] = salesforce_clean_field( $_POST[$field_name_attr] );
 					}
 				}
 			}
@@ -306,18 +311,20 @@ function salesforce_form( $options, $is_sidebar = false, $errors = null, $form_i
 		if (!$input['show'])
 			continue;
 
-		$val = '';
-		if ( isset( $_POST[$id] ) ){
-			$val = $_POST[$id];
+		$field_name_attr = 'sf_'.$id;
 
-			if( is_array( $val  ) ){
+		$val = '';
+		if ( isset( $_POST[ $field_name_attr ] ) ){
+			$val = $_POST[ $field_name_attr ];
+
+			if( is_array( $val ) ){
 				$val = array_map( 'esc_attr', array_map( 'salesforce_clean_field', $val ) );
 			}else{
 				$val = esc_attr(strip_tags(stripslashes($val)));
 			}
 
 		}else{
-			if( isset($input['value']) ) $val	= esc_attr(strip_tags(stripslashes($input['value'])));
+			if( isset( $input['value'] ) ) $val	= esc_attr( strip_tags( stripslashes( $input['value'] ) ) );
 		}
 
 		$val = apply_filters( 'salesforce_w2l_field_value', $val, sanitize_html_class( $id ), $form_id );
@@ -341,13 +348,13 @@ function salesforce_form( $options, $is_sidebar = false, $errors = null, $form_i
 			if ($options['wpcf7css']) { $content .= '<p>'; }
 			if ($input['type'] == 'checkbox') {
 
-				if( isset( $_POST[$id] ) ){
-					$post_val = $_POST[$id];
+				if( isset( $_POST[$field_name_attr] ) ){
+					$post_val = $_POST[$field_name_attr];
 				}else{
 					$post_val = '';
 				}
 
-				$content .= "\t\n\t".'<input type="checkbox" id="sf_'.$id.'" class="w2linput checkbox" name="'.$id.'" value="'.$val.'" '.checked( $post_val, $val, false ).' />'."\n\n";
+				$content .= "\t\n\t".'<input type="checkbox" id="sf_'.$id.'" class="w2linput checkbox" name="'.$field_name_attr.'" value="'.$val.'" '.checked( $post_val, $val, false ).' />'."\n\n";
 			}
 
 			$placeholder = '';
@@ -398,31 +405,31 @@ function salesforce_form( $options, $is_sidebar = false, $errors = null, $form_i
 			$content .= "\t".'<input type="text" placeholder="'.$placeholder.'" value="'.$val.'" id="sf_'.$id.'" class="';
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-text' : 'w2linput text';
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
-			$content .= '" name="'.$id.'" '.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' />'."\n\n";
+			$content .= '" name="'.$field_name_attr.'" '.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' />'."\n\n";
 
 		}else if ($input['type'] == 'email') {
 			$content .= "\t".'<input type="email" placeholder="'.$placeholder.'" value="'.$val.'" id="sf_'.$id.'" class="';
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-text' : 'w2linput text';
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
-			$content .= '" name="'.$id.'" '.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' />'."\n\n";
+			$content .= '" name="'.$field_name_attr.'" '.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' />'."\n\n";
 
 		}else if ($input['type'] == 'date') {
 			$content .= "\t".'<input type="text" placeholder="'.$placeholder.'" value="'.$val.'" id="sf_'.$id.'" class="';
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-text' : 'w2linput text';
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
-			$content .= '" name="'.$id.'" />'."\n\n";
+			$content .= '" name="'.$field_name_attr.'" />'."\n\n";
 
 		} else if ($input['type'] == 'textarea') {
 			$content .= "\t".( !$options['wpcf7css'] ? "\n\n" : '' )."\n\t".'<textarea id="sf_'.$id.'" class="';
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-textarea' : 'w2linput textarea';
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
-			$content .= '" name="'.$id.'"'.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' placeholder="'.$placeholder.'">'.$val.'</textarea>'."\n\n";
+			$content .= '" name="'.$field_name_attr.'"'.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' placeholder="'.$placeholder.'">'.$val.'</textarea>'."\n\n";
 
 		} else if ($input['type'] == 'hidden') {
-			$content .= "\t\n\t".'<input type="hidden" id="sf_'.$id.'" class="w2linput hidden" name="'.$id.'" value="'.$val.'" />'."\n\n";
+			$content .= "\t\n\t".'<input type="hidden" id="sf_'.$id.'" class="w2linput hidden" name="'.$field_name_attr.'" value="'.$val.'" />'."\n\n";
 
 		} else if ($input['type'] == 'current_date') {
-			$content .= "\t\n\t".'<input type="hidden" id="sf_'.$id.'" class="w2linput hidden" name="'.$id.'" value="'.date($input['opts']).'" />'."\n\n";
+			$content .= "\t\n\t".'<input type="hidden" id="sf_'.$id.'" class="w2linput hidden" name="'.$field_name_attr.'" value="'.date($input['opts']).'" />'."\n\n";
 
 		} else if ($input['type'] == 'html'){
 			$content .= '<br>'.stripslashes($input['opts'])."\n\n";
@@ -432,10 +439,10 @@ function salesforce_form( $options, $is_sidebar = false, $errors = null, $form_i
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-select style-select' : 'w2linput select';
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
 			if( $input['type'] == 'multi-select' ){
-				$content .= '" name="'.$id.'[]"';
+				$content .= '" name="'.$field_name_attr.'[]"';
 				$content .= ' multiple="multiple" ';
 			}else{
-				$content .= '" name="'.$id.'"';
+				$content .= '" name="'.$field_name_attr.'"';
 			}
 			$content .= '>';
 
@@ -731,6 +738,8 @@ function submit_salesforce_form( $post, $options ) {
 
 	// Pre submit actions
 	do_action( 'salesforce_w2l_before_submit', $post, $form_id, $form_type );
+
+	die( print_r( $args, 1 ) );
 
 	$result = wp_remote_post( $url, $args );
 
