@@ -120,6 +120,38 @@ function salesforce_add_settings_link( $links ) {
 $plugin = plugin_basename( __FILE__ );
 add_filter( 'plugin_action_links_'.$plugin, 'salesforce_add_settings_link' );
 
+// Admin column
+
+add_filter('manage_'.salesforce_get_post_type_slug().'_posts_columns' , 'add_salesforce_form_columns');
+
+function add_salesforce_form_columns($columns) {
+    //unset( $columns['author'] );
+    return array_merge(
+	    	$columns,
+	        array(
+	        	'legacy_id' => 'Legacy ID'
+	        )
+        );
+}
+
+add_action('manage_posts_custom_column' , 'salesforce_form_custom_columns', 10, 2 );
+
+function salesforce_form_custom_columns( $column, $post_id ) {
+    switch ( $column ) {
+
+    case 'legacy_id' :
+        $form_id = salesforce_get_form_id_by_post_id( $post_id );
+
+        if( $form_id ){
+        	echo $form_id;
+        }else{
+	    	echo '&mdash;';
+	    }
+
+        break;
+    }
+}
+
 //Add try DA and support links
 function salesforce_add_plugin_meta( $plugin_meta, $plugin_file, $plugin_data, $status ){
 
