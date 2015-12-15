@@ -45,10 +45,16 @@ function salesforce_form_sc( $atts ) {
 	$post_id = absint( $id );
 	$sidebar = (bool) $sidebar;
 
-	// hack until this is refactored
-	$sc = '[salesforce form="' . salesforce_get_form_id_by_post_id( $post_id ) . '" sidebar="' . $sidebar . '"]';
-	//echo $sc;
-	return do_shortcode( $sc );
+	$legacy = absint( salesforce_get_form_id_by_post_id( $post_id ) );
+
+	if( $legacy ){
+		// hack until this is refactored
+		$sc = '[salesforce form="' . $legacy . '" sidebar="' . $sidebar . '"]';
+		//echo $sc;
+		return do_shortcode( $sc );
+	}else{
+		return 'TODO: Render forms without a Legacy Form ID...';
+	}
 
 	// ********** TODO : REFACTOR
 
