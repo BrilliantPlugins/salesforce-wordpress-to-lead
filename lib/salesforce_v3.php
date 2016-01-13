@@ -45,17 +45,6 @@ function salesforce_form_sc( $atts ) {
 	$post_id = absint( $id );
 	$sidebar = (bool) $sidebar;
 
-	$legacy = absint( salesforce_get_form_id_by_post_id( $post_id ) );
-
-	if( $legacy ){
-		// hack until this is refactored
-		$sc = '[salesforce form="' . $legacy . '" sidebar="' . $sidebar . '"]';
-		//echo $sc;
-		return do_shortcode( $sc );
-	}else{
-		return 'TODO: Render forms without a Legacy Form ID...';
-	}
-
 	// ********** TODO : REFACTOR
 
 	$emailerror = '';
@@ -70,13 +59,15 @@ function salesforce_form_sc( $atts ) {
 
 	}
 
-	$form = get_post( $form_id );
+	// Load form boject, plugin options and form options - this used to be all in one object
+
+	$form = get_post( $post_id );
 
 	$plugin_options = get_option( salesforce_get_option_name() );
 
-	$form_options = salesforce_get_meta_data( $form_id );
+	$form_options = salesforce_get_meta_data( $post_id );
 
-	return '<pre>'.print_r( $plugin_options, 1 ).'</pre>';
+	return '<pre>'.print_r( $form_options, 1 ).'</pre>';
 
 	//don't submit unless we're in the right shortcode
 	if( isset( $_POST['salesforce_submitted_form_id'] ) ){
@@ -98,7 +89,7 @@ function salesforce_form_sc( $atts ) {
 		$has_error = false;
 
 		// field validation
-		foreach ($options['forms'][$form]['inputs'] as $id => $input) {
+		foreach ( $form_options['inputs'] as $id => $input) {
 
 			if( isset( $_POST[$id] ) ){
 
@@ -137,15 +128,15 @@ function salesforce_form_sc( $atts ) {
 
 			}
 
-			$error = apply_filters('sfwp2l_validate_field', $error, $id, $val, $options['forms'][$form]['inputs'][$id] );
+			$error = apply_filters('sfwp2l_validate_field', $error, $id, $val, $form_options['inputs'][$id] );
 
-			//$error = apply_filters('sfwp2l_'.$id, $error, $id, $options['forms'][$form]['inputs'][$id] );
+			//$error = apply_filters('sfwp2l_'.$id, $error, $id, $form_options['inputs'][$id] );
 
 			$errors[$id] = $error;
 
 			if ( $input['required'] && strlen( salesforce_maybe_implode( ';', $val ) ) == 0 ) {
 
-			//$options['forms'][$form]['inputs'][$id]['error'] = true;
+			//$form_options['inputs'][$id]['error'] = true;
 
 			//	$error = true;
 			//} else if ($id == 'email' && $input['required'] && !is_email($_POST[$id]) ) {
@@ -218,7 +209,7 @@ function salesforce_form_sc( $atts ) {
 			}else{
 
 				// Return / Success URL
-				$returl = apply_filters( 'salesforce_w2l_returl', $options['forms'][$form]['returl'], $form );
+				$returl = apply_filters( 'salesforce_w2l_returl', $form_options['returl'], $form );
 				$returl = apply_filters( 'salesforce_w2l_returl_'.absint( $form_id ), $returl, $form );
 				$returl = esc_url_raw( $returl );
 
@@ -258,13 +249,13 @@ function salesforce_form_sc( $atts ) {
 }
 
 // salesforce_get_form => salesforce_get_form_by_id
-
+// $form_id = post_id
 function salesforce_get_field_data( $name, $form_id ){
 
-	//$options = get_option("salesforce2");
+	$form_options = salesforce_get_meta_data( $form_id );
 
-	if( isset( $options['forms'][$form]['inputs'][$name] ) )
-		return $options['forms'][$form]['inputs'][$name];
+	if( isset( $form_options['inputs'][$name] ) )
+		return $form_options['inputs'][$name];
 
 	return false;
 }
