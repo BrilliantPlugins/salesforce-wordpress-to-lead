@@ -173,3 +173,23 @@ function example_salesforce_enable_ssl_verify( $args ){
 	return $args;
 
 }
+
+add_filter('sfwp2l_validate_field','block_non_biz_emails', 10, 4);
+
+function block_non_biz_emails( $error, $name, $val, $field ){
+
+	if( $name == 'email' ){
+
+		$non_biz_domains = array( 'gmail.com', 'yahoo.com', 'hotmail.com', 'aol.com' );
+
+		$domain = array_pop(explode('@', $val));
+
+		if( in_array( $domain, $non_biz_domains ) ){
+			$error['valid'] = false;
+			$error['message'] = 'Please enter a business email addresss.';
+		}
+
+	}
+
+	return $error;
+}
