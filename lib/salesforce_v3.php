@@ -147,8 +147,11 @@ function salesforce_form_sc( $atts ) {
 				if( isset( $_POST[ $id ] ) ){
 					if( is_array( $_POST[ $id ] ) ){
 						$post[ $id ] = array_map( 'salesforce_clean_field', $_POST[ $id ] );
+				if( isset( $_POST[ 'sf_'. $id ] ) ){
+					if( is_array( $_POST[ '_sf' . $id ] ) ){
+						$post[ $id ] = array_map( 'salesforce_clean_field', $_POST[ 'sf_'. $id ] );
 					}else{
-						$post[ $id ] = salesforce_clean_field( $_POST[ $id ] );
+						$post[ $id ] = salesforce_clean_field( $_POST[ 'sf_' . $id ] );
 					}
 				}
 			}
@@ -169,9 +172,9 @@ function salesforce_form_sc( $atts ) {
 		}
 
 		//check captcha if enabled
-		if( salesforce_get_plugin_option( 'captchaform', $post_id, $plugin_options, $form_options ) == 'enabled' || ( salesforce_get_plugin_option('captchaform', $post_id, $plugin_options, $form_options ) == '' && $form_options['captcha']) ){
+		if( salesforce_get_plugin_option( 'captchaform', $post_id, $plugin_options, $form_options ) == 'enabled' || ( salesforce_get_plugin_option('captchaform', $post_id, $plugin_options, $form_options ) == '' && $form_options['captcha'] ) ){
 
-			if( $_POST['captcha_hash'] != sha1( $_POST['captcha_text'].NONCE_SALT )){
+			if( $_POST['sf_captcha_hash'] != sha1( $_POST['sf_captcha_text'] . NONCE_SALT ) ){
 				$has_error = true;
 
 				$errors['captcha']['valid'] = false;
@@ -674,7 +677,7 @@ function submit_salesforce_form_to_api( $post, $plugin_options, $form_options ) 
 	}
 
 	//spam honeypot
-	if( !empty($_POST['message']) ) {
+	if( !empty($_POST['sf_message']) ) {
 		error_log( "Salesforce: No message set." );
 		return false;
 	}
@@ -750,6 +753,8 @@ function submit_salesforce_form_to_api( $post, $plugin_options, $form_options ) 
 
 	// Pre submit actions
 	do_action( 'salesforce_w2l_before_submit', $post, $post_id, $form_type );
+
+	//print_r($args);
 
 	$result = wp_remote_post( $url, $args );
 
