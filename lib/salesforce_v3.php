@@ -144,17 +144,30 @@ function salesforce_form_sc( $atts ) {
 			//	$error = true;
 			//	$emailerror = true;
 			} else {
+
 				if( isset( $_POST[ $id ] ) ){
-					if( is_array( $_POST[ $id ] ) ){
+
+					if( is_array( $_POST[ $id ] ) )
 						$post[ $id ] = array_map( 'salesforce_clean_field', $_POST[ $id ] );
-				if( isset( $_POST[ 'sf_'. $id ] ) ){
-					if( is_array( $_POST[ '_sf' . $id ] ) ){
-						$post[ $id ] = array_map( 'salesforce_clean_field', $_POST[ 'sf_'. $id ] );
-					}else{
-						$post[ $id ] = salesforce_clean_field( $_POST[ 'sf_' . $id ] );
-					}
+
 				}
+
+				if( isset( $_POST[ 'sf_'. $id ] ) ){
+
+					if( is_array( $_POST[ '_sf' . $id ] ) ){
+
+						$post[ $id ] = array_map( 'salesforce_clean_field', $_POST[ 'sf_'. $id ] );
+
+					}else{
+
+						$post[ $id ] = salesforce_clean_field( $_POST[ 'sf_' . $id ] );
+
+					}
+
+				}
+
 			}
+
 		}
 
 		//pass daddy analytics fields
@@ -225,21 +238,24 @@ function salesforce_form_sc( $atts ) {
 				$success_message = apply_filters( 'salesforce_w2l_success_message', salesforce_get_plugin_option( 'successmsg', $form, $plugin_options, $form_options ), $form );
 				$success_message = apply_filters( 'salesforce_w2l_success_message_'.absint( $form_id ), $success_message, $form );
 
-				if( $success_message )
+				if( $success_message ){
 					$content = '<strong class="success_message">'.esc_html( stripslashes( $success_message ) ).'</strong>';
+				}
 
-			}
+			} // if (!$result)
 
 			$sf_form_id = get_salesforce_form_id( $form_id, $sidebar );
 
 			$content = '<div id="'.$sf_form_id.'">'.$content.'</div>';
 
-		} else {
+		} else { // if (!$has_error)
+
 			$errormsg = esc_html( stripslashes( $form_options['errormsg'] ) ) ;
 
 			$content .= salesforce_form_output( $plugin_options, $form_options, $sidebar, $errors, $post_id );
 		}
-	} else {
+
+	} else { // if ( isset( $_POST['w2lsubmit'] ) && $_POST['w2lsubmit'] )
 		$content = salesforce_form_output( $plugin_options, $form_options, $sidebar, null, $post_id );
 	}
 
