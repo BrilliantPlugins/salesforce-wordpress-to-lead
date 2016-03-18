@@ -198,6 +198,18 @@ function salesforce_init() {
 
 }
 
+add_action( 'the_content', 'salesforce_single_form' );
+
+function salesforce_single_form( $content ){
+
+	if( get_post_type() == salesforce_get_post_type_slug() ){
+		return $content . do_shortcode( '[salesforce_form id="' . get_the_id() . '"]' );
+	}else{
+		return $content;
+	}
+
+}
+
 add_action('plugins_loaded', 'salesforce_init');
 
 register_activation_hook( __FILE__, 'salesforce_activate' );
