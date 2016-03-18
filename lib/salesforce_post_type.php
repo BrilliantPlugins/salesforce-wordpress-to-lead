@@ -393,7 +393,7 @@ function salesforce_form_editor_save( $post_id, $post, $update ){
 				foreach ( $_POST['salesforce_add_inputs'] as $key => $input ) {
 
 					//force valid field names
-					$id = sanitize_key( str_replace( array( '-', ' ' ), '_', $input['field_name'] ) );
+					$id = salesforce_sanitize_key( $input['field_name'] );
 
 					// can't use 'name' in wp, doesn't exist at Salesforce, must be a custom field
 					// avoids support requests when using 'name' breaks the page
