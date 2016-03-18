@@ -63,6 +63,8 @@ function salesforce_form_id_metabox( $post ){
 
 	//echo '<p>Legacy Shortcode<br>[salesforce form="' . salesforce_get_form_id_by_post_id( $post->ID ) . '"]</p>';
 
+	//echo '<p><a class="button secondary" href="'. salesforce_get_duplicate_url( $post->ID ) .'" class="salesforce_duplicate_link">' . __('Duplicate this form') . '</a></p>';
+
 }
 
 function salesforce_form_editor_ad_metabox( $post ){
