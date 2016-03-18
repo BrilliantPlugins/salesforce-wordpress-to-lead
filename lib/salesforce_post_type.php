@@ -123,40 +123,40 @@ function salesforce_form_editor_ui( $post ){
 		$content .= '<table>';
 		$content .= '<tr>';
 		$content .= '<td><label for="salesforce_inputs['.$field.'_show]">Enabled</label></td>';
-		$content .= '<td><input type="checkbox" name="salesforce_inputs['.$field.'_show]" id="salesforce_inputs['.$field.'_show]" '.checked($input['show'],true,false).'/></td>';
+		$content .= '<td><input type="checkbox" name="salesforce_inputs['.$field.'_show]" id="salesforce_inputs[' . esc_attr( $field ) . '_show]" ' . checked($input['show'], true, false) . '/></td>';
 		$content .= '</tr><tr>';
 		$content .= '<td><label for="salesforce_inputs['.$field.'_required]">Required</label></td>';
-		$content .= '<td><input type="checkbox" name="salesforce_inputs['.$field.'_required]" id="salesforce_inputs['.$field.'_required]" '.checked($input['required'],true,false).'/></td>';
+		$content .= '<td><input type="checkbox" name="salesforce_inputs['.$field.'_required]" id="salesforce_inputs[' . esc_attr( $field ) . '_required]" ' . checked($input['required'], true, false ) . '/></td>';
 		$content .= '</tr><tr>';
 		$content .= '<td><label for="salesforce_inputs['.$field.'_delete]">Delete</label></td>';
-		$content .= '<td><input type="checkbox" name="salesforce_inputs['.$field.'_delete]" id="salesforce_inputs['.$field.'_delete]" /></td>';
+		$content .= '<td><input type="checkbox" name="salesforce_inputs['.$field.'_delete]" id="salesforce_inputs[' . esc_attr( $field ) . '_delete]" /></td>';
 		$content .= '</tr>';
 		$content .= '</table>';
 		$content .= '</td>';
-		$content .= '<td><select name="salesforce_inputs['.$field.'_type]">';
-		$content .= '<option value="text" '.selected($input['type'],'text',false).'>Text</option>';
-		$content .= '<option value="email" '.selected($input['type'],'email',false).'>Email</option>';
-		$content .= '<option value="textarea" '.selected($input['type'],'textarea',false).'>Textarea</option>';
-		$content .= '<option value="hidden" '.selected($input['type'],'hidden',false).'>Hidden</option>';
-		$content .= '<option value="select" '.selected($input['type'],'select',false).'>Select (picklist)</option>';
-		$content .= '<option value="multi-select" '.selected($input['type'],'multi-select',false).'>Multi-Select (picklist)</option>';
-		$content .= '<option value="checkbox" '.selected($input['type'],'checkbox',false).'>Checkbox</option>';
-		//$content .= '<option '.selected($input['type'],'current_date',false).'>current_date</option>';
-		$content .= '<option value="date" '.selected($input['type'],'date',false).'>Date</option>';
-		$content .= '<option value="html" '.selected($input['type'],'html',false).'>HTML</option>';
+		$content .= '<td><select name="salesforce_inputs[' . esc_attr( $field ) . '_type]">';
+		$content .= '<option value="text" '.selected( $input['type'],'text',false ) . '>Text</option>';
+		$content .= '<option value="email" '.selected( $input['type'],'email',false ) . '>Email</option>';
+		$content .= '<option value="textarea" '.selected( $input['type'],'textarea', false ) . '>Textarea</option>';
+		$content .= '<option value="hidden" '.selected( $input['type'], 'hidden', false ) . '>Hidden</option>';
+		$content .= '<option value="select" '.selected( $input['type'], 'select', false ) . '>Select (picklist)</option>';
+		$content .= '<option value="multi-select" '.selected( $input['type'], 'multi-select', false) . '>Multi-Select (picklist)</option>';
+		$content .= '<option value="checkbox" '.selected( $input['type'], 'checkbox', false) . '>Checkbox</option>';
+		//$content .= '<option ' . selected( $input['type'], 'current_date', false ) . '>current_date</option>';
+		$content .= '<option value="date" ' . selected( $input['type'], 'date', false) . '>Date</option>';
+		$content .= '<option value="html" ' . selected( $input['type'], 'html', false) . '>HTML</option>';
 		$content .= '</select></td>';
-		$content .= '<td><small>Label:</small> <input size="10" name="salesforce_inputs['.$field.'_label]" type="text" value="'.esc_html(stripslashes($input['label'])).'"/>'; //</td>'.'<td>';
+		$content .= '<td><small>Label:</small> <input size="10" name="salesforce_inputs[' . esc_attr( $field ) . '_label]" type="text" value="'.esc_attr( stripslashes( $input['label'] ) ).'"/>'; //</td>'.'<td>';
 
-		$content .= '<br><small>Value:</small> <input size="10" name="salesforce_inputs['.$field.'_value]" type="text" value="';
-		if( isset($input['value']) ) $content .= esc_html(stripslashes($input['value']));
+		$content .= '<br><small>Value:</small> <input size="10" name="salesforce_inputs[' . esc_attr( $field ) . '_value]" type="text" value="';
+		if( isset( $input['value'] ) ) $content .= esc_attr( stripslashes( $input['value'] ) );
 		$content .= '"/></td>';
 
 		$opts = '';
 		if( isset( $input['opts'] ) )
 			$opts = $input['opts'];
 
-		$content .= '<td><textarea rows="4" name="salesforce_inputs['.$field.'_opts]"  >'.esc_textarea( stripslashes( $opts ) ).'</textarea></td>';
-		$content .= '<td><input size="2" name="salesforce_inputs['.$field.'_pos]" type="text" value="'.esc_html( $input['pos'] ).'"/></td>';
+		$content .= '<td><textarea rows="4" name="salesforce_inputs[' . esc_attr( $field ) . '_opts]"  >' . esc_textarea( stripslashes( $opts ) ) . '</textarea></td>';
+		$content .= '<td><input size="2" name="salesforce_inputs[' . esc_attr( $field ) . '_pos]" type="text" value="' . esc_attr( $input['pos'] ) . '"/></td>';
 		$content .= '</tr>';
 		$i++;
 	}
@@ -195,7 +195,7 @@ function salesforce_form_editor_ui( $post ){
 	row += '<td><input type="text" size="2" name="salesforce_add_inputs['+i+'][pos]" value="'+pos+'"></td>';
 	row += '</tr>';
 
-	jQuery('#salesforce_form_editor > tbody').append(row);
+	jQuery( '#salesforce_form_editor > tbody' ).append( row );
 
 	i++;
 
@@ -216,15 +216,15 @@ function salesforce_form_editor_ui( $post ){
 
 	$content .= '<p>';
 	$content .= '<label>'.__('Form Type:','salesforce').'</label><br/>';
-	$content .= '<input type="radio" name="salesforce_type" value="lead" '.checked($options['forms'][$form_id]['type'],'lead',false).'> Web to Lead <br>';
-	$content .= '<input type="radio" name="salesforce_type" value="case"'.checked($options['forms'][$form_id]['type'],'case',false).'> Web to Case';
+	$content .= '<input type="radio" name="salesforce_type" value="lead" ' . checked( $options['forms'][$form_id]['type'], 'lead', false) . '> Web to Lead <br>';
+	$content .= '<input type="radio" name="salesforce_type" value="case"' . checked( $options['forms'][$form_id]['type'], 'case', false) . '> Web to Case';
 	$content .= '<br/><small>'.__('<b>Note:</b> Daddy Analytics does not support cases at this time.').'</small>';
 	$content .= '</p>';
 
 
 	$content .= '<p>';
 	$content .= '<label>'.__('Lead Source:','salesforce').'</label><br/>';
-	$content .= '<input type="text" name="salesforce_source" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['source']).'">';
+	$content .= '<input type="text" name="salesforce_source" style="width:50%;" value="' . esc_attr( $options['forms'][$form_id]['source'] ) . '">';
 
 	$content .= '<br/><small>'.__('Lead Source (up to 40 characters) to display in Salesforce.com, use %URL% to include the URL of the page containing the form (need more characters? See the <a href="https://wordpress.org/plugins/salesforce-wordpress-to-lead/faq/" target="_blank">FAQ</a>). You can also use a field above to set the lead source (this value will not be used if a field named lead_source exists).').'</small>';
 
@@ -235,32 +235,32 @@ function salesforce_form_editor_ui( $post ){
 
 	$content .= '<p>';
 	$content .= '<label>'.__('Return/Thanks URL:','salesforce').'</label><br/>';
-	$content .= '<input type="text" name="salesforce_returl" style="width:50%;" value="'.esc_html($options['forms'][$form_id]['returl']).'">';
+	$content .= '<input type="text" name="salesforce_returl" style="width:50%;" value="' . esc_attr( $options['forms'][$form_id]['returl'] ) . '">';
 	$content .= '<br/><small>'.__('e.g.http://yoursite.com/thanks/').'</small>';
 	$content .= '</p>';
 
 	$content .= '<p>';
 	$content .= '<label>'.__('Success Message:','salesforce').'</label><br/>';
-	$content .= '<input type="text" name="salesforce_successmsg" style="width:50%;" value="'.esc_html(salesforce_get_option('successmsg',$form_id,$options)).'">';
+	$content .= '<input type="text" name="salesforce_successmsg" style="width:50%;" value="' . esc_attr( salesforce_get_option( 'successmsg', $form_id, $options ) ) . '">';
 	$content .= '<br/><small>'.__('Overrides the default message for this form.(leave blank to use the global setting)').'</small>';
 	$content .= '</p>';
 
 	$content .= '<p>';
 	$content .= '<label>'.__('Submit button text (override):','salesforce').'</label><br/>';
-	$content .= '<input type="text" name="salesforce_submitbutton" style="width:50%;" value="'.esc_html(stripslashes( salesforce_get_option('submitbutton',$form_id,$options) )).'">';
+	$content .= '<input type="text" name="salesforce_submitbutton" style="width:50%;" value="' . esc_attr( stripslashes( salesforce_get_option('submitbutton',$form_id,$options) ) ) . '">';
 	$content .= '<br/><small>'.__('Overrides the default message for this form.(leave blank to use the global setting)').'</small>';
 	$content .= '</p>';
 
 	$content .= '<p>';
 	$content .= '<label>'.__('Required fields text (override):','salesforce').'</label><br/>';
-	$content .= '<input type="text" name="salesforce_requiredfieldstext" style="width:50%;" value="'.esc_html(stripslashes( salesforce_get_option('requiredfieldstext',$form_id,$options) )).'">';
+	$content .= '<input type="text" name="salesforce_requiredfieldstext" style="width:50%;" value="' . esc_attr( stripslashes( salesforce_get_option('requiredfieldstext',$form_id,$options) ) ) . '">';
 	$content .= '<br/><small>'.__('Overrides the default message for this form (leave blank to use the global setting).').'</small>';
 	$content .= '</p>';
 
 	/* Add a Subject line to the User email on a per-form basis */
 	$content .= '<p>';
 	$content .= '<label>' . __( 'User CC email subject:', 'salesforce' ) . '</label><br/>';
-	$content .= '<input type="text" name="salesforce_cc_email_subject" style="width:50%;" value="' . esc_html( salesforce_get_option( 'cc_email_subject', $form_id, $options ) ) . '">';
+	$content .= '<input type="text" name="salesforce_cc_email_subject" style="width:50%;" value="' . esc_attr( salesforce_get_option( 'cc_email_subject', $form_id, $options ) ) . '">';
 	$content .= '<br/><small>' . __( 'Subject of the email when sending out a copy to the user.(leave blank to use the global setting)' ) . '</small>';
 	$content .= '</p>';
 
@@ -316,17 +316,17 @@ function salesforce_form_editor_ui( $post ){
 	$content .= '<input type="checkbox" name="salesforce_donotautoaddcolontolabels" value="1" '.checked( $options['forms'][$form_id]['donotautoaddcolontolabels'], '1', false ).'> Do not automatically add a colon to labels <br>';
 	$content .= '</p>';
 
-	$content .= '<input type="hidden" name="salesforce_form_id" id="form_id" value="'.$form_id.'">';
+	$content .= '<input type="hidden" name="salesforce_form_id" id="form_id" value="' . esc_attr( $form_id ) . '">';
 
 	$content .= '<p>';
 	$content .= '<label>'.__('Salesforce.com Organization ID (override):','salesforce').'</label><br/>';
-	$content .= '<input type="text" name="salesforce_org_id" style="width:50%;" value="'. esc_html( stripslashes( salesforce_get_option( 'org_id', $form_id, $options ) ) ).'">';
+	$content .= '<input type="text" name="salesforce_org_id" style="width:50%;" value="'. esc_attr( stripslashes( salesforce_get_option( 'org_id', $form_id, $options ) ) ).'">';
 	$content .= '<br/><small>'.__('Overrides the default org_id for this form (leave blank to use the global setting).').'</small>';
 	$content .= '</p>';
 
 	echo $content;
 
-	echo '<hr><p><b>Legacy Form ID:</b> ' . salesforce_get_form_id_by_post_id( $post->ID ) . '</p>';
+	echo '<hr><p><b>Legacy Form ID:</b> ' . esc_html( salesforce_get_form_id_by_post_id( $post->ID ) ) . '</p>';
 
 }
 

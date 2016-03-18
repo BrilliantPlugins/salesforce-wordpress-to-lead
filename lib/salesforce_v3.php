@@ -204,14 +204,14 @@ function salesforce_form_sc( $atts ) {
 		}
 
 		foreach( $errors as $error ){
-			if(!$error['valid'])
+			if( ! $error['valid'] )
 				$has_error = true;
 		}
 
-		if (!$has_error) {
+		if ( ! $has_error ) {
 			$result = submit_salesforce_form_to_api( $post, $plugin_options, $form_options, $form );
 
-			//echo 'RESULT='.$result;
+			///ddd( $result );
 			//if($result) echo 'true';
 			//if(!$result) echo 'false';
 
@@ -343,7 +343,7 @@ function salesforce_form_output( $plugin_options, $form_options, $is_sidebar = f
 	$date_fields = array();
 
 	if (!empty($reqtext) && salesforce_get_plugin_option('requiredfieldstextpos', $post_id, $plugin_options) == 'top' )
-		$content .= '<p class="sf_required_fields_msg" id="requiredfieldsmsg"><sup><span class="required">*</span></sup> '.esc_html( $reqtext ).'</p>';
+		$content .= '<p class="sf_required_fields_msg" id="requiredfieldsmsg"><sup><span class="required">*</span></sup> ' . esc_html( $reqtext ) . '</p>';
 
 	foreach ( $form_options['inputs'] as $id => $input ) {
 		if ( !$input['show'] )
@@ -356,16 +356,16 @@ function salesforce_form_output( $plugin_options, $form_options, $is_sidebar = f
 			if( is_array( $val  ) ){
 				$val = array_map( 'esc_attr', array_map( 'salesforce_clean_field', $val ) );
 			}else{
-				$val = esc_attr(strip_tags(stripslashes($val)));
+				$val = esc_attr( strip_tags( stripslashes( $val ) ) );
 			}
 
 		}else{
 			if( isset($input['value']) ) $val	= esc_attr(strip_tags(stripslashes($input['value'])));
 		}
 
-		$val = apply_filters( 'salesforce_w2l_field_value', $val, sanitize_html_class( $id ), $post_id );
+		$val = apply_filters( 'salesforce_w2l_field_value', $val, $id, $post_id );
 
-		$val = apply_filters( 'salesforce_w2l_field_value_'.absint( $post_id ) . '_' . $id, $val );
+		$val = apply_filters( 'salesforce_w2l_field_value_' . absint( $post_id ) . '_' . $id, $val );
 
 		if($input['type'] != 'hidden' && $input['type'] != 'current_date') {
 			$content .= '<div class="sf_field sf_field_'.$id.' sf_type_'.$input['type'].'">';
@@ -412,7 +412,7 @@ function salesforce_form_output( $plugin_options, $form_options, $is_sidebar = f
 					$required = 'required';
 
 				if (!empty($input['label'])) {
-					$content .= "\t".'<label class="w2llabel '.$required.' '.$error.$input['type'].($input['type'] == 'checkbox' ? ' w2llabel-checkbox-label' : '').'" for="sf_'.$id.'">'.( $input['opts'] == 'html' && $input['type'] == 'checkbox' ? stripslashes($input['label']) : esc_html(stripslashes($input['label'])));
+					$content .= "\t".'<label class="w2llabel '.$required.' '.$error.$input['type'].($input['type'] == 'checkbox' ? ' w2llabel-checkbox-label' : '').'" for="sf_'.$id.'">'.( $input['opts'] == 'html' && $input['type'] == 'checkbox' ? stripslashes( $input['label'] ) : esc_html( stripslashes( $input['label'] ) ) );
 					if ( ! in_array($input['type'], array('checkbox', 'html') ) && ! salesforce_get_plugin_option('donotautoaddcolontolabels', $post_id, $plugin_options ) ) {
 						$content .= ':';
 					}
@@ -512,7 +512,7 @@ function salesforce_form_output( $plugin_options, $form_options, $is_sidebar = f
 					} else {
 						$k = $v = $opt;
 					}
-					$v = trim(esc_attr(strip_tags(stripslashes($v))));
+					$v = trim( esc_attr( strip_tags( stripslashes( $v ) ) ) );
 
 					if( $placeholder ){
 						$content .= '<option value="' . esc_attr($v) . '">' . trim( stripslashes( $k ) ) . '</option>' . "\n";
@@ -581,7 +581,7 @@ function salesforce_form_output( $plugin_options, $form_options, $is_sidebar = f
 	if( $plugin_options['showccuser'] ){
 		$label = $plugin_options['ccusermsg'];
 		if( empty($label) ) $label = __('Send me a copy','salesforce');
-		$content .= "\t\n\t".'<div class="sf_field sf_field_cb sf_type_checkbox sf_cc_user"><label class="w2llabel checkbox w2llabel-checkbox-label"><input type="checkbox" name="sf_w2lcc" class="w2linput checkbox" value="1" '.checked(1, salesforce_get_post_data('w2lcc') , false).' /> '.esc_html($label)."</label></div>\n";
+		$content .= "\t\n\t".'<div class="sf_field sf_field_cb sf_type_checkbox sf_cc_user"><label class="w2llabel checkbox w2llabel-checkbox-label"><input type="checkbox" name="sf_w2lcc" class="w2linput checkbox" value="1" '.checked(1, salesforce_get_post_data('w2lcc') , false).' /> '.esc_html( $label )."</label></div>\n";
 	}
 
 	//spam honeypot
@@ -596,8 +596,8 @@ function salesforce_form_output( $plugin_options, $form_options, $is_sidebar = f
 		$da_token = $plugin_options['da_token'];
 		$da_url = $plugin_options['da_url'];
 
-		$content .= "\t".'<input type="hidden" id="Daddy_Analytics_Token" name="'.esc_attr($da_token).'" class="w2linput" value="" style="display: none;" />'."\n";
-		$content .= "\t".'<input type="hidden" id="Daddy_Analytics_WebForm_URL" name="'.esc_attr($da_url).'" class="w2linput" value="" style="display: none;" />'."\n";
+		$content .= "\t".'<input type="hidden" id="Daddy_Analytics_Token" name="' . esc_attr( $da_token ) . '" class="w2linput" value="" style="display: none;" />'."\n";
+		$content .= "\t".'<input type="hidden" id="Daddy_Analytics_WebForm_URL" name="' . esc_attr( $da_url ) . '" class="w2linput" value="" style="display: none;" />'."\n";
 	}
 
 	$submit = stripslashes( salesforce_get_plugin_option( 'submitbutton', $post_id, $plugin_options ) );
@@ -617,7 +617,7 @@ function salesforce_form_output( $plugin_options, $form_options, $is_sidebar = f
 	} else {
 		$content .= 'w2linput submit';
 	}
-	$content .= '" value="'.esc_attr($submit).'" />'."\n";
+	$content .= '" value="' . esc_attr( $submit ) . '" />' . "\n";
 	if ($plugin_options['wpcf7css']) {
 		$content .= '</p>';
 	} else {
