@@ -1,4 +1,6 @@
 <?php
+if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 // Legacy v2 form output & submission
 // Uses sequential form id and [salesforce] shortcode
 

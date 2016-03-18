@@ -1,4 +1,5 @@
 <?php
+if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
  * Backend Class for use in all Yoast plugins

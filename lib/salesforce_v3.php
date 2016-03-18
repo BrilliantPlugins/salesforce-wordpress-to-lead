@@ -1,4 +1,6 @@
 <?php
+if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 // New v3+ form output & submission
 // Uses post id as form id and [salesforce_form id="XX"] shortcode
 

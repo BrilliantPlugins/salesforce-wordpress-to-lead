@@ -9,6 +9,8 @@ Author URI: http://try.daddyanalytics.com/wordpress-to-lead-general?utm_source=T
 License: GPL2
 */
 
+if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 // Yoast Plugin Helper Functions
 require_once( plugin_dir_path( __FILE__ ) . 'lib/ov_plugin_tools.php' );
 

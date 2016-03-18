@@ -1,4 +1,5 @@
 <?php
+if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 add_action( 'init', 'register_cpt_salesforce_w2l_form' );
 

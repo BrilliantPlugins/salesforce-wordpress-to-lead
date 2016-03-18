@@ -1,4 +1,5 @@
 <?php
+if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 function salesforce_get_next_form_id(){
 

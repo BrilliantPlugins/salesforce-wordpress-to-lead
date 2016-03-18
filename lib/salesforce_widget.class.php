@@ -1,4 +1,6 @@
 <?php
+if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class Salesforce_WordPress_to_Lead_Widgets extends WP_Widget {
 
 	function Salesforce_WordPress_to_Lead_Widgets() {
