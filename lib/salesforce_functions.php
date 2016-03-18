@@ -23,6 +23,16 @@ function salesforce_get_default_form_title(){
 
 }
 
+function salesforce_sanitize_key( $key ){
+
+	$key = str_replace( array( '-', ' ' ), '_', $key );
+
+	$key = preg_replace( '/[^A-Za-z0-9_\-]/', '', $key );
+
+	return $key;
+
+}
+
 function salesforce_map_legacy_id( $form ){
 
 	$options = get_option( salesforce_get_option_name() );
