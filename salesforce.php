@@ -24,6 +24,9 @@ require_once( plugin_dir_path( __FILE__ ) . 'lib/salesforce_v2.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'lib/salesforce_v3.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'lib/salesforce_post_type.php' );
 
+// Form duplication code
+require_once( plugin_dir_path( __FILE__ ) . 'lib/salesforce_duplicate.php' );
+
 // Admin Class
 if ( ! class_exists( 'Salesforce_Admin' ) ) {
 	require_once('lib/salesforce_admin.class.php');
@@ -167,8 +170,6 @@ function salesforce_add_plugin_meta( $plugin_meta, $plugin_file, $plugin_data, $
 }
 
 add_filter( 'plugin_row_meta', 'salesforce_add_plugin_meta', 10, 4);
-
-//add_filter('post_row_actions', 'salesforce_add_post_row_actions', 10, 2);
 
 function salesforce_init() {
 	load_plugin_textdomain( 'salesforce', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );

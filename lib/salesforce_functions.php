@@ -282,14 +282,3 @@ function salesforce_maybe_implode( $delimiter, $data ){
 function salesforce_clean_field( $value ){
 	return trim(strip_tags(stripslashes( $value )));
 }
-
-function salesforce_add_post_row_actions( $actions, $post ){
-
-	if( $post->post_type != salesforce_get_post_type_slug() )
-		return $actions;
-
-    $actions['salesforce_duplicate'] = '<a href="#" class="salesforce_duplicate_link">' . __('Duplicate') . '</a>';
-
-   return $actions;
-
-}
