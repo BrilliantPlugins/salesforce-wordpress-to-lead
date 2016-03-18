@@ -85,7 +85,7 @@ function salesforce_activate(){
 			}
 
 		//sort merged inputs
-		salesforce_sksort($newinputs,'pos',true);
+		$newinputs = salesforce_sksort( $newinputs, 'pos', true );
 
 		//save merged and sorted inputs
 		$options['forms'][1]['inputs'] = $newinputs;

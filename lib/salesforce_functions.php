@@ -211,16 +211,21 @@ function salesforce_back_link($url){
 /**
  * Sort input array by $subkey
  * Taken from: http://php.net/manual/en/function.ksort.php
+ * Revised 3/18/2016
  */
-function salesforce_sksort( &$array, $subkey="id", $sort_ascending=false ) {
+function salesforce_sksort( $array, $subkey = "id", $sort_ascending = false ){
 
 	// can't sort a non array
-	if( ! is_array( $array ) )
+	if( ! is_array( $array ) ){
 		return $array;
+	}
+
+	$first_item = current($array);
 
 	// can't sort on an index that doesn't exist
-	if( ! isset( $array[ $subkey ] ) )
+	if( ! isset( $first_item[ $subkey ] ) ){
 		return $array;
+	}
 
 	$temp_array = array();
 
@@ -246,9 +251,14 @@ function salesforce_sksort( &$array, $subkey="id", $sort_ascending=false ) {
         if( ! $found ) $temp_array = array_merge( $temp_array, array( $key => $val ) );
     }
 
-    if ($sort_ascending) $array = array_reverse($temp_array);
+    if ( $sort_ascending ){
+	    $array = array_reverse($temp_array);
+	}else{
+		$array = $temp_array;
+	}
 
-    else $array = $temp_array;
+    return $array;
+
 }
 
 function salesforce_get_post_data( $index ){

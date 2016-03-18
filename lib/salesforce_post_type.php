@@ -425,8 +425,10 @@ function salesforce_form_editor_save( $post_id, $post, $update ){
 			//echo '<pre>NEWINPUTS = '. print_r( $newinputs, 1 ).'</pre>';
 
 			// normal options
-			salesforce_sksort ($newinputs, 'pos', true );
+			$newinputs = salesforce_sksort( $newinputs, 'pos', true );
 			$options['inputs'] = $newinputs; //TODO ?
+
+			//echo '<pre>NEWINPUTS = '. print_r( $newinputs, 1 ).'</pre>';
 
 			foreach ( array( 'source','returl','successmsg','captchaform','labellocation','labellocationsidebar','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id', 'cc_email_subject','donotautoaddcolontolabels') as $option_name ) {
 				if ( isset( $_POST['salesforce_'.$option_name] ) ) {
