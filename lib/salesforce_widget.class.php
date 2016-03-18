@@ -33,10 +33,10 @@ class Salesforce_WordPress_to_Lead_Widgets extends WP_Widget {
 	}
 
 	function form( $instance ) {
-		$defaults = array( 
-			'title' => 'Contact Us', 
-			'desc' 	=> 'Contact us using the form below', 
-			'form' 	=> 1, 
+		$defaults = array(
+			'title' => 'Contact Us',
+			'desc' 	=> 'Contact us using the form below',
+			'form' 	=> 1,
 		);
 		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
 		<p>
@@ -54,21 +54,21 @@ class Salesforce_WordPress_to_Lead_Widgets extends WP_Widget {
 			<select id="<?php echo $this->get_field_id( 'form' ); ?>" name="<?php echo $this->get_field_name( 'form' ); ?>">
 				<?php
 				$sfoptions = get_option('salesforce2');
-				
+
 				foreach($sfoptions['forms'] as $key=>$value){
-					
+
 					echo '<option value="'.$key.'"';
 					if( $instance['form'] == $key)
 						echo ' selected="selected"';
 					echo '>'.$value['form_name'].'</option>';
-						 				
-				
+
+
 				}
 				?>
 			</select>
 		</p>
 
 
-	<?php 
+	<?php
 	}
 }
