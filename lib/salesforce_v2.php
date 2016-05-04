@@ -175,7 +175,7 @@ function salesforce_shortcode( $atts ) {
 
 				// Return / Success URL
 				$returl = apply_filters( 'salesforce_w2l_returl', $options['forms'][$form]['returl'], $form );
-				$returl = apply_filters( 'salesforce_w2l_returl_'.absint( $form_id ), $returl, $form );
+				$returl = apply_filters( 'salesforce_w2l_returl_' . absint( $form ), $returl, $form );
 				$returl = esc_url_raw( $returl );
 
 				if( $returl ){
@@ -190,14 +190,14 @@ function salesforce_shortcode( $atts ) {
 
 				// Success message
 				$success_message = apply_filters( 'salesforce_w2l_success_message', salesforce_get_option( 'successmsg', $form, $options ), $form );
-				$success_message = apply_filters( 'salesforce_w2l_success_message_'.absint( $form_id ), $success_message, $form );
+				$success_message = apply_filters( 'salesforce_w2l_success_message_' . absint( $form ), $success_message, $form );
 
 				if( $success_message )
 					$content = '<strong class="success_message">'.esc_html( stripslashes( $success_message ) ).'</strong>';
 
 			}
 
-			$sf_form_id = get_salesforce_form_id( $form_id, $sidebar );
+			$sf_form_id = get_salesforce_form_id( $form, $sidebar );
 
 			$content = '<div id="'.$sf_form_id.'">'.$content.'</div>';
 
@@ -786,12 +786,23 @@ function submit_salesforce_form( $post, $options ) {
 
 function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $append = '' ){
 
+	if( $options['forms'][$form_id]['type'] == 'case' ){
+		$form_type = __( 'Case', 'salesforce' );
+	}else{
+		$form_type = __( 'Lead', 'salesforce' );
+	}
+
 	if( !$subject )
 		$subject = '[' . __( 'Salesforce Web to %%type%% Submission', 'salesforce' ) . ']';
 
 	$subject = str_replace( '%%type%%', $form_type,  $subject );
 
-	$subject .= ' ' . $options['forms'][$form_id]['form_name'];
+	$form_name = '';
+
+	if( isset( $options['forms'][$form_id]['form_name'] ) )
+		$form_name = $options['forms'][$form_id]['form_name'];
+
+	$subject .= ' ' . $form_name;
 
 	$from_name = salesforce_get_option( 'emailfromname', $form_id, $options );
 	if( !$from_name )
@@ -810,11 +821,6 @@ function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $app
 	}
 	$headers .= 'Reply-to: '.$from_name.' <' . $from_email . ">\r\n";
 
-	if( $options['forms'][$form_id]['type'] == 'case' ){
-		$form_type = __( 'Case', 'salesforce' );
-	}else{
-		$form_type = __( 'Lead', 'salesforce' );
-	}
 
 	$message = '';
 
@@ -872,9 +878,6 @@ function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $app
 
 	$message = apply_filters('salesforce_w2l_cc_admin_email_content', $message );
 	$subject = apply_filters('salesforce_w2l_cc_admin_email_subject', $subject, $form_type, $post );
-
-	if( WP_DEBUG )
-		error_log( 'salesforce_cc_admin:'.print_r( array($emails,$message,$subject),1 ) );
 
 	if( $message ){
 		foreach( $emails as $email ){

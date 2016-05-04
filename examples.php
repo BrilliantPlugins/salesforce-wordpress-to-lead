@@ -183,7 +183,9 @@ function block_non_biz_emails( $error, $name, $val, $field ){
 
 		$non_biz_domains = array( 'gmail.com', 'yahoo.com', 'hotmail.com', 'aol.com' );
 
-		$domain = array_pop(explode('@', $val));
+		$parts = explode( '@', $val );
+
+		$domain = array_pop( $parts );
 
 		if( in_array( $domain, $non_biz_domains ) ){
 			$error['valid'] = false;
