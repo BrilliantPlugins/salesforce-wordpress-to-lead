@@ -27,6 +27,10 @@ require_once( plugin_dir_path( __FILE__ ) . 'lib/salesforce_post_type.php' );
 // Form duplication code
 require_once( plugin_dir_path( __FILE__ ) . 'lib/salesforce_duplicate.php' );
 
+// Debugging
+if( defined( 'SFW2L_DEBUG' ) && SFW2L_DEBUG )
+	require_once( plugin_dir_path( __FILE__ ) . 'lib/debug.php' );
+
 // Admin Class
 if ( ! class_exists( 'Salesforce_Admin' ) ) {
 	require_once('lib/salesforce_admin.class.php');
