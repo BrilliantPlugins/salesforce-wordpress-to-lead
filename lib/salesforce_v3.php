@@ -156,7 +156,7 @@ function salesforce_form_sc( $atts ) {
 
 				if( isset( $_POST[ 'sf_'. $id ] ) ){
 
-					if( is_array( $_POST[ '_sf' . $id ] ) ){
+					if( is_array( $_POST[ 'sf_' . $id ] ) ){
 
 						$post[ $id ] = array_map( 'salesforce_clean_field', $_POST[ 'sf_'. $id ] );
 
@@ -210,10 +210,12 @@ function salesforce_form_sc( $atts ) {
 				$has_error = true;
 		}
 
+		//echo 'BEFORE - ' .print_r( $post, 1 ) . '<hr>';
+
 		if ( ! $has_error ) {
 			$result = submit_salesforce_form_to_api( $post, $plugin_options, $form_options, $form );
 
-			///ddd( $result );
+			//ddd( $result );
 			//if($result) echo 'true';
 			//if(!$result) echo 'false';
 
@@ -246,7 +248,7 @@ function salesforce_form_sc( $atts ) {
 
 			} // if (!$result)
 
-			$sf_form_id = get_salesforce_form_id( $form_id, $sidebar );
+			$sf_form_id = get_salesforce_form_id( $post_id, $sidebar );
 
 			$content = '<div id="'.$sf_form_id.'">'.$content.'</div>';
 
@@ -257,9 +259,13 @@ function salesforce_form_sc( $atts ) {
 			$content .= salesforce_form_output( $plugin_options, $form_options, $sidebar, $errors, $post_id );
 		}
 
+		//echo 'INSIDE' . esc_html( $content ) . '<hr>';
+
 	} else { // if ( isset( $_POST['w2lsubmit'] ) && $_POST['w2lsubmit'] )
 		$content = salesforce_form_output( $plugin_options, $form_options, $sidebar, null, $post_id );
 	}
+
+	//echo 'OUTSIDE' .  esc_html( $content ) . '<hr>';
 
 	return '<div class="salesforce_w2l_lead">'.$content.'</div>';
 }
@@ -679,12 +685,14 @@ function salesforce_form_output( $plugin_options, $form_options, $is_sidebar = f
 
 function submit_salesforce_form_to_api( $post, $plugin_options, $form_options ) {
 
+	//echo 'INSIDE - ' . print_r( $post,1 ) . '<hr>';
+
 	global $wp_version;
 
 	$post_id = absint( $_POST['sf_submitted_form_id'] );
 
 	$org_id = salesforce_get_plugin_option('org_id', $post_id, $plugin_options);
-	//echo '$org_id='.$org_id;
+	//die( '$org_id='.$org_id );
 
 	if ( !$org_id )
 		$org_id = $plugin_options['org_id']; // fallback to global
@@ -700,7 +708,7 @@ function submit_salesforce_form_to_api( $post, $plugin_options, $form_options ) 
 		return false;
 	}
 
-	//print_r($_POST); //DEBUG
+	//echo 'POST - ' . print_r($_POST,1) . '<hr>'; //DEBUG
 
 	//echo $org_id;
 
@@ -736,10 +744,15 @@ function submit_salesforce_form_to_api( $post, $plugin_options, $form_options ) 
 
 	$form_type = $form_options['type'];
 
+	//echo print_r($post,1) .'<hr>';
+
 	// Filter arguments before generating POST to SF
 	$post = apply_filters( 'salesforce_w2l_post_data', $post, $post_id, $form_type );
 
+	//echo print_r($post,1) .'<hr>';
+
 	$body = preg_replace('/%5B[0-9]+%5D/simU', '', http_build_query($post) ); // remove php style arrays for array values [1]
+
 	//echo $body .'<hr>';
 
 	$sslverify = false;
@@ -791,7 +804,7 @@ function submit_salesforce_form_to_api( $post, $plugin_options, $form_options ) 
 		return false;
 	}
 
-	if ($result['response']['code'] == 200){
+	if ( $result['response']['code'] == 200 ){
 
 		// Post submit actions
 		do_action( 'salesforce_w2l_after_submit', $post, $post_id, $form_type );
