@@ -205,16 +205,20 @@ function salesforce_init() {
 
 }
 
-add_action( 'the_content', 'salesforce_single_form' );
+/* Avoid running before the loop content  */
+add_action( 'loop_start', 'salesforce_single_form_hook' );
 
-function salesforce_single_form( $content ){
-
-	if( get_post_type() == salesforce_get_post_type_slug() ){
-		return $content . do_shortcode( '[salesforce_form id="' . get_the_id() . '"]' );
-	}else{
-		return $content;
+/* If we're on a singlular page template  */
+function salesforce_single_form_hook(){
+	if( is_singular( salesforce_get_post_type_slug() ) && is_main_query() ) {
+		add_action( 'the_content', 'salesforce_single_form', 1, 999 );
 	}
+}
 
+/* Output form  */
+function salesforce_single_form( $content ){
+	remove_filter( current_filter(), __FUNCTION__ );
+	return $content . do_shortcode( '[salesforce_form id="' . get_the_id() . '"]' );
 }
 
 add_action('plugins_loaded', 'salesforce_init');
