@@ -641,7 +641,9 @@ function salesforce_form( $options, $is_sidebar = false, $errors = null, $form_i
 
 	}
 
-	$content = apply_filters('salesforce_w2l_form_html', $content);
+	$post_id = salesforce_map_legacy_id( $options );
+
+	$content = apply_filters('salesforce_w2l_form_html', $content, $options, $sidebar, $post_id );
 
 	return $content;
 }

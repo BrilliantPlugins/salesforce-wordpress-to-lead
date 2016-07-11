@@ -196,3 +196,11 @@ function block_non_biz_emails( $error, $name, $val, $field ){
 
 	return $error;
 }
+
+add_filter( 'salesforce_w2l_form_html' ,'salesforce_w2l_form_html_add_title', 10, 5 );
+
+function salesforce_w2l_form_html_add_title( $content, $form_options, $is_sidebar, $form_id, $version ){
+
+		return '<h2>'.get_the_title( $form_id ).'</h2>' . $content;
+
+}

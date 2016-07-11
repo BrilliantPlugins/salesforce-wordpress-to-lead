@@ -394,6 +394,16 @@ You can add to the $non_biz_domains to block other providers as well.
 
 HTML of the form before it's returned to WordPress for display
 
+`
+add_filter( 'salesforce_w2l_form_html' ,'salesforce_w2l_form_html_add_title', 10, 5 );
+
+function salesforce_w2l_form_html_add_title( $content, $form_options, $is_sidebar, $form_id, $version ){
+
+		return '<h2>'.get_the_title( $form_id ).'</h2>' . $content;
+
+}
+`
+
 **salesforce_w2l_cc_user_from_name**
 
 Change from name (user confirmation)
@@ -514,6 +524,7 @@ If you need access to the field or form settings in your filter you can use:
 
 Examples:
 
+Single form
 `
 // Pre-check a checkbox
 
@@ -528,6 +539,25 @@ function salesforce_w2l_field_value_precheck_example( $val, $field, $form ){
 		return 1; // or whatever the value of your checkbox is
 
 	return $val;
+
+}
+`
+
+Multiple Forms
+`
+// Pre-check a checkbox
+
+add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_precheck_example', 10, 3 );
+
+function salesforce_w2l_field_value_precheck_example( $val, $field, $form ){
+
+$form_ids = array( 1, 2, 3, 4, 6 ); // form ids to act upon
+$field_name = 'checkboxfield__c'; // API Name of the field you want to auto check
+
+if( in_array( $form, form_ids ) && $field_name == $field && ! $_POST )
+return 1; // or whatever the value of your checkbox is
+
+return $val;
 
 }
 `
