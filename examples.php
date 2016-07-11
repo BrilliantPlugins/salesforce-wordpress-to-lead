@@ -204,3 +204,20 @@ function salesforce_w2l_form_html_add_title( $content, $form_options, $is_sideba
 		return '<h2>'.get_the_title( $form_id ).'</h2>' . $content;
 
 }
+
+add_filter('salesforce_w2l_cc_admin_email_subject', 'salesforce_w2l_cc_admin_email_subject_add_form_title', 10, 3 );
+
+function salesforce_w2l_cc_admin_email_subject_add_form_title( $subject, $form_type, $post ){
+
+	// extract form ID from $post
+	$form_id = absint( $_POST['form_id'] );
+
+	// get form options
+	$options = get_option('salesforce2');
+
+	// alter subject line
+	$subject = str_replace( 'Salesforce Web to Lead Submission', '[SFWP2L] ' .  $options['forms'][ $form_id ][ 'form_name' ] , $subject );
+
+	return $subject;
+
+}
