@@ -641,7 +641,7 @@ function salesforce_form( $options, $is_sidebar = false, $errors = null, $form_i
 
 	}
 
-	$content = apply_filters('salesforce_w2l_form_html', $content);
+	$content = apply_filters('salesforce_w2l_form_html', $content, $options, $sidebar, $form_id, 2 );
 
 	return $content;
 }

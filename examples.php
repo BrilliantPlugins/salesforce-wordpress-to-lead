@@ -196,3 +196,19 @@ function block_non_biz_emails( $error, $name, $val, $field ){
 
 	return $error;
 }
+
+add_filter( 'salesforce_w2l_form_html' ,'salesforce_w2l_form_html_add_title', 10, 5 );
+
+function salesforce_w2l_form_html_add_title( $content, $form_options, $is_sidebar, $form_id, $version ){
+
+	// $version tells you which mode the plugin is in: 2 = legacy, 3 = current - since the form title is stored in the CPT in v3, we need to access it differently
+
+	if( $version == 2 ){
+		return '<h2>'.$form_options['title'].'</h2>' . $content;
+	}
+
+	if( $version == 3 ){
+		return '<h2>'.get_the_title( $form_id ).'</h2>' . $content;
+	}
+
+}
