@@ -1,4 +1,5 @@
 <?php
+if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
  * Processes the comment data, and sends the lead if appropriate.
@@ -22,7 +23,7 @@ function salesforce_process_comment( $comment_id ) {
         $allowed_types = apply_filters( 'salesforce_allowed_comment_to_lead_types', array( 'post', 'page' ) );
         if ( ! in_array( $post->post_type, $allowed_types ) )
                 return;
-                
+
         $first_name = get_comment_meta( $comment_id, 'author_first_name', true );
         $last_name = get_comment_meta( $comment_id, 'author_last_name', true );
 
@@ -30,7 +31,7 @@ function salesforce_process_comment( $comment_id ) {
         if ( ! $first_name && ! $last_name )
                 $first_name = $comment->comment_author;
 
-        $lead_data = array( 
+        $lead_data = array(
                 'first_name' => $first_name,
                 'last_name' => $last_name,
                 'email' => $comment->comment_author_email,
@@ -38,7 +39,7 @@ function salesforce_process_comment( $comment_id ) {
                 'URL' => $comment->comment_author_url,
                 'description' => $comment->comment_content,
         );
-        
+
         if ( submit_salesforce_form( $lead_data, $options ) )
                 add_comment_meta( $comment_id, 'salesforce_lead_submitted', 1 );
 }
@@ -80,7 +81,7 @@ function salesforce_wp_set_comment_status( $comment_id, $comment_status ) {
 add_action( 'wp_set_comment_status', 'salesforce_wp_set_comment_status', 10, 2 );
 
 /**
- * Hooks the WP comment_form_defaults filter to swap the name field for a 
+ * Hooks the WP comment_form_defaults filter to swap the name field for a
  * "First name" and "Last name" field.
  *
  * @param $fields array An array of default settings for the comments form
@@ -116,7 +117,7 @@ add_filter( 'comment_form_defaults', 'salesforce_comment_form_defaults' );
 
 /**
  * Hooks the WP pre_comment_on_post action to cheat in an author field
- * in the global $_POST array if the first and last name fields are 
+ * in the global $_POST array if the first and last name fields are
  * both filled. Hackety McHack Hack.
  *
  * @param int $comment_post_ID The ID of the post being commented on

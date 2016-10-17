@@ -1,4 +1,6 @@
 <?php
+if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class Salesforce_Admin extends OV_Plugin_Admin {
 
 	public $optionname;
@@ -12,7 +14,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 	function Salesforce_Admin() {
 
-		$this->optionname = 'salesforce2';
+		$this->optionname = salesforce_get_option_name(); // back compat, use  salesforce_get_option_name()
 
 		$this->hook 		= 'salesforce-wordpress-to-lead';
 		$this->filename		= 'salesforce/salesforce.php';
@@ -76,7 +78,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 	static function using_da(){
 
-		$options = get_option( 'salesforce2' );
+		$options = get_option( salesforce_get_option_name() );
 
 		if( isset( $options['da_token'] ) && isset( $options['da_url'] ) && isset( $options['da_site'] ) && $options['da_token'] && $options['da_url'] && $options['da_site'] )
 			return true;
@@ -108,7 +110,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 	public function get_ad_code( $type, $id = null, $num = null ){
 
-		$options  = get_option( $this->optionname );
+		$options  = get_option(  salesforce_get_option_name()  );
 
 		if( defined( 'SFWP2L_HIDE_ADS' ) && SFWP2L_HIDE_ADS == true ){
 			return; // hide ads due to constant
@@ -157,7 +159,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	}
 
 	function warning() {
-		$options = get_option($this->optionname);
+		$options = get_option( salesforce_get_option_name() );
 
 		$show_admin_nag_message = apply_filters( 'salesforce_w2l_show_admin_nag_message', true );
 
@@ -168,14 +170,18 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 	}
 
-	function admin_tabs( $current = 'forms' ) {
+	function admin_tabs( $current = 'settings' ) {
 		if( isset( $_GET['tab'] ) )
 			$current = $_GET['tab'];
 
 		if( !$current )
 			$current = 'forms';
 
-	    $tabs = array( 'forms' => 'Forms', 'settings' => 'Settings', 'css' => 'Styling', 'form' => 'Form Editor', 'import' => 'Import' );
+	    $tabs = array(
+	    	'settings' => 'Settings',
+	    	'css' => 'Styling',
+	    	//'import' => 'Import',
+	    );
 	    //echo '<div id="icon-themes" class="icon32"><br></div>';
 	    echo '<h2 class="nav-tab-wrapper">';
 	    foreach( $tabs as $tab => $name ){
@@ -190,7 +196,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 			// SAVE GENERAL PLUGIN SETTINGS
 
-			$options  = get_option($this->optionname);
+			$options  = get_option( salesforce_get_option_name() );
 
 			if (!current_user_can('manage_options')) die(__('You cannot edit the WordPress-to-Lead options.', 'salesforce'));
 			check_admin_referer('salesforce-udpatesettings');
@@ -210,7 +216,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 			}
 
 			// SAVE OPTION(S) TO DB
-			update_option($this->optionname, $options);
+			update_option( salesforce_get_option_name(), $options);
 
 	}
 
@@ -218,7 +224,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 		wp_enqueue_style( 'sfwp2lcssadmin', plugins_url('assets/css/sfwp2l-admin.css', dirname(__FILE__) ) );
 
-		$options = get_option($this->optionname);
+		$options = get_option( salesforce_get_option_name() );
 
 		if ( isset($_POST['submit']) ) {
 
@@ -249,37 +255,9 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				<div class="metabox-holder col-wrap">
 					<div class="meta-box-sortables">
 
-						<?php if (!isset($_GET['tab']) || $_GET['tab'] == 'forms') {
+						<?php
 
-								$content = '<table border="0" cellspacing="0" cellpadding="4">';
-								$content .= '<tr><th>ID</th><th>Name</th></tr>';
-								foreach($options['forms'] as $key=>$form){
-
-									$name = $form['form_name'];
-
-									if( !$name )
-										$name = '(Blank)';
-
-									$content .= '<tr><td>'.$key.'</td><td><a href="'.$this->plugin_options_url().'&tab=form&id='.$key.'">'.$name.'</a><td></tr>';
-
-								}
-								$content .= '</table>';
-
-								$content .= '<p><a class="button-secondary" href="'.$this->plugin_options_url().'&tab=form">'.__('Add a new form','salesforce').' &raquo;</a></p>';
-
-								$this->postbox('sfforms',__('Forms', 'salesforce'),$content);
-
-								$loc = 'banner-main';
-								$ad = $this->get_ad_code( $loc );
-								if( $ad ){
-									$link = $this->get_ad_link( $ad['utm_content'], $ad['utm_medium'], $ad['url'], '',$ad['utm_source'],$ad['utm_campaign']);
-									echo '<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>';
-								}
-
-
-						}
-
-						 if (isset($_GET['tab']) && $_GET['tab'] == 'settings') { ?>
+						 if ( ! isset($_GET['tab'] ) || $_GET['tab'] == 'settings' ) { ?>
 						<form action="" method="post" id="salesforce-conf">
 							<?php if (function_exists('wp_nonce_field')) { wp_nonce_field('salesforce-udpatesettings'); } ?>
 							<input type="hidden" value="<?php echo $options['version']; ?>" name="version"/>

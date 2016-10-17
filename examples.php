@@ -1,4 +1,5 @@
 <?php
+if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // Remove Form Action
 add_filter( 'salesforce_w2l_form_action', 'salesforce_w2l_form_action_example', 10, 1 );
@@ -171,5 +172,52 @@ function example_salesforce_enable_ssl_verify( $args ){
 
 	$args['sslverify'] = true;
 	return $args;
+
+}
+
+add_filter('sfwp2l_validate_field','block_non_biz_emails', 10, 4);
+
+function block_non_biz_emails( $error, $name, $val, $field ){
+
+	if( $name == 'email' ){
+
+		$non_biz_domains = array( 'gmail.com', 'yahoo.com', 'hotmail.com', 'aol.com' );
+
+		$parts = explode( '@', $val );
+
+		$domain = array_pop( $parts );
+
+		if( in_array( $domain, $non_biz_domains ) ){
+			$error['valid'] = false;
+			$error['message'] = 'Please enter a business email addresss.';
+		}
+
+	}
+
+	return $error;
+}
+
+add_filter( 'salesforce_w2l_form_html' ,'salesforce_w2l_form_html_add_title', 10, 5 );
+
+function salesforce_w2l_form_html_add_title( $content, $form_options, $is_sidebar, $form_id, $version ){
+
+		return '<h2>'.get_the_title( $form_id ).'</h2>' . $content;
+
+}
+
+add_filter('salesforce_w2l_cc_admin_email_subject', 'salesforce_w2l_cc_admin_email_subject_add_form_title', 10, 3 );
+
+function salesforce_w2l_cc_admin_email_subject_add_form_title( $subject, $form_type, $post ){
+
+	// extract form ID from $post
+	$form_id = absint( $_POST['form_id'] );
+
+	// get form options
+	$options = get_option('salesforce2');
+
+	// alter subject line
+	$subject = str_replace( 'Salesforce Web to Lead Submission', '[SFWP2L] ' .  $options['forms'][ $form_id ][ 'form_name' ] , $subject );
+
+	return $subject;
 
 }

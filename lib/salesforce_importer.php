@@ -1,4 +1,5 @@
 <?php
+if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /*
 add_action('admin_menu', 'sfwtli_menu');

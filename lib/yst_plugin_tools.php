@@ -1,4 +1,5 @@
 <?php
+if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
  * Backend Class for use in all Yoast plugins
@@ -16,22 +17,22 @@ if (!class_exists('Yoast_Plugin_Admin')) {
 		var $optionname = '';
 		var $homepage	= '';
 		var $accesslvl	= 'manage_options';
-		
+
 		function Yoast_Plugin_Admin() {
 			add_action( 'admin_menu', array(&$this, 'register_settings_page') );
 			add_filter( 'plugin_action_links', array(&$this, 'add_action_link'), 10, 2 );
-			add_filter( 'ozh_adminmenu_icon', array(&$this, 'add_ozh_adminmenu_icon' ) );				
-			
+			add_filter( 'ozh_adminmenu_icon', array(&$this, 'add_ozh_adminmenu_icon' ) );
+
 			add_action('admin_print_scripts', array(&$this,'config_page_scripts'));
-			add_action('admin_print_styles', array(&$this,'config_page_styles'));				
+			add_action('admin_print_styles', array(&$this,'config_page_styles'));
 		}
-		
+
 		function add_ozh_adminmenu_icon( $hook ) {
-			if ($hook == $this->hook) 
+			if ($hook == $this->hook)
 				return WP_CONTENT_URL . '/plugins/' . plugin_basename(dirname($filename)). '/'.$this->ozhicon;
 			return $hook;
 		}
-		
+
 		function config_page_styles() {
 			if (isset($_GET['page']) && $_GET['page'] == $this->hook) {
 				wp_enqueue_style('dashboard');
@@ -45,11 +46,11 @@ if (!class_exists('Yoast_Plugin_Admin')) {
 		function register_settings_page() {
 			add_options_page($this->longname, $this->shortname, $this->accesslvl, $this->hook, array(&$this,'config_page'));
 		}
-		
+
 		function plugin_options_url() {
 			return admin_url( 'options-general.php?page='.$this->hook );
 		}
-		
+
 		/**
 		 * Add a link to the settings page to the plugins list
 		 */
@@ -62,11 +63,11 @@ if (!class_exists('Yoast_Plugin_Admin')) {
 			}
 			return $links;
 		}
-		
+
 		function config_page() {
-			
+
 		}
-		
+
 		function config_page_scripts() {
 			if (isset($_GET['page']) && $_GET['page'] == $this->hook) {
 				wp_enqueue_script('postbox');
@@ -84,7 +85,7 @@ if (!class_exists('Yoast_Plugin_Admin')) {
 			$val = ( isset( $options[$id] ) ) ? $options[$id] : false;
 			return '<input type="checkbox" id="'.$id.'" name="'.$id.'"'. checked( $val, true, false).'/> <label for="'.$id.'">'.$label.'</label><br/>';
 		}
-		
+
 		/**
 		 * Create a Text input field
 		 */
@@ -107,7 +108,7 @@ if (!class_exists('Yoast_Plugin_Admin')) {
 				</div>
 			</div>
 		<?php
-		}	
+		}
 
 		/**
 		 * Create a form table from an array of rows
@@ -124,7 +125,7 @@ if (!class_exists('Yoast_Plugin_Admin')) {
 					$content .= '<br/><small>'.$row['desc'].'</small>';
 				$content .= '</th><td valign="top">';
 				$content .= $row['content'];
-				$content .= '</td></tr>'; 
+				$content .= '</td></tr>';
 			}
 			$content .= '</table>';
 			return $content;
@@ -140,8 +141,8 @@ if (!class_exists('Yoast_Plugin_Admin')) {
 			$content .= '<li><a href="http://wordpress.org/extend/plugins/'.$this->hook.'/">'.__('Give it a good rating on WordPress.org.','ystplugin').'</a></li>';
 			$content .= '</ul>';
 			$this->postbox($this->hook.'like', 'Like this plugin?', $content);
-		}	
-		
+		}
+
 		/**
 		 * Info box with link to the support forums.
 		 */

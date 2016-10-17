@@ -1,9 +1,9 @@
 === WordPress-to-lead for Salesforce CRM ===
-Contributors: nickciske, cimbura.com
+Contributors: stonydaddydonkeylabscom, nickciske, cimburacom
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 4.3
-Stable tag: 2.7
+Stable tag: 3.0
 License: GPLv2
 Donate link: https://donate.charitywater.org/donate
 
@@ -515,7 +515,7 @@ ZM|Zambia
 ZW|Zimbabwe
 `
 
-_Note: Leading & trailing whitespace is trimmed when names and values are displayed, so feel free to use spaces to make things more readable._
+_*Note:* Leading & trailing whitespace is trimmed when names and values are displayed, so feel free to use spaces to make things more readable._
 
 = How do I use the Date field? =
 
@@ -730,6 +730,16 @@ You can add to the $non_biz_domains to block other providers as well.
 
 HTML of the form before it's returned to WordPress for display
 
+`
+add_filter( 'salesforce_w2l_form_html' ,'salesforce_w2l_form_html_add_title', 10, 5 );
+
+function salesforce_w2l_form_html_add_title( $content, $form_options, $is_sidebar, $form_id, $version ){
+
+		return '<h2>'.get_the_title( $form_id ).'</h2>' . $content;
+
+}
+`
+
 **salesforce_w2l_cc_user_from_name**
 
 Change from name (user confirmation)
@@ -850,6 +860,7 @@ If you need access to the field or form settings in your filter you can use:
 
 Examples:
 
+Single form
 `
 // Pre-check a checkbox
 
@@ -864,6 +875,25 @@ function salesforce_w2l_field_value_precheck_example( $val, $field, $form ){
 		return 1; // or whatever the value of your checkbox is
 
 	return $val;
+
+}
+`
+
+Multiple Forms
+`
+// Pre-check a checkbox
+
+add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_precheck_example', 10, 3 );
+
+function salesforce_w2l_field_value_precheck_example( $val, $field, $form ){
+
+$form_ids = array( 1, 2, 3, 4, 6 ); // form ids to act upon
+$field_name = 'checkboxfield__c'; // API Name of the field you want to auto check
+
+if( in_array( $form, form_ids ) && $field_name == $field && ! $_POST )
+return 1; // or whatever the value of your checkbox is
+
+return $val;
 
 }
 `
@@ -1074,6 +1104,10 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 `
 
 == Changelog ==
+
+= 3.0 =
+* Move form storage to custom post types (sponsored by SPS commerce)
+* Handle WordPress reserved field names like `name` and `title`	gracefully. Note that all field names (in the HTML output) are now prefixed with `sf_` automatically.
 
 = 2.7 =
 * Fix widget constructor to be compatible with WP 4.3 (thanks Steven Stevenson)
@@ -1340,8 +1374,8 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 
 == Upgrade Notice ==
 
-= 2.7 =
-This version changes how option data is stored (it will auto migrate data to the new format leaving the old format available in case a rollback is needed).
+= 3.0 =
+This version changes how option data is stored (it will auto migrate data to the new format leaving the old format available in case a fallback is needed).
 
 = 2.6.1 =
 The default CSS changed in the 2.6 release. If you've customized the form output, double check your form styling after upgrade.
