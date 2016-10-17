@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske, cimbura.com
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 4.3
-Stable tag: 2.6.7
+Stable tag: 2.7
 License: GPLv2
 Donate link: https://donate.charitywater.org/donate
 
@@ -1077,7 +1077,6 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 
 = 2.7 =
 * Fix widget constructor to be compatible with WP 4.3 (thanks Steven Stevenson)
-* Store form configuration data in one (non auto-loaded) option per form to avoid option trimming and memory issues for larger installs (sponsored by SPS commerce)
 
 = 2.6.7 =
 * Add setting to remove WP CF7 javascript to fix it hijacking forms with WP CF7 CSS integration turned on
