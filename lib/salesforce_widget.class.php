@@ -3,10 +3,12 @@ if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Salesforce_WordPress_to_Lead_Widgets extends WP_Widget {
 
-	function Salesforce_WordPress_to_Lead_Widgets() {
-		$widget_ops = array( 'classname' => 'salesforce', 'description' => __('Displays a WordPress-to-Lead for Salesforce Form','salesforce') );
-		$control_ops = array( 'width' => 200, 'height' => 250, 'id_base' => 'salesforce' );
-		parent::__construct( 'salesforce', 'Salesforce', $widget_ops, $control_ops );
+	function __construct() {
+		parent::__construct(
+			'salesforce', // Base ID
+			__( 'Salesforce Widget', 'salesforce' ), // Name
+			array( 'description' => __( 'Displays a WordPress-to-Lead for Salesforce Form', 'salesforce' ), ) // Args
+		);
 	}
 
 	function widget( $args, $instance ) {
