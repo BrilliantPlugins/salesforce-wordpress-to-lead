@@ -105,6 +105,12 @@
     width: auto;
 }
 
+/* Styling Fix for Twenty Sixteen Theme */
+.w2llead.sidebar{
+	margin-left: auto;
+	width: 100%;
+}
+
 .salesforce_w2l_lead .placeholders .w2linput {
 }
 
