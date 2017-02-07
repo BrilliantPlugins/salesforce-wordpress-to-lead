@@ -1,0 +1,489 @@
+# Copyright (C) 2014 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version:  \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/salesforce-wordpress-to-lead\n"
+"POT-Creation-Date: 2014-03-12 13:49:14+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: lib/ov_plugin_tools.php:60 lib/salesforce_admin.class.php:163
+#: lib/yst_plugin_tools.php:60
+msgid "Settings"
+msgstr ""
+
+#: lib/ov_plugin_tools.php:143 lib/yst_plugin_tools.php:137
+msgid "Why not do any or all of the following:"
+msgstr ""
+
+#: lib/ov_plugin_tools.php:145
+msgid "Link to it so other folks can find out about it"
+msgstr ""
+
+#: lib/ov_plugin_tools.php:146
+msgid "Give it a good review on WordPress.org"
+msgstr ""
+
+#: lib/ov_plugin_tools.php:155
+msgid ""
+"If you have any problems with this plugin, ideas for improvements, or  "
+"feature requests, please talk about them in the"
+msgstr ""
+
+#: lib/ov_plugin_tools.php:155 lib/yst_plugin_tools.php:149
+msgid "Support forums"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:46
+msgid "Lead form on "
+msgstr ""
+
+#: lib/salesforce_admin.class.php:163
+msgid "Your WordPress-to-Lead settings are not complete."
+msgstr ""
+
+#: lib/salesforce_admin.class.php:163
+msgid "You must enter your Salesforce.com Organization ID for it to work."
+msgstr ""
+
+#: lib/salesforce_admin.class.php:283
+msgid "You cannot edit the WordPress-to-Lead options."
+msgstr ""
+
+#: lib/salesforce_admin.class.php:323
+msgid "Configuration Saved"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:342
+msgid "Add a new form"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:344
+msgid "Forms"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:365
+msgid "Your Salesforce.com Organization ID"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:365
+msgid ""
+"To find your Salesforce.com Organization ID, in your Salesforce.com account, "
+"go to Setup &raquo; Company Profile &raquo; Company Information"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:366
+msgid "Salesforce.com Settings"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:390
+msgid "Daddy Analytics Token"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:391
+msgid "Daddy Analytics Web to Lead URL ID"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:392
+msgid "Daddy Analytics Site ID"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:393
+msgid "Daddy Analytics Settings"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:395
+msgid "Success message after sending lead to SalesForce"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:396
+msgid "Error message shown when required fields are not filled out"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:397
+msgid "Error message shown when email field is invalid"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:399
+msgid "Error message shown when captcha is invalid"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:401
+msgid "Error message when Salesforce.com connection fails"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:402
+msgid "Basic Settings"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:404
+msgid "Allow user to request a copy of their submission"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:406
+msgid "Request a copy text"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:407
+msgid "Email subject"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:407
+msgid "Use %BLOG_NAME% to auto-insert the blog title into the subject"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:409
+msgid "Send blog admin an email notification"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:411
+msgid "Email Settings"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:413
+msgid "Submit button text"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:414
+msgid "Required fields text"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:416
+msgid "Use CAPTCHA?"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:417
+msgid "Learn more about CAPTCHAs at Wikipedia"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:419 lib/salesforce_admin.class.php:714
+msgid "Form Settings"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:421
+msgid "Use Default CSS?"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:422
+msgid "Use WPCF7 CSS integration?"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:424
+msgid "Read how to override the default CSS with your own CSS file"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:426
+msgid "Style Settings"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:428
+msgid "Create a lead when an approved comment is published"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:429
+msgid ""
+"Replace the \"Name\" field on the comment form with \"First Name\" and "
+"\"Last Name\""
+msgstr ""
+
+#: lib/salesforce_admin.class.php:430
+msgid ""
+"<small>Using first and last name fields allows for cleaner Salesforce leads, "
+"otherwise the \"first name\" on the lead will contain the full name, but it "
+"may create issues with some WordPress themes.</small>"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:432
+msgid "Comment Settings"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:435
+msgid "Save WordPress-to-Lead Settings"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:471
+msgid "Deleted Form #"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:475
+msgid "Duplicated Form #"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:494
+msgid "This form could not be found."
+msgstr ""
+
+#: lib/salesforce_admin.class.php:498
+msgid "Form settings updated."
+msgstr ""
+
+#: lib/salesforce_admin.class.php:514
+msgid "Form Name"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:525
+msgid "Field"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:526
+msgid "Operations"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:527
+msgid "Type"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:528
+msgid "Label/Value"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:530
+msgid "Options"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:531
+msgid "Order"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:636
+msgid "Form Type:"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:639
+msgid "<b>Note:</b> Daddy Analytics does not support cases at this time."
+msgstr ""
+
+#: lib/salesforce_admin.class.php:644
+msgid "Lead Source:"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:647
+msgid ""
+"Lead Source (up to 40 characters) to display in Salesforce.com, use %URL% to "
+"include the URL of the page containing the form."
+msgstr ""
+
+#: lib/salesforce_admin.class.php:655
+msgid "Return/Thanks URL:"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:657
+msgid "e.g.http://yoursite.com/thanks/"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:661
+msgid "Success Message:"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:663 lib/salesforce_admin.class.php:669
+msgid ""
+"Overrides the default message for this form.(leave blank to use the global "
+"setting)"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:667
+msgid "Submit button text (override):"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:673
+msgid "Required fields text (override):"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:675
+msgid ""
+"Overrides the default message for this form (leave blank to use the global "
+"setting)."
+msgstr ""
+
+#: lib/salesforce_admin.class.php:679
+msgid "Captcha:"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:686
+msgid "Overrides the default captcha settings for this form."
+msgstr ""
+
+#: lib/salesforce_admin.class.php:691
+msgid "Required Fields Text Location:"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:699
+msgid "Label Location:"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:708
+msgid "Salesforce.com Organization ID (override):"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:710
+msgid ""
+"Overrides the default org_id for this form (leave blank to use the global "
+"setting)."
+msgstr ""
+
+#: lib/salesforce_admin.class.php:718
+msgid "Save Form"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:753
+msgid "How to Use This Form"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:757
+msgid "How to Use This Plugin"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:757
+msgid ""
+"<p>To embed a form, copy the following shortcode into a post or page:</p><p> "
+"[salesforce form=\"X\"] </p><p>Replace X with the form number for the form "
+"you want to show.</p><p><i>Make sure you have entered all the correct "
+"settings on the left, including your Organization ID.</i></p>"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:764
+msgid ""
+"<b>Community</b><br>If you have any problems with this plugin, ideas for "
+"improvements, or  feature requests, please talk about them in the community "
+"support forum.<p><i>Be sure to read the <a target=\"_blank\" href=\"http://"
+"wordpress.org/support/topic/support-guidelines/\">support guidelines</a> "
+"before posting.</i></p>"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:764
+msgid "Get Community Support"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:766
+msgid ""
+"<b>Premium</b><br>Need guaranteed support, customization help, or want to "
+"sponsor a feature addition?"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:766
+msgid "Request Premium Support"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:779
+msgid "Plugin Sponsor: Daddy Analytics"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:782
+msgid "Want to contribute?"
+msgstr ""
+
+#: lib/salesforce_admin.class.php:782
+msgid ""
+"<p class=\"aligncenter\">Pull requests welcome!<br><br>\n"
+"\t\t\t\t\t\t\t\n"
+"\t\t\t\t\t\t\t<a class=\"button-secondary\" href=\"https://github.com/nciske/"
+"salesforce-wordpress-to-lead\" target=\"_blank\">Fork me on GitHub</"
+"a><br><br>\n"
+"\n"
+"\t\t\t\t\t\t\t<a class=\"button-secondary\" href=\"https://github.com/nciske/"
+"salesforce-wordpress-to-lead/issues\" target=\"_blank\">Submit an issue</a>\n"
+"\n"
+"\t\t\t\t\t\t\t\n"
+"\t\t\t\t\t\t\t\n"
+"\t\t\t\t\t\t\t\n"
+"\t\t\t\t\t\t\t</p>"
+msgstr ""
+
+#: lib/salesforce_comment_to_lead.php:104
+msgid "First Name"
+msgstr ""
+
+#: lib/salesforce_comment_to_lead.php:106
+msgid "Last Name"
+msgstr ""
+
+#: lib/salesforce_widget.class.php:5
+msgid "Displays a WordPress-to-Lead for Salesforce Form"
+msgstr ""
+
+#: lib/salesforce_widget.class.php:41
+msgid "Title"
+msgstr ""
+
+#: lib/salesforce_widget.class.php:46
+msgid "Introduction"
+msgstr ""
+
+#: lib/salesforce_widget.class.php:51
+msgid "Form"
+msgstr ""
+
+#: lib/yst_plugin_tools.php:139
+msgid "Link to it so other folks can find out about it."
+msgstr ""
+
+#: lib/yst_plugin_tools.php:140
+msgid "Give it a good rating on WordPress.org."
+msgstr ""
+
+#: lib/yst_plugin_tools.php:149
+msgid ""
+"If you have any problems with this plugin or good ideas for improvements or "
+"new features, please talk about them in the"
+msgstr ""
+
+#: salesforce.php:40
+msgid "Success!"
+msgstr ""
+
+#: salesforce.php:41
+msgid "This field is required."
+msgstr ""
+
+#: salesforce.php:42 salesforce.php:680
+msgid "The email address you entered is not valid."
+msgstr ""
+
+#: salesforce.php:43 salesforce.php:728
+msgid "The text you entered did not match the image."
+msgstr ""
+
+#: salesforce.php:44
+msgid "These fields are required."
+msgstr ""
+
+#: salesforce.php:45
+msgid "Failed to connect to Salesforce.com."
+msgstr ""
+
+#: salesforce.php:46
+msgid "Submit"
+msgstr ""
+
+#: salesforce.php:47
+msgid "Thank you for contacting %BLOG_NAME%"
+msgstr ""
+
+#: salesforce.php:49 salesforce.php:369
+msgid "Send me a copy"
+msgstr ""
+
+#: salesforce.php:74
+msgid "Back to configuration page"
+msgstr ""
+
+#: salesforce.php:347
+msgid "Type the text shown: *"
+msgstr ""
+
+#: salesforce.php:532
+msgid "Thank you for contacting"
+msgstr ""
+
+#: salesforce.php:579
+msgid "Salesforce Web to Case Submission"
+msgstr ""
+
+#: salesforce.php:581
+msgid "Salesforce Web to Lead Submission"
+msgstr ""

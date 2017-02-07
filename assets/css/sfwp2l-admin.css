@@ -1,0 +1,18 @@
+th{text-align:left;}
+
+img{
+	max-width: 100%;
+	height: auto;
+}
+
+p.aligncenter{
+	text-align: center;
+}
+
+code.language-css{
+	background-color: transparent;
+}
+
+tr.disabled{
+	opacity: .75;
+}
