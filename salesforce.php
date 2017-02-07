@@ -214,6 +214,9 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		if (!$input['show'])
 			continue;
 
+		if( ! isset( $input['opts'] ) )
+			$input['opts'] = null;
+
 		$val = '';
 		if ( isset( $_POST[$id] ) ){
 			$val = $_POST[$id];
