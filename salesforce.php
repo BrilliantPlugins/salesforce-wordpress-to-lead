@@ -495,11 +495,6 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 	if (!empty($reqtext) && salesforce_get_option('requiredfieldstextpos',$form_id,$options) == '' )
 		$content .= '<p class="sf_required_fields_msg" id="requiredfieldsmsg"><sup><span class="required">*</span></sup> '.esc_html( $reqtext ).'</p>';
-/*
-	if (!$options['hide_salesforce_link']) {
-		$content .= '<div id="salesforce"><small>'.__('Powered by','salesforce').' <a href="http://www.salesforce.com/">Salesforce CRM</a></small></div>';
-	}
-*/
 
 	if ( $options['wpcf7css'] ) {
 		$content .= '</section>';
@@ -635,9 +630,9 @@ function submit_salesforce_form( $post, $options ) {
 	$args = apply_filters( 'salesforce_w2l_post_args', $args );
 
 	if( $form_type == 'case' ){
-		$url = 'https://www.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8';
+		$url = 'https://webto.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8';
 	}else{
-		$url = 'https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
+		$url = 'https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
 	}
 
 	// Do we need to change the URL we're submitting to?
