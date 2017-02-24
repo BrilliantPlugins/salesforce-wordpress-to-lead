@@ -1,9 +1,9 @@
 === WordPress-to-lead for Salesforce CRM ===
-Contributors: nickciske, cimbura.com
-Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
-Requires at least: 3.5.2
-Tested up to: 4.6.1
-Stable tag: 2.7
+Contributors: brilliantplugins, nickciske, stuporglue, jrfoell,
+Tags: crm, contact form, contactform, web to lead, case to lead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder
+Requires at least: 4.0
+Tested up to: 4.7.2
+Stable tag: 2.7.2
 License: GPLv2
 Donate link: https://donate.charitywater.org/donate
 
@@ -23,6 +23,7 @@ Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hn
 #### Previous contributors:
 * [Joost de Valk](http://profiles.wordpress.org/joostdevalk/)
 * [ModernTribe](http://profiles.wordpress.org/moderntribe/)
+* [Daddy Donkey Labs](http://daddyanalytics.com/)
 
 == Screenshots ==
 
@@ -59,22 +60,24 @@ SalesForce is inconsistent in naming built in fields, and even misreports the na
 <strong>Built in fields</strong>
 
 `
-First Name	first_name
-Last Name 	last_name
+Human Name		API Name
+- - - - - - - - - - - - - - - - - - - - - - - -
+First Name		first_name
+Last Name 		last_name
 
-Title		title
-Website		URL
+Title			title
+Website			URL
 
-Phone		phone
-Mobile		mobile
-Fax	        fax
-Email		email
+Phone			phone
+Mobile			mobile
+Fax	      	  fax
+Email			email
 
-Address		street
-City		city
-State/Prov.	state
-Zip			zip
-Country 	country
+Address			street
+City			city
+State/Prov.		state
+Zip				zip
+Country 		country
 
 Description 	description
 Industry 		industry
@@ -84,14 +87,14 @@ Employees		employees
 `
 <strong>Other Fields</strong>
 `
-Lead Source 	lead_source
-Email Opt Out 	emailOptOut
-Fax Opt Out		faxOptOut
-Do Not Call		doNotCall
+Lead Source 		lead_source
+Email Opt Out 		emailOptOut
+Fax Opt Out			faxOptOut
+Do Not Call			doNotCall
 
-Lead Record Type recordType
+Lead Record Type 	recordType
 
-Campaign	Campaign_ID
+Campaign		Campaign_ID
 
 Campaign Member Status	member_status
 `
@@ -1074,6 +1077,14 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 `
 
 == Changelog ==
+
+= 2.7.2 =
+* Change Reply-to header to use built in email field
+* Add Reply-to filter (`salesforce_w2l_cc_admin_replyto_email`) to allow overriding the default behavior
+* Rebrand plugin as Brilliant Web-to-Lead for Salesforce by BrilliantPlugins
+
+= 2.7.1 =
+* Change API endpoints per https://help.salesforce.com/articleView?eid=ss-tc&id=Updating-the-Web-to-Case-and-Web-to-Lead-Endpoint-URL&language=en_US&type=1
 
 = 2.7 =
 * Fix widget constructor to be compatible with WP 4.3 (thanks Steven Stevenson)

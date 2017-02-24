@@ -18,7 +18,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		$this->filename		= 'salesforce/salesforce.php';
 		$this->longname		= 'WordPress-to-Lead for Salesforce CRM Configuration';
 		$this->shortname	= 'Salesforce';
-		$this->homepage		= 'http://bit.ly/1d56aqB';
+		$this->homepage		= 'https://brilliantplugins.com/';
 		$this->ozhicon		= 'salesforce-16x16.png';
 
 		add_action( 'admin_menu', array(&$this, 'register_settings_page') );
@@ -96,7 +96,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 	}
 
-	function get_ad_link( $content, $medium, $url = 'http://daddyanalytics.com/', $term='', $source = 'ThoughtRefinery', $campaign = 'WP2L_Plugin_01' ){
+	function get_ad_link( $content, $medium, $url = 'http://brilliantplugins.com/', $term='', $source = 'wp-admin', $campaign = 'bwtlfs' ){
 
 		if( !$term )
 			$term = $this->get_ad_term();
@@ -109,6 +109,9 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	function get_ad_code( $type, $id = null, $num = null ){
 
 		$options  = get_option($this->optionname);
+
+		// disable ads for now
+		return;
 
 		if( defined( 'SFWP2L_HIDE_ADS' ) && SFWP2L_HIDE_ADS == true ){
 			return; // hide ads due to constant
