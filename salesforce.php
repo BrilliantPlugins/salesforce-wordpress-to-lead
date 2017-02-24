@@ -622,7 +622,7 @@ function submit_salesforce_form( $post, $options ) {
 		'body' 		=> $body,
 		'headers' 	=> array(
 			'Content-Type' => 'application/x-www-form-urlencoded',
-			'user-agent' => 'WordPress-to-Lead for Salesforce plugin - WordPress/'.$wp_version.'; '.get_bloginfo('url'),
+			'user-agent' => 'Brilliant Web-to-Lead for Salesforce plugin - WordPress/'.$wp_version.'; '.get_bloginfo('url'),
 		),
 		'sslverify'	=> $sslverify,
 	);

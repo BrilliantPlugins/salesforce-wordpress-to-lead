@@ -1,5 +1,5 @@
-=== WordPress-to-lead for Salesforce CRM ===
-Contributors: brilliantplugins, nickciske, stuporglue, jrfoell,
+=== Brilliant Web-to-Lead for Salesforce ===
+Contributors: brilliantplugins, nickciske, stuporglue, jrfoell
 Tags: crm, contact form, contactform, web to lead, case to lead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder
 Requires at least: 4.0
 Tested up to: 4.7.2
@@ -7,18 +7,18 @@ Stable tag: 2.7.2
 License: GPLv2
 Donate link: https://donate.charitywater.org/donate
 
-WordPress-to-Lead for Salesforce CRM creates a solid integration between your WordPress install(s) and your Salesforce.com account!
+Brilliant Web-to-Lead for Salesforce creates a solid integration between your WordPress install(s) and your Salesforce.com account!
 
 == Description ==
 
-WordPress-to-Lead for Salesforce CRM creates a solid integration between your WordPress install(s) and your [Salesforce CRM](http://www.salesforce.com) account! People can enter a contact form on your site, and the lead (or case) goes straight into Salesforce CRM: no more copy pasting lead info, no more missing leads: each and every one of them is in Salesforce.com for you to follow up.
+Brilliant Web-to-Lead for Salesforce creates a solid integration between your WordPress install(s) and your [Salesforce CRM](http://www.salesforce.com) account! People can enter a contact form on your site, and the lead (or case) goes straight into Salesforce CRM: no more copy pasting lead info, no more missing leads: each and every one of them is in Salesforce.com for you to follow up.
 
 ### Check out the screencast
 [youtube http://www.youtube.com/watch?v=hnMzkxPUIyc]
 
 You can fully configure all the different settings for the form, and then use a shortcode to insert the form into your posts or pages, or you can use the widget that comes with the plugin and insert the form into your sidebar!
 
-Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hnMzkxPUIyc) to get a full grasp of some of the power this plugin holds (though it's a bit outdated!).
+Please see this [Demo video](http://www.youtube.com/watch?v=hnMzkxPUIyc) to get a full grasp of some of the power this plugin holds (though it's a bit outdated!).
 
 #### Previous contributors:
 * [Joost de Valk](http://profiles.wordpress.org/joostdevalk/)
@@ -27,15 +27,15 @@ Please see this [WordPress-to-Lead Demo video](http://www.youtube.com/watch?v=hn
 
 == Screenshots ==
 
-1. An example form generated with WordPress-to-Lead for Salesforce CRM (with optional CAPTCHA) -- both post and widget forms are shown in the TwentyEleven theme
-2. The backend administration for WordPress-to-Lead for Salesforce CRM
+1. An example form generated with Brilliant Web-to-Lead for Salesforce (with optional CAPTCHA) -- both post and widget forms are shown in the TwentyEleven theme
+2. The backend administration for Brilliant Web-to-Lead for Salesforce
 3. The new form editor (multiple forms, hidden fields, add new fields, thanks URL, lead source per form)
 
 == Installation ==
 
 1. Upload the `plugin` folder to the `/wp-content/plugins/` directory or install via the Add New Plugin menu
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Enter your Salesforce.com Organization ID on the WordPress-to-Lead plugin configuration page.
+1. Enter your Salesforce.com Organization ID on the plugin configuration page.
 
 == Frequently Asked Questions ==
 
@@ -605,7 +605,7 @@ Version 2.1 allows you to duplicate forms to reduce re-entering data.
 Version 2.5 allows you to import Web-to-Lead forms from Salesforce.
 
 = How do I change the Lead Source that shows up in Salesforce? =
-You can easily change this by going into the WordPress-to-Lead admin panel and, under form settings, changing the Lead Source for that form. Daddy Analytics uers can set this to blank to have it automatically filled.
+You can easily change this by going into the admin panel and, under form settings, changing the Lead Source for that form. Daddy Analytics uers can set this to blank to have it automatically filled.
 
 = I want to include the full URL the form is embedded on, but SF limits the lead source to 40 characters -- how would I do that? =
 
@@ -638,7 +638,7 @@ function salesforce_w2l_field_embedurl( $val, $field, $form ){
 https://gist.github.com/nciske/10047552
 
 = Can I change the submit button? =
-Of course you can! Go into the WordPress-to-Lead admin panel and, under Form Settings, change the text from the default "Submit" to whatever you'd like it to be!
+Of course you can! Go into the admin panel and, under Form Settings, change the text from the default "Submit" to whatever you'd like it to be!
 
 = Will I lose data if I upgrade to 2.0? Do I need to change anything? =
 Nope! The plugin will migrate your existing data to the new format. Your existing form will become Form 1 and be output by the [salesforce] shortcode).
