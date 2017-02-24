@@ -18,7 +18,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		$this->filename		= 'salesforce/salesforce.php';
 		$this->longname		= 'WordPress-to-Lead for Salesforce CRM Configuration';
 		$this->shortname	= 'Salesforce';
-		$this->homepage		= 'https://brilliantplugins.com/';
+		$this->homepage		= 'https://brilliantplugins.com/downloads/salesforce/';
 		$this->ozhicon		= 'salesforce-16x16.png';
 
 		add_action( 'admin_menu', array(&$this, 'register_settings_page') );
