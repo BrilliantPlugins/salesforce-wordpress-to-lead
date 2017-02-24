@@ -797,6 +797,10 @@ function salesforce_filter_admin_message( $message ){
 }
 `
 
+**salesforce_w2l_cc_admin_replyto_email**
+
+Filter the Reply-To email header (e.g. to allow replies to go to the form submitter)
+
 **salesforce_w2l_returl**
 
 **salesforce_w2l_returl_{Form ID}**

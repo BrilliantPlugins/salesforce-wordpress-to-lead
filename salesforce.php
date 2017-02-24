@@ -780,7 +780,12 @@ function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $app
 	if (get_option('email_sender') != '') {
 		$headers .= 'Sender: '.get_option('email_sender')."\r\n";
 	}
-	$headers .= 'Reply-to: '.$from_name.' <' . $from_email . ">\r\n";
+
+	$replyto_email = sanitize_email( apply_filters('salesforce_w2l_cc_admin_replyto_email', $post['email'] ) );
+
+	if( $replyto_email && is_email( $replyto_email ) ){
+		$headers .= 'Reply-to: ' . $replyto_email . "\r\n";
+	}
 
 	if( $options['forms'][$form_id]['type'] == 'case' ){
 		$form_type = __( 'Case', 'salesforce' );
