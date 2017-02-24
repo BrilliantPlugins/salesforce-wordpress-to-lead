@@ -25,24 +25,24 @@ SVNUSER="nickciske" # your svn username
 
 # Let's begin...
 echo ".........................................."
-echo 
+echo
 echo "Preparing to deploy WordPress plugin"
-echo 
+echo
 echo ".........................................."
-echo 
+echo
 
 # Check version in readme.txt is the same as plugin file
 # on ubuntu $GITPATH/readme.txt seems to have an extra /
-NEWVERSION1=`grep "^Stable tag" $GITPATH/readme.txt | awk -F' ' '{print $3}'`
+NEWVERSION1=`grep "^Stable tag" "$GITPATH/readme.txt" | awk -F' ' '{print $3}'`
 echo "readme version: $NEWVERSION1"
-NEWVERSION2=`grep "^Version: " $GITPATH/$MAINFILE | awk -F' ' '{print $2}'`
+NEWVERSION2=`grep "^Version: " "$GITPATH/$MAINFILE" | awk -F' ' '{print $2}'`
 echo "$MAINFILE version: $NEWVERSION2"
 
 if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo "Versions don't match. Exiting...."; exit 1; fi
 
 echo "Versions match in readme.txt and PHP file. Let's proceed..."
 
-cd $GITPATH
+cd "$GITPATH"
 
 # ask if not clean (staged, unstaged, untracked)
 if [ -n "$(git status --porcelain)" ]; then
@@ -60,9 +60,9 @@ echo "Pushing latest commit to origin, with tags"
 # git push origin master
 # git push origin master --tags
 
-echo 
+echo
 echo "Creating local copy of SVN repo ..."
-svn co $SVNURL $SVNPATH
+svn co $SVNURL "$SVNPATH"
 
 echo "Ignoring github specific files and deployment script"
 # svn propset svn:ignore wp-assets "deploy.sh
@@ -75,7 +75,7 @@ svn propset svn:ignore "wp-assets"$'\n'"deploy.sh"$'\n'"README.md"$'\n'"readme.m
 
 #export git -> SVN
 echo "Exporting the HEAD of master from git to the trunk of SVN"
-git checkout-index -a -f --prefix=$SVNPATH/trunk/
+git checkout-index -a -f --prefix="$SVNPATH/trunk/"
 
 # sed commands to convert readme.md to readme.txt
 #sed -e 's/^#\{1\} \(.*\)/=== \1 ===/g' -e 's/^#\{2\} \(.*\)/== \1 ==/g' -e 's/^#\{3\} \(.*\)/= \1 =/g' -e 's/^#\{4,5\} \(.*\)/**\1**/g' "readme.md" > "$SVNPATH/trunk/readme.txt"
@@ -86,32 +86,32 @@ then
 echo "Exporting the HEAD of each submodule from git to the trunk of SVN"
 git submodule init
 git submodule update
-git submodule foreach --recursive 'git checkout-index -a -f --prefix=$SVNPATH/trunk/$path/'
+git submodule foreach --recursive 'git checkout-index -a -f --prefix="$SVNPATH/trunk/$path/"'
 fi
 
 echo "Changing directory to SVN and committing to trunk"
-cd $SVNPATH/trunk/
+cd "$SVNPATH/trunk/"
 # Add all new files that are not set to be ignored
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
-svn commit --username=$SVNUSER -m "$COMMITMSG" 
+svn commit --username=$SVNUSER -m "$COMMITMSG"
 
 echo "Creating new SVN tag & committing it"
-cd $SVNPATH
+cd "$SVNPATH"
 svn copy trunk/ tags/$NEWVERSION1/
-cd $SVNPATH/tags/$NEWVERSION1
+cd "$SVNPATH/tags/$NEWVERSION1"
 svn commit --username=$SVNUSER -m "Tagging version $NEWVERSION1"
 
 # Add assets
 if [ -d "$GITPATH/wp-assets" ]
 then
 echo "Changing directory to SVN and committing to assets"
-cd $SVNPATH/assets
-cp $GITPATH/wp-assets/* .
+cd "$SVNPATH/assets"
+cp "$GITPATH/wp-assets/*" .
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
 svn commit --username=$SVNUSER -m "$COMMITMSG"
 fi
 
 echo "Removing temporary directory $SVNPATH"
-rm -fr $SVNPATH/
+rm -fr "$SVNPATH/"
 
 echo "*** FIN ***"
