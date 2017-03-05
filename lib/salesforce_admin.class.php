@@ -16,7 +16,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 		$this->hook 		= 'salesforce-wordpress-to-lead';
 		$this->filename		= 'salesforce/salesforce.php';
-		$this->longname		= 'WordPress-to-Lead for Salesforce CRM Configuration';
+		$this->longname		= 'Brilliant Web-to-Lead for Salesforce: Configuration';
 		$this->shortname	= 'Salesforce';
 		$this->homepage		= 'https://brilliantplugins.com/downloads/salesforce/';
 		$this->ozhicon		= 'salesforce-16x16.png';
