@@ -211,7 +211,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 	$action	= '#sf_form_'.$sf_form_id;
 	$action = apply_filters( 'salesforce_w2l_form_action', $action );
 
-	if( salesforce_has_captcha( $form_id, $options ) ){
+	if( salesforce_has_captcha( $form_id, $options ) && salesforce_get_option('captcha_type', $form_id, $options ) == 'recaptcha' ){
 		wp_enqueue_script( 'wp2l_recaptcha_js', 'https://www.google.com/recaptcha/api.js' );
 	}
 
