@@ -106,7 +106,7 @@ if [ -d "$GITPATH/wp-assets" ]
 then
 echo "Changing directory to SVN and committing to assets"
 cd "$SVNPATH/assets"
-cp "$GITPATH/wp-assets/*" .
+cp "$GITPATH"/wp-assets/* .
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
 svn commit --username=$SVNUSER -m "$COMMITMSG"
 fi
