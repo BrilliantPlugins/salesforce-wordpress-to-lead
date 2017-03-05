@@ -152,6 +152,16 @@ function get_salesforce_form_id( $form_id, $sidebar ){
 
 }
 
+function salesforce_has_captcha( $form_id, $options ){
+
+	if( salesforce_get_option('captchaform', $form_id, $options ) == 'enabled' || ( salesforce_get_option('captchaform', $form_id, $options ) == '' && $options['captcha'] ) ){
+		return true;
+	}
+
+	return false;
+
+}
+
 function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id = 1) {
 
 	if( !isset($options['forms'][$form_id]) )
@@ -200,6 +210,10 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 	$action	= '#sf_form_'.$sf_form_id;
 	$action = apply_filters( 'salesforce_w2l_form_action', $action );
+
+	if( salesforce_has_captcha( $form_id, $options ) ){
+		wp_enqueue_script( 'wp2l_recaptcha_js', 'https://www.google.com/recaptcha/api.js' );
+	}
 
 	$content .= "\n".'<form id="sf_form_'.$sf_form_id.'" class="'.($options['wpcf7css'] ? 'wpcf7-form' : 'w2llead'.$sidebar ).' '.$label_location.'" method="post" action="'.$action.'">'."\n";
 
@@ -409,39 +423,61 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 	//captcha
 
-	if( salesforce_get_option('captchaform',$form_id,$options) == 'enabled' || ( salesforce_get_option('captchaform',$form_id,$options) == '' && $options['captcha']) ){
 
-		// attempt to disable caching
-		if ( !defined( 'DONOTCACHEPAGE' ) )
-			define( 'DONOTCACHEPAGE', true );
-		if ( !defined( 'DONOTCACHEOBJECT' ) )
-			define( 'DONOTCACHEOBJECT', true );
+	if( salesforce_has_captcha( $form_id, $options ) ){
 
-		include("lib/captcha/captcha.php");
-		$captcha = captcha();
+		if( salesforce_get_option('captcha_type', $form_id, $options ) == 'recaptcha' ){
 
-		//$content .=  'CODE='.$captcha['code'].'<hr>';
+			// Use Google ReCaptcha
 
-		$sf_hash = sha1($captcha['code'].NONCE_SALT);
+			$content .= '<div class="sf_field sf_field_recaptcha sf_type_recaptcha">';
+				$content .= '<br>';
+				$content .= '<div class="g-recaptcha" data-sitekey="' . esc_attr( salesforce_get_option('recaptcha_site_key', $form_id, $options ) ) . '"></div>';
 
-		set_transient( $sf_hash, $captcha['code'], 60*15 );
+			if( $errors && !$errors['recaptcha']['valid'] ){
+				$content .=  "<span class=\"error_message\">" . $errors['recaptcha']['message'] . '</span>';
+			}
 
-		$label = __('Type the text shown: *','salesforce');
+			$content .= '</div>';
 
-		$content .= '<div class="sf_field sf_field_captcha sf_type_captcha">';
+		}else{
 
-			$content .=  '<label class="w2llabel">'.$label.'</label>'."\n\n".'
-				<img class="w2limg" src="' . $captcha['image_src'] . '&hash=' . $sf_hash . '" alt="CAPTCHA image" />'."\n\n";
-				$content .=  '<input type="text" class="w2linput text captcha" name="captcha_text" value="" />';
+			// Use built in captcha system
+
+			// attempt to disable caching
+			if ( !defined( 'DONOTCACHEPAGE' ) )
+				define( 'DONOTCACHEPAGE', true );
+			if ( !defined( 'DONOTCACHEOBJECT' ) )
+				define( 'DONOTCACHEOBJECT', true );
+
+			include("lib/captcha/captcha.php");
+			$captcha = captcha();
+
+			//$content .=  'CODE='.$captcha['code'].'<hr>';
+
+			$sf_hash = sha1($captcha['code'].NONCE_SALT);
+
+			set_transient( $sf_hash, $captcha['code'], 60*15 );
+
+			$label = __('Type the text shown: *','salesforce');
+
+			$content .= '<div class="sf_field sf_field_captcha sf_type_captcha">';
+
+				$content .=  '<label class="w2llabel">'.$label.'</label>'."\n\n".'
+					<img class="w2limg" src="' . $captcha['image_src'] . '&hash=' . $sf_hash . '" alt="CAPTCHA image" />'."\n\n";
+					$content .=  '<input type="text" class="w2linput text captcha" name="captcha_text" value="" />';
 
 
-		if( $errors && !$errors['captcha']['valid'] ){
-			$content .=  "<span class=\"error_message\">".$errors['captcha']['message'].'</span>';
+			if( $errors && !$errors['captcha']['valid'] ){
+				$content .=  "<span class=\"error_message\">" . $errors['captcha']['message'] . '</span>';
+			}
+
+			$content .=  '<input type="hidden" class="w2linput hidden" name="captcha_hash" value="'. $sf_hash .'" />';
+
+			$content .= '</div>';
+
 		}
 
-		$content .=  '<input type="hidden" class="w2linput hidden" name="captcha_hash" value="'. $sf_hash .'" />';
-
-		$content .= '</div>';
 
 	}
 
@@ -890,7 +926,7 @@ function salesforce_form_shortcode($atts) {
 	}
 
 	//this is the right form, continue
-	if (isset($_POST['w2lsubmit'])) {
+	if( isset( $_POST['w2lsubmit'] ) ) {
 		$error = false;
 		$post = array();
 
@@ -974,20 +1010,63 @@ function salesforce_form_shortcode($atts) {
 
 		}
 
-		//check captcha if enabled
+		if( salesforce_has_captcha( $form_id, $options ) ){
 
-		if( salesforce_get_option('captchaform',$form_id,$options) == 'enabled' || ( salesforce_get_option('captchaform',$form_id,$options) == '' && $options['captcha']) ){
+			if( salesforce_get_option('captcha_type', $form_id, $options ) == 'recaptcha' ){
 
-			if( $_POST['captcha_hash'] != sha1( $_POST['captcha_text'].NONCE_SALT )){
-				$has_error = true;
+				$recaptcha_valid = false;
 
-				$errors['captcha']['valid'] = false;
+				if( isset( $_POST['g-recaptcha-response'] ) && $_POST['g-recaptcha-response'] ){
 
-				if( isset( $options['captchaerrormsg'] ) && $options['captchaerrormsg'] ){
-					$errors['captcha']['message'] = $options['captchaerrormsg'];
+					$recaptcha_args = array(
+						'secret' => salesforce_get_option('recaptcha_secret_key', $form_id, $options ),
+						'response' => $_POST['g-recaptcha-response'],
+					);
+
+					if( isset( $_SERVER['REMOTE_ADDR'] ) && $_SERVER['REMOTE_ADDR'] != '127.0.0.1' ){
+						$recaptcha_args['remoteip'] = $_SERVER['REMOTE_ADDR'];
+					}
+
+					$recaptcha_response = wp_safe_remote_post( 'https://www.google.com/recaptcha/api/siteverify', array( 'body' => $recaptcha_args ) );
+
+					$recaptcha_response_body = wp_remote_retrieve_body( $recaptcha_response );
+
+					$recaptcha_response_object = json_decode( $recaptcha_response_body );
+
+					$recaptcha_valid = $recaptcha_response_object->success;
+
+					if( ! $recaptcha_valid ){
+						$errors['recaptcha']['valid'] = false;
+						$errors['recaptcha']['message'] = __('Failed to verify ReCaptcha. Please try again.','salesforce');
+					}
+
 				}else{
-					//backwards compatibility
-					$errors['captcha']['message'] = __('The text you entered did not match the image.','salesforce');
+
+					$errors['recaptcha']['valid'] = false;
+
+					if( isset( $options['recaptchaerrormsg'] ) && $options['recaptchaerrormsg'] ){
+						$errors['recaptcha']['message'] = $options['recaptchaerrormsg'];
+					}else{
+						//backwards compatibility
+						$errors['recaptcha']['message'] = __('Please complete the ReCaptcha field.','salesforce');
+					}
+
+				}
+
+			}else{
+
+				if( $_POST['captcha_hash'] != sha1( $_POST['captcha_text'].NONCE_SALT )){
+					$has_error = true;
+
+					$errors['captcha']['valid'] = false;
+
+					if( isset( $options['captchaerrormsg'] ) && $options['captchaerrormsg'] ){
+						$errors['captcha']['message'] = $options['captchaerrormsg'];
+					}else{
+						//backwards compatibility
+						$errors['captcha']['message'] = __('The text you entered did not match the image.','salesforce');
+					}
+
 				}
 
 			}

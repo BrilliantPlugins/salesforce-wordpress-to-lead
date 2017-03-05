@@ -262,7 +262,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				w2l_sksort($newinputs,'pos',true);
 				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
 
-				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','labellocationsidebar','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id', 'cc_email_subject','donotautoaddcolontolabels') as $option_name) {
+				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','labellocationsidebar','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id', 'cc_email_subject','donotautoaddcolontolabels' ) as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options['forms'][$form_id][$option_name] = $_POST[$option_name];
 					}else{
@@ -293,7 +293,20 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				if (!current_user_can('manage_options')) die(__('You cannot edit the WordPress-to-Lead options.', 'salesforce'));
 				check_admin_referer('salesforce-udpatesettings');
 
-				foreach (array('usecss','showccuser','ccadmin','captcha','wpcf7css','wpcf7jsfix','sslverify','hide_salesforce_link', 'commentstoleads', 'commentsnamefields') as $option_name) {
+				foreach( array(
+
+					'usecss',
+					'showccuser',
+					'ccadmin',
+					'captcha',
+					'wpcf7css',
+					'wpcf7jsfix',
+					'sslverify',
+					'hide_salesforce_link',
+					'commentstoleads',
+					'commentsnamefields'
+
+					) as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options[$option_name] = true;
 					} else {
@@ -301,7 +314,31 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 					}
 				}
 
-		        foreach (array('successmsg','errormsg','emailerrormsg','captchaerrormsg','sferrormsg','org_id','submitbutton','subject','ccusermsg','requiredfieldstext', 'ccothers', 'emailfromname', 'emailfromaddress',  'da_token', 'da_url', 'da_site') as $option_name) {
+		        foreach ( array(
+
+		        	'successmsg',
+		        	'errormsg',
+		        	'emailerrormsg',
+		        	'captchaerrormsg',
+		        	'sferrormsg',
+		        	'org_id',
+		        	'submitbutton',
+		        	'subject',
+		        	'ccusermsg',
+		        	'requiredfieldstext',
+		        	'ccothers',
+		        	'emailfromname',
+		        	'emailfromaddress',
+
+					'captcha_type',
+					'recaptcha_site_key',
+					'recaptcha_secret_key',
+
+		        	'da_token',
+		        	'da_url',
+		        	'da_site'
+
+		        	) as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options[$option_name] = $_POST[$option_name];
 					}
@@ -400,7 +437,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								$class = '';
 							}else{
 								//$class = 'closed';
-								$content = 'Thank you for using <a href="http://daddyanalytics.com/" target="_blank">Daddy Analytics</a>!<br/><br/>';
+								$content = '';
 							}
 
 								$content .= $this->textinput('da_token',__('Daddy Analytics Token','salesforce'));
@@ -435,15 +472,32 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								$content = $this->textinput('submitbutton',__('Submit button text', 'salesforce') );
 								$content .= $this->textinput('requiredfieldstext',__('Required fields text', 'salesforce') );
 
-								$content .= $this->checkbox('captcha',__('Use CAPTCHA?', 'salesforce') );
-								$content .= '<br/><small><a href="http://en.wikipedia.org/wiki/CAPTCHA" target="_blank">'.__('Learn more about CAPTCHAs at Wikipedia').'</a></small>';
-
 								$this->postbox('formsettings',__('Form Settings', 'salesforce'), $content);
+
+								$content = $this->checkbox('captcha',__('Enable CAPTCHA', 'salesforce') );
+
+								$items = array(
+									array( 'value' => '', 'name' => __('Built-In', 'salesforce') ),
+									array( 'value' => 'recaptcha', 'name' => __('Google ReCaptcha', 'salesforce') ),
+								);
+
+								$content .= '<br/>';
+
+								$content .= $this->radiogroup('captcha_type', 'Captcha Type:', $items);
+
+								$content .= '<br/>';
+
+								$content .= $this->textinput('recaptcha_site_key',__('Google ReCaptcha Site Key', 'salesforce') );
+								$content .= $this->textinput('recaptcha_secret_key',__('Google ReCaptcha Secret Key', 'salesforce') );
+
+								$content .= '<small><a href="https://www.google.com/recaptcha/admin" target="_blank">'.__('Get ReCaptcha Keys').'</a></small>';
+
+								$this->postbox('formsettings',__('Captcha Settings', 'salesforce'), $content);
 
 								$content = $this->checkbox('usecss',__('Use Default CSS?', 'salesforce') );
 								$content .= $this->checkbox('wpcf7css',__('Use WP CF7 CSS integration?', 'salesforce') );
 								$content .= $this->checkbox('wpcf7jsfix',__('Remove WP CF7 Javascript on SFWP2L pages? <i>(fixes CF7 hijacking form submits, may break CF7 forms on the same page)</i>', 'salesforce') );
-								//$content .= $this->checkbox('hide_salesforce_link',__('Hide "Powered by Salesforce CRM" on form?', 'salesforce') );
+
 								$content .= '<br/><small><a href="'.$this->plugin_options_url().'&amp;tab=css">'.__('Read how to override the default CSS with your own CSS file').'</a></small><br><br>';
 
 								$this->postbox('csssettings',__('Style Settings', 'salesforce'), $content);
