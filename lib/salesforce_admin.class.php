@@ -262,7 +262,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 				w2l_sksort($newinputs,'pos',true);
 				$options['forms'][$form_id]['inputs'] = $newinputs; //TODO
 
-				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','labellocationsidebar','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id', 'cc_email_subject','donotautoaddcolontolabels' ) as $option_name) {
+				foreach (array('form_name','source','returl','successmsg','captchaform','labellocation','labellocationsidebar','layout','submitbutton','requiredfieldstext','requiredfieldstextpos','type','org_id', 'cc_email_subject','donotautoaddcolontolabels' ) as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options['forms'][$form_id][$option_name] = $_POST[$option_name];
 					}else{
@@ -825,6 +825,17 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 									$content .= '<input type="radio" name="labellocationsidebar" value="top-aligned" '.checked( $label_location_sidebar, 'top-aligned', false ).'> Top Aligned <br>';
 									$content .= '<input type="radio" name="labellocationsidebar" value="left-aligned"'.checked( $label_location_sidebar, 'left-aligned', false ).'> Left Aligned <br>';
 									$content .= '<input type="radio" name="labellocationsidebar" value="placeholders"'.checked( $label_location_sidebar, 'placeholders', false ).'> Placeholders';
+									$content .= '</p>';
+
+									$content .= '<p>';
+									$content .= '<label>'.__('Layout:','salesforce').'</label><br/>';
+
+									$layout = trim( $options['forms'][$form_id]['layout'] );
+									if( !$layout )
+										$layout = 'one_column';
+
+									$content .= '<input type="radio" name="layout" value="one_column" '.checked( $layout, 'one_column', false ).'> One Column <br>';
+									$content .= '<input type="radio" name="layout" value="two_column"'.checked( $layout, 'two_column', false ).'> Two Columns <br>';
 									$content .= '</p>';
 
 									$content .= '<p>';

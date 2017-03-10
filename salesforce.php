@@ -920,9 +920,17 @@ function salesforce_form_shortcode($atts) {
 
 		if( $form_id != $form ){
 			$content = salesforce_form($options, $sidebar, null, $form);
-			return '<div class="salesforce_w2l_lead">'.$content.'</div>';
+
+			$layout = salesforce_get_option('layout', $form, $options );
+
+			if( $layout ){
+				$layout = 'sf_' . $layout;
+			}
+
+			return '<div class="salesforce_w2l_lead ' . sanitize_html_class( $layout ) . '">' . $content . '</div>';
 
 		}
+
 	}
 
 	//this is the right form, continue
@@ -1131,7 +1139,14 @@ function salesforce_form_shortcode($atts) {
 		$content = salesforce_form($options, $sidebar, null, $form);
 	}
 
-	return '<div class="salesforce_w2l_lead">'.$content.'</div>';
+	$layout = salesforce_get_option( 'layout', $form, $options );
+
+	if( $layout ){
+		$layout = 'sf_' . $layout;
+	}
+
+	return '<div class="salesforce_w2l_lead ' . sanitize_html_class( $layout ) . '">'.$content.'</div>';
+
 }
 
 function salesforce_clean_field( $value ){
