@@ -1,7 +1,9 @@
 <?php
 
 // Remove Form Action
-add_filter( 'salesforce_w2l_form_action', 'salesforce_w2l_form_action_example', 10, 1 );
+
+//add_filter( 'salesforce_w2l_form_action', 'salesforce_w2l_form_action_example', 10, 1 );
+
 function salesforce_w2l_form_action_example(  $action ){
 
 	return $action;
@@ -9,7 +11,9 @@ function salesforce_w2l_form_action_example(  $action ){
 }
 
 // Lead Source
-add_filter( 'salesforce_w2l_lead_source', 'salesforce_w2l_lead_source_example', 10, 2 );
+
+//add_filter( 'salesforce_w2l_lead_source', 'salesforce_w2l_lead_source_example', 10, 2 );
+
 function salesforce_w2l_lead_source_example(  $lead_source, $form_id ){
 
 	if( $form_id == 1 )
@@ -19,7 +23,7 @@ function salesforce_w2l_lead_source_example(  $lead_source, $form_id ){
 
 }
 
-add_filter( 'salesforce_w2l_post_args', 'salesforce_w2l_post_args_example' );
+//add_filter( 'salesforce_w2l_post_args', 'salesforce_w2l_post_args_example' );
 
 function salesforce_w2l_post_args_example( $args ){
 
@@ -28,7 +32,7 @@ function salesforce_w2l_post_args_example( $args ){
 
 }
 
-add_filter( 'salesforce_w2l_post_data', 'salesforce_w2l_post_data_example', 10, 3 );
+//add_filter( 'salesforce_w2l_post_data', 'salesforce_w2l_post_data_example', 10, 3 );
 
 function salesforce_w2l_post_data_example( $post, $form_id, $form_type ){
 	error_log( 'POST ARGS '.print_r( $post, 1 ) );
@@ -37,7 +41,7 @@ function salesforce_w2l_post_data_example( $post, $form_id, $form_type ){
 }
 
 
-add_filter( 'salesforce_w2l_post_data', 'salesforce_w2l_post_data_date_example', 10, 3 );
+//add_filter( 'salesforce_w2l_post_data', 'salesforce_w2l_post_data_date_example', 10, 3 );
 
 function salesforce_w2l_post_data_date_example( $post, $form_id, $form_type ){
 
@@ -52,26 +56,26 @@ function salesforce_w2l_post_data_date_example( $post, $form_id, $form_type ){
 }
 
 
-add_action('salesforce_w2l_before_submit', 'salesforce_w2l_before_submit_example', 10, 3 );
+//add_action('salesforce_w2l_before_submit', 'salesforce_w2l_before_submit_example', 10, 3 );
 
 function salesforce_w2l_before_submit_example( $post, $form_id, $form_type ){
 	error_log( 'BEFORE SUBMIT '.print_r($post,1) );
 }
 
-add_action('salesforce_w2l_error_submit', 'salesforce_w2l_error_submit_example', 10, 4 );
+//add_action('salesforce_w2l_error_submit', 'salesforce_w2l_error_submit_example', 10, 4 );
 
 function salesforce_w2l_error_submit_example( $result, $post, $form_id, $form_type ){
 	error_log( 'ERROR SUBMIT ' . print_r($result,1) );
 }
 
-add_action('salesforce_w2l_after_submit', 'salesforce_w2l_after_submit_example', 10, 3 );
+//add_action('salesforce_w2l_after_submit', 'salesforce_w2l_after_submit_example', 10, 3 );
 
 function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 	error_log( 'AFTER SUBMIT '.print_r($post,1) );
 }
 
 
-add_filter( 'salesforce_w2l_post_args', 'salesforce_w2l_post_args_timeout_example', 10, 1 );
+//add_filter( 'salesforce_w2l_post_args', 'salesforce_w2l_post_args_timeout_example', 10, 1 );
 
 function salesforce_w2l_post_args_timeout_example( $args ){
 	$args['timeout'] = 10;
@@ -80,7 +84,7 @@ function salesforce_w2l_post_args_timeout_example( $args ){
 
 //add_filter( 'salesforce_w2l_show_admin_nag_message', '__return_false', 10, 1 );
 
-add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_referrer_example', 10, 3 );
+//add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_referrer_example', 10, 3 );
 
 function salesforce_w2l_field_value_referrer_example( $val, $field, $form ){
 
@@ -97,7 +101,7 @@ function salesforce_w2l_field_value_referrer_example( $val, $field, $form ){
 
 }
 
-add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_querystring_example', 10, 3 );
+//add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_querystring_example', 10, 3 );
 
 function salesforce_w2l_field_value_querystring_example( $val, $field, $form ){
 
@@ -115,7 +119,7 @@ function salesforce_w2l_field_value_querystring_example( $val, $field, $form ){
 
 }
 
-add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_geoip_example', 10, 3 );
+//add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_geoip_example', 10, 3 );
 
 function salesforce_w2l_field_value_geoip_example( $val, $field, $form ){
 
@@ -145,14 +149,16 @@ function salesforce_w2l_returl_1_tester_example(  $returl ){
 }
 
 // salesforce_w2l_success_message_{Form ID}
-add_filter( 'salesforce_w2l_success_message_1', 'salesforce_w2l_success_message_1_tester_example', 10, 1 );
+
+//add_filter( 'salesforce_w2l_success_message_1', 'salesforce_w2l_success_message_1_tester_example', 10, 1 );
+
 function salesforce_w2l_success_message_1_tester_example(  $success ){
 
 	return 'Testing 123';
 
 }
 
-add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_date_example', 10, 3 );
+//add_filter( 'salesforce_w2l_field_value', 'salesforce_w2l_field_value_date_example', 10, 3 );
 
 function salesforce_w2l_field_value_date_example( $val, $field, $form ){
 
@@ -165,11 +171,39 @@ return current_time('Y-m-d'); // or whatever date format you want
 return $val;
 }
 
-add_filter( 'salesforce_w2l_post_args', 'example_salesforce_enable_ssl_verify', 10, 1 );
+//add_filter( 'salesforce_w2l_post_args', 'example_salesforce_enable_ssl_verify', 10, 1 );
 
 function example_salesforce_enable_ssl_verify( $args ){
 
 	$args['sslverify'] = true;
 	return $args;
 
+}
+
+//add_filter('salesforce_w2l_cc_admin_email_content','example_salesforce_filter_admin_message', 10, 1);
+
+function example_salesforce_filter_admin_message( $message ){
+
+    $message = $message . "\r\n" . 'Form Embed URL: ' . sanitize_url( get_permalink() );
+
+    return $message;
+
+}
+
+add_filter('sfwp2l_validate_field','sf_phone_enforce_country_code', 10, 4);
+
+function sf_phone_enforce_country_code( $error, $name, $val, $field ){
+
+    if( $name == 'phone' ){
+
+		$phone_digits = preg_replace("/[^0-9]/", "", $val);
+
+        if( strlen( $phone_digits ) < 11 ){
+            $error['valid'] = false;
+            $error['message'] = 'Please enter your phone number with a country code.';
+        }
+
+    }
+
+    return $error;
 }
