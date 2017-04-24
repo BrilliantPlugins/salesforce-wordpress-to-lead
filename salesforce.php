@@ -432,7 +432,12 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 			$content .= '<div class="sf_field sf_field_recaptcha sf_type_recaptcha">';
 				$content .= '<br>';
-				$content .= '<div class="g-recaptcha" data-sitekey="' . esc_attr( salesforce_get_option('recaptcha_site_key', $form_id, $options ) ) . '"></div>';
+				
+				if( $sidebar ){
+					$content .= '<div class="g-recaptcha" data-size="compact" data-sitekey="' . esc_attr( salesforce_get_option('recaptcha_site_key', $form_id, $options ) ) . '"></div>';
+				}else{
+					$content .= '<div class="g-recaptcha" data-sitekey="' . esc_attr( salesforce_get_option('recaptcha_site_key', $form_id, $options ) ) . '"></div>';
+				}
 
 			if( $errors && !$errors['recaptcha']['valid'] ){
 				$content .=  "<span class=\"error_message\">" . $errors['recaptcha']['message'] . '</span>';
