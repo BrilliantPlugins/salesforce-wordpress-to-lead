@@ -269,11 +269,21 @@
 	clear: none;
 }
 
+.salesforce_w2l_lead.sf_two_column .sf_field .w2llabel{
+	width: auto;
+	display: block;
+	float: none;
+}
+
+.salesforce_w2l_lead.sf_two_column .sf_type_checkbox .w2llabel{
+	display: inline;
+}
+
 .salesforce_w2l_lead.sf_two_column .w2linput.text, .salesforce_w2l_lead.sf_two_column .w2linput.select, .salesforce_w2l_lead.sf_two_column .w2linput.date{
 	width: 90%;
 }
 
-.salesforce_w2l_lead.sf_two_column .sf_type_text, .salesforce_w2l_lead.sf_two_column .sf_type_select, .salesforce_w2l_lead.sf_two_column .sf_type_multi-select, .salesforce_w2l_lead.sf_two_column .sf_type_checkbox, .salesforce_w2l_lead.sf_two_column .sf_type_date{
+.salesforce_w2l_lead.sf_two_column .sf_type_email, .salesforce_w2l_lead.sf_two_column .sf_type_text, .salesforce_w2l_lead.sf_two_column .sf_type_select, .salesforce_w2l_lead.sf_two_column .sf_type_multi-select, .salesforce_w2l_lead.sf_two_column .sf_type_checkbox, .salesforce_w2l_lead.sf_two_column .sf_type_date{
 	width: 50%;
 	float: left;
 }
