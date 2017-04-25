@@ -828,7 +828,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 									$content .= '</p>';
 
 									$content .= '<p>';
-									$content .= '<label>'.__('Layout:','salesforce').'</label><br/>';
+									$content .= '<label>'.__('Layout (Content):','salesforce').'</label><br/>';
 
 									$layout = trim( $options['forms'][$form_id]['layout'] );
 									if( !$layout )
