@@ -38,6 +38,9 @@ function salesforce_map_legacy_id( $form ){
 
 	$options = get_option( salesforce_get_option_name() );
 
+	// make sure $form is a valid array index
+	$form = strval( $form );
+
 	if( isset( $options[ 'form_mapping' ][ $form ] ) ){
 		// check for mapping
 
@@ -86,8 +89,10 @@ function salesforce_get_form_id_by_post_id( $post_id ){
 	// check mapping
 	$options = get_option( salesforce_get_option_name() );
 
-	if( isset( $options[ 'form_mapping' ] ) )
-		$map = array_flip( $options[ 'form_mapping' ] );
+	if( isset( $options[ 'form_mapping' ] ) ){
+		//die( print_r( $options[ 'form_mapping' ], 1 ) );
+		@$map = array_flip( $options[ 'form_mapping' ] );
+	}
 
 	if( $map && isset( $map[ $post_id ] ) ){
 		// check for mapping
