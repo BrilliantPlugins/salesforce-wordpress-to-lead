@@ -3,7 +3,7 @@ Contributors: stonydaddydonkeylabscom, nickciske, cimburacom
 Tags: crm, contact form, contactform, wordpress to lead, wordpresstolead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder, Wordpress CRM
 Requires at least: 3.5.2
 Tested up to: 4.3
-Stable tag: 3.0.1.1
+Stable tag: 3.0.1.2
 License: GPLv2
 Donate link: https://donate.charitywater.org/donate
 
@@ -1104,6 +1104,10 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 `
 
 == Changelog ==
+
+= 3.0.1.2 =
+* Fix some PHP notices
+* Fix form/plugin option fallback logic
 
 = 3.0 =
 * Move form storage to custom post types (sponsored by SPS commerce)
