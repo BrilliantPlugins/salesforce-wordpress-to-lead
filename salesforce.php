@@ -4,7 +4,7 @@ Plugin Name: Brilliant Web-to-Lead for Salesforce
 Plugin URI: http://wordpress.org/plugins/salesforce-wordpress-to-lead/
 Description: Easily embed a contact form into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM. Also supports Web to Case and Comments to leads.
 Author: BrilliantPlugins
-Version: 2.7.3.1
+Version: 2.7.3.2
 Author URI: https://brilliantplugins.com/
 License: GPL2
 */
@@ -432,7 +432,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 			$content .= '<div class="sf_field sf_field_recaptcha sf_type_recaptcha">';
 				$content .= '<br>';
-				
+
 				if( $sidebar ){
 					$content .= '<div class="g-recaptcha" data-size="compact" data-sitekey="' . esc_attr( salesforce_get_option('recaptcha_site_key', $form_id, $options ) ) . '"></div>';
 				}else{
@@ -801,6 +801,8 @@ function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $app
 
 	if( !$subject )
 		$subject = '[' . __( 'Salesforce Web to %%type%% Submission', 'salesforce' ) . ']';
+
+	$form_type = $options['forms'][$form_id]['type'];
 
 	$subject = str_replace( '%%type%%', $form_type,  $subject );
 
