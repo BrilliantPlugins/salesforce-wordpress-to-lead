@@ -10,7 +10,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	public $homepage;
 	public $ozhicon;
 
-	function Salesforce_Admin() {
+	function __construct() {
 
 		$this->optionname = 'salesforce2';
 
