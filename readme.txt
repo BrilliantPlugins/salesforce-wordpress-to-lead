@@ -53,6 +53,12 @@ To turn on debugging via email,  add a hidden field (enabled) named `debugEmail`
 
 Also check for debug logs at SalesForce to see if a validation rule is the culprit: `Administration Setup | Monitoring | Debug Logs`.
 
+= I'm not receiving new submission emails  =
+
+99% of the time the plugin is sendign these... and the issue is at the WordPress or server level.
+
+The Give team has an excellent article on [diagnosing and troubleshooting email issues](https://givewp.com/documentation/core/settings/emails/troubleshooting-common-email-problems/).
+
 = What are the built in field names? Not all the fields are working when I use the Field Label in the lead edit screen? =
 
 SalesForce is inconsistent in naming built in fields, and even misreports the names of some fields (like `MobilePhone`, which is actually `mobile`) in the customize fields screen. Generating a Web to Lead form gets you the real names, but the list below should help as well.
