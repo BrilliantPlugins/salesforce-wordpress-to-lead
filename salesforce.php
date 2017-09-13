@@ -64,6 +64,14 @@ function salesforce_default_settings() {
 
 	$options['usecss']				= true;
 	$options['wpcf7css']			= false;
+
+	$options['captcha_type']		= null;
+	$options['wpcf7jsfix']			= null;
+	$options['sslverify']		= null;
+
+	$options['layout']		= null;
+	$options['donotautoaddcolontolabels']		= null;
+
 	//$options['hide_salesforce_link']= true;
 
 	$options['forms'][1] = Salesforce_Admin::default_form();
@@ -432,7 +440,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 			$content .= '<div class="sf_field sf_field_recaptcha sf_type_recaptcha">';
 				$content .= '<br>';
-
+				
 				if( $sidebar ){
 					$content .= '<div class="g-recaptcha" data-size="compact" data-sitekey="' . esc_attr( salesforce_get_option('recaptcha_site_key', $form_id, $options ) ) . '"></div>';
 				}else{
@@ -801,8 +809,6 @@ function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $app
 
 	if( !$subject )
 		$subject = '[' . __( 'Salesforce Web to %%type%% Submission', 'salesforce' ) . ']';
-
-	$form_type = $options['forms'][$form_id]['type'];
 
 	$subject = str_replace( '%%type%%', $form_type,  $subject );
 
