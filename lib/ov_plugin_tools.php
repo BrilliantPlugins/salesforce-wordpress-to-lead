@@ -122,6 +122,22 @@ if (!class_exists('OV_Plugin_Admin')) {
 		}
 
 		/**
+		 * Create a Textbox field
+		 */
+		function textbox($id, $label, $note='') {
+			$options = get_option($this->optionname);
+			$textbox = '<label for="'.$id.'">'.$label.':</label><br/><textarea id="'.$id.'" name="'.$id.'" style="width: 333px; height: 150px;">';
+			if ( isset($options[$id]))
+				$textbox .= htmlentities(stripslashes($options[$id]));
+			$textbox .= '</textarea><br/>';
+
+			if( $note ) $textbox .= '<small>'.$note.'</small><br/>';
+
+			$textbox .= '<br/>';
+			return $textbox;
+		}
+
+		/**
 		 * Create a potbox widget
 		 */
 		function postbox($id, $title, $content, $class='') {
