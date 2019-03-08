@@ -440,7 +440,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 			$content .= '<div class="sf_field sf_field_recaptcha sf_type_recaptcha">';
 				$content .= '<br>';
-				
+
 				if( $sidebar ){
 					$content .= '<div class="g-recaptcha" data-size="compact" data-sitekey="' . esc_attr( salesforce_get_option('recaptcha_site_key', $form_id, $options ) ) . '"></div>';
 				}else{
@@ -558,7 +558,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 
 	if( $date_fields ){
 		wp_enqueue_script('jquery-ui-datepicker');
-		wp_enqueue_style('jquery-style', '//ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
+		wp_enqueue_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 
 		$content .= "<script>jQuery(document).ready(function( $ ) {";
 
