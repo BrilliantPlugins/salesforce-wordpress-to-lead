@@ -12,7 +12,7 @@ SVNUSER="macbookandrew"
 SVNPATH="/tmp/$PLUGINSLUG"
 SVNURL="http://plugins.svn.wordpress.org/$PLUGINSLUG"
 PLUGINDIR="$CURRENTDIR"
-MAINFILE="$PLUGINSLUG.php"
+MAINFILE="salesforce.php"
 
 echo
 echo "Slug: $PLUGINSLUG"
