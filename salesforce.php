@@ -808,6 +808,12 @@ function salesforce_maybe_implode( $delimiter, $data ){
 
 function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $append = '' ){
 
+	if( $options['forms'][$form_id]['type'] == 'case' ){
+		$form_type = __( 'Case', 'salesforce' );
+	}else{
+		$form_type = __( 'Lead', 'salesforce' );
+	}	
+	
 	if( !$subject )
 		$subject = '[' . __( 'Salesforce Web to %%type%% Submission', 'salesforce' ) . ']';
 
@@ -835,12 +841,6 @@ function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $app
 
 	if( $replyto_email && is_email( $replyto_email ) ){
 		$headers .= 'Reply-to: ' . $replyto_email . "\r\n";
-	}
-
-	if( $options['forms'][$form_id]['type'] == 'case' ){
-		$form_type = __( 'Case', 'salesforce' );
-	}else{
-		$form_type = __( 'Lead', 'salesforce' );
 	}
 
 	$message = '';
