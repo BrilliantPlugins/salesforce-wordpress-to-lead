@@ -530,7 +530,11 @@ _Note: Leading & trailing whitespace is trimmed when names and values are displa
 
 Choose it from the dropdown, that's all you *have* to do.
 
-If you want to customize the date format or display/functionality of the datepicker UI, you can set the options by entering a list of options in the Options box of the field editor, one per line. Note that you must end each option with a comma, or you'll end up with a javascript error instead of a datepicker.
+If you want to customize the date format or display/functionality of the datepicker UI, you can set the options by entering a list of options in the Options box of the field editor, one per line.
+
+Note that you must end each option with a comma, or you'll end up with a javascript error instead of a datepicker.
+
+Note that any options you specify will *override* the default options.
 
 e.g.
 
