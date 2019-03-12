@@ -3,7 +3,7 @@ Contributors: brilliantplugins, nickciske, stuporglue, jrfoell
 Tags: crm, contact form, contactform, web to lead, case to lead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder
 Requires at least: 4.0
 Tested up to: 5.1
-Stable tag: 2.7.3.3
+Stable tag: 2.7.3.4
 License: GPLv2
 Donate link: https://donate.charitywater.org/donate
 
@@ -1091,6 +1091,9 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 `
 
 == Changelog ==
+
+= 2.7.3.4 =
+* Restore missing assets in WordPress.org repository
 
 = 2.7.3.3 =
 * Add support for showing year in datepicker
