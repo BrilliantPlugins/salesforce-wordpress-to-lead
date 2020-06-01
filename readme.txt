@@ -1,9 +1,9 @@
 === Brilliant Web-to-Lead for Salesforce ===
-Contributors: brilliantplugins, nickciske, stuporglue, jrfoell
+Contributors: brilliantplugins, nickciske
 Tags: crm, contact form, contactform, web to lead, case to lead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder
 Requires at least: 4.0
-Tested up to: 5.1
-Stable tag: 2.7.3.4
+Tested up to: 5.4.1
+Stable tag: 2.7.3.5
 License: GPLv2
 Donate link: https://donate.charitywater.org/donate
 
@@ -1090,7 +1090,37 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 }
 `
 
+**salesforce_w2l_get_prefixed_inputs**
+
+Allows you to add to or change the list of fields that are auto prefixed by the plugin to avoid collisions with WP Query reserved request parameters
+
+`
+add_filter('salesforce_w2l_get_prefixed_inputs', 'salesforce_w2l_get_prefixed_inputs_example', 10, 1 );
+
+function salesforce_w2l_get_prefixed_inputs_example( $fields ){
+	$fields[] = 'new_field_name';
+	return $fields;
+}
+`
+
+**salesforce_w2l_input_name_prefix**
+
+Allows you to change the default field name prefix (`_sf`) used to avoid collisions with WP Query reserved request parameters.
+
+`
+add_filter('salesforce_w2l_input_name_prefix', 'salesforce_w2l_input_name_prefix_example', 10, 1 );
+
+function salesforce_w2l_input_name_prefix_example( $prefix ){
+	return 'sfwp2lprefix_';
+}
+`
+
 == Changelog ==
+
+= 2.7.3.5 =
+* Auto prefix field names known to conflict with WP_Query (like `name` in WebToCase). Does not alter other field names for backwards compatibility. Prefix and list of fields to be prefixed is configurable via filters.
+* Update tested up to version
+* Remove inactive contributors
 
 = 2.7.3.4 =
 * Restore missing assets in WordPress.org repository

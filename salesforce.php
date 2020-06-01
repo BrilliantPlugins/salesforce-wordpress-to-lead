@@ -4,7 +4,7 @@ Plugin Name: Brilliant Web-to-Lead for Salesforce
 Plugin URI: http://wordpress.org/plugins/salesforce-wordpress-to-lead/
 Description: Easily embed a contact form into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM. Also supports Web to Case and Comments to leads.
 Author: BrilliantPlugins
-Version: 2.7.3.4
+Version: 2.7.3.5
 Author URI: https://brilliantplugins.com/
 License: GPL2
 */
@@ -170,6 +170,38 @@ function salesforce_has_captcha( $form_id, $options ){
 
 }
 
+// known WP_Query reserved request parameters
+function salesforce_get_prefixed_inputs(){
+	$wp_query_reserved = array( 'attachment',  'attachment_id', 'author',  'author_name',  'cat',  'calendar',  'category_name',  'comments_popup',  'cpage',  'day',  'error',  'exact',  'feed',  'hour',  'm',  'minute',  'monthnum',  'more',  'name',  'order',  'orderby',  'p',  'page_id',  'page',  'paged',  'pagename',  'pb',  'post_type',  'posts',  'preview',  'robots',  's',  'search',  'second',  'sentence',  'static',  'subpost',  'subpost_id',  'taxonomy',  'tag',  'tag_id',  'tb',  'term',  'w',  'withcomments',  'withoutcomments',  'year',  'category__in',  'category__not_in',  'category__and',  'comments_per_page',  'offset',  'perm',  'post__in',  'post__not_in',  'post_mime_type',  'post_parent__in',  'tag__and',  'tag__in',  'tag__not_in',  'tag_id',  'tag_slug__and',  'tag_slug__in',  'meta_key', 'meta_value' );
+	return apply_filters('salesforce_w2l_get_prefixed_inputs', $wp_query_reserved);
+}
+
+// prefix certain field names to avoid collisions with WP Query reserved request parameters
+function salesforce_get_input_name( $id ){
+	$inputs = salesforce_get_prefixed_inputs();
+
+	if( in_array( $id, $inputs ) ){
+		$prefix = apply_filters( 'salesforce_w2l_input_name_prefix', 'sf_' );
+		return $prefix . $id;
+	}else{
+		return $id;
+	}
+}
+
+// un-prefix certain field names to avoid collisions with WP Query reserved request parameters
+function salesforce_get_input_id_from_name( $name ){
+	$inputs = salesforce_get_prefixed_inputs();
+
+	$prefix = apply_filters( 'salesforce_w2l_input_name_prefix', 'sf_' );
+	$id = substr( $name, strlen( $prefix ) + 1 );
+
+	if( in_array( $id, inputs ) ){
+		return $id;
+	}else{
+		return $name;
+	}
+}
+
 function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id = 1) {
 
 	if( !isset($options['forms'][$form_id]) )
@@ -233,6 +265,10 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 		$content .= '<p class="sf_required_fields_msg" id="requiredfieldsmsg"><sup><span class="required">*</span></sup> '.esc_html( $reqtext ).'</p>';
 
 	foreach ($options['forms'][$form_id]['inputs'] as $id => $input) {
+
+		// get prefixed input name
+		$input_name = salesforce_get_input_name( $id );
+
 		if (!$input['show'])
 			continue;
 
@@ -240,10 +276,10 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 			$input['opts'] = null;
 
 		$val = '';
-		if ( isset( $_POST[$id] ) ){
-			$val = $_POST[$id];
+		if ( isset( $_POST[ $input_name ] ) ){
+			$val = $_POST[ $input_name ];
 
-			if( is_array( $val  ) ){
+			if( is_array( $val ) ){
 				$val = array_map( 'esc_attr', array_map( 'salesforce_clean_field', $val ) );
 			}else{
 				$val = esc_attr(strip_tags(stripslashes($val)));
@@ -274,13 +310,13 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 			if ($options['wpcf7css']) { $content .= '<p>'; }
 			if ($input['type'] == 'checkbox') {
 
-				if( isset( $_POST[$id] ) ){
-					$post_val = $_POST[$id];
+				if( isset( $_POST[ $input_name ] ) ){
+					$post_val = $_POST[ $input_name ];
 				}else{
 					$post_val = '';
 				}
 
-				$content .= "\t\n\t".'<input type="checkbox" id="sf_'.$id.'" class="w2linput checkbox" name="'.$id.'" value="'.$val.'" '.checked( $post_val, $val, false ).' />'."\n\n";
+				$content .= "\t\n\t".'<input type="checkbox" id="sf_'.$id.'" class="w2linput checkbox" name="'.$input_name.'" value="'.$val.'" '.checked( $post_val, $val, false ).' />'."\n\n";
 			}
 
 			$placeholder = '';
@@ -326,31 +362,31 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 			$content .= "\t".'<input type="text" placeholder="'.$placeholder.'" value="'.$val.'" id="sf_'.$id.'" class="';
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-text' : 'w2linput text';
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
-			$content .= '" name="'.$id.'" '.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' />'."\n\n";
+			$content .= '" name="'.$input_name.'" '.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' />'."\n\n";
 
 		}else if ($input['type'] == 'email') {
 			$content .= "\t".'<input type="email" placeholder="'.$placeholder.'" value="'.$val.'" id="sf_'.$id.'" class="';
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-text' : 'w2linput text';
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
-			$content .= '" name="'.$id.'" '.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' />'."\n\n";
+			$content .= '" name="'.$input_name.'" '.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' />'."\n\n";
 
 		}else if ($input['type'] == 'date') {
 			$content .= "\t".'<input type="text" placeholder="'.$placeholder.'" value="'.$val.'" id="sf_'.$id.'" class="';
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-text' : 'w2linput text';
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
-			$content .= '" name="'.$id.'" />'."\n\n";
+			$content .= '" name="'.$input_name.'" />'."\n\n";
 
 		} else if ($input['type'] == 'textarea') {
 			$content .= "\t".( !$options['wpcf7css'] ? "\n\n" : '' )."\n\t".'<textarea id="sf_'.$id.'" class="';
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-textarea' : 'w2linput textarea';
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
-			$content .= '" name="'.$id.'"'.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' placeholder="'.$placeholder.'">'.$val.'</textarea>'."\n\n";
+			$content .= '" name="'.$input_name.'"'.( !empty($input['opts']) ? ' placeholder="'.$input['opts'].'" title="'.$input['opts'].'"' : '' ).' placeholder="'.$placeholder.'">'.$val.'</textarea>'."\n\n";
 
 		} else if ($input['type'] == 'hidden') {
-			$content .= "\t\n\t".'<input type="hidden" id="sf_'.$id.'" class="w2linput hidden" name="'.$id.'" value="'.$val.'" />'."\n\n";
+			$content .= "\t\n\t".'<input type="hidden" id="sf_'.$id.'" class="w2linput hidden" name="'.$input_name.'" value="'.$val.'" />'."\n\n";
 
 		} else if ($input['type'] == 'current_date') {
-			$content .= "\t\n\t".'<input type="hidden" id="sf_'.$id.'" class="w2linput hidden" name="'.$id.'" value="'.date($input['opts']).'" />'."\n\n";
+			$content .= "\t\n\t".'<input type="hidden" id="sf_'.$id.'" class="w2linput hidden" name="'.$input_name.'" value="'.date($input['opts']).'" />'."\n\n";
 
 		} else if ($input['type'] == 'html'){
 			$content .= '<br>'.stripslashes($input['opts'])."\n\n";
@@ -360,10 +396,10 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 			$content .= $options['wpcf7css'] ? 'wpcf7-form-control wpcf7-select style-select' : 'w2linput select';
 			$content .= $options['wpcf7css'] && $input['required'] ? ' wpcf7-validates-as-required required' : '';
 			if( $input['type'] == 'multi-select' ){
-				$content .= '" name="'.$id.'[]"';
+				$content .= '" name="'.$input_name.'[]"';
 				$content .= ' multiple="multiple" ';
 			}else{
-				$content .= '" name="'.$id.'"';
+				$content .= '" name="'.$input_name.'"';
 			}
 			$content .= '>';
 
@@ -954,12 +990,16 @@ function salesforce_form_shortcode($atts) {
 
 		$has_error = false;
 
+
 		// field validation
 		foreach ($options['forms'][$form]['inputs'] as $id => $input) {
 
-			if( isset( $_POST[$id] ) ){
+			// get prefixed input name
+			$input_name = salesforce_get_input_name( $id );
 
-				$val = $_POST[$id];
+			if( isset( $_POST[$input_name] ) ){
+
+				$val = $_POST[$input_name];
 
 				if( is_array($val) ){
 					$val = array_map( 'trim', $val );
@@ -1008,11 +1048,11 @@ function salesforce_form_shortcode($atts) {
 			//	$error = true;
 			//	$emailerror = true;
 			} else {
-				if( isset( $_POST[$id] ) ){
-					if( is_array( $_POST[$id] ) ){
-						$post[$id] = array_map( 'salesforce_clean_field', $_POST[$id] );
+				if( isset( $_POST[$input_name] ) ){
+					if( is_array( $_POST[$input_name] ) ){
+						$post[$id] = array_map( 'salesforce_clean_field', $_POST[$input_name] );
 					}else{
-						$post[$id] = salesforce_clean_field( $_POST[$id] );
+						$post[$id] = salesforce_clean_field( $_POST[$input_name] );
 					}
 				}
 			}
