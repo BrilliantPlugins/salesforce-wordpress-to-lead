@@ -4,7 +4,7 @@ Tags: crm, contact form, contactform, web to lead, case to lead, salesforce.com,
 Requires at least: 4.0
 Requires PHP: 7.2
 Tested up to: 5.4.1
-Stable tag: 2.7.3.5
+Stable tag: 2.7.3.6
 License: GPLv2
 Donate link: https://donate.charitywater.org/donate
 
@@ -1140,6 +1140,9 @@ function salesforce_w2l_input_name_prefix_example( $prefix ){
 `
 
 == Changelog ==
+
+= 2.7.3.6 =
+* Fix issues with GitHub auto deploy action
 
 = 2.7.3.5 =
 * Auto prefix field names known to conflict with WP_Query (like `name` in WebToCase). Does not alter other field names for backwards compatibility. Prefix and list of fields to be prefixed is configurable via filters.
