@@ -1,9 +1,10 @@
 === Brilliant Web-to-Lead for Salesforce ===
-Contributors: brilliantplugins, nickciske, stuporglue, jrfoell
+Contributors: brilliantplugins, nickciske
 Tags: crm, contact form, contactform, web to lead, case to lead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder
 Requires at least: 4.0
-Tested up to: 5.1
-Stable tag: 2.7.3.4
+Requires PHP: 7.2
+Tested up to: 5.4.1
+Stable tag: 2.7.3.5
 License: GPLv2
 Donate link: https://donate.charitywater.org/donate
 
@@ -13,12 +14,9 @@ Brilliant Web-to-Lead for Salesforce creates a solid integration between your Wo
 
 Brilliant Web-to-Lead for Salesforce creates a solid integration between your WordPress install(s) and your [Salesforce CRM](http://www.salesforce.com) account! People can enter a contact form on your site, and the lead (or case) goes straight into Salesforce CRM: no more copy pasting lead info, no more missing leads: each and every one of them is in Salesforce.com for you to follow up.
 
-### Check out the screencast
-[youtube http://www.youtube.com/watch?v=hnMzkxPUIyc]
+### Features
 
 You can fully configure all the different settings for the form, and then use a shortcode to insert the form into your posts or pages, or you can use the widget that comes with the plugin and insert the form into your sidebar!
-
-Please see this [Demo video](http://www.youtube.com/watch?v=hnMzkxPUIyc) to get a full grasp of some of the power this plugin holds (though it's a bit outdated!).
 
 #### Previous contributors:
 * [Joost de Valk](http://profiles.wordpress.org/joostdevalk/)
@@ -65,6 +63,7 @@ SalesForce is inconsistent in naming built in fields, and even misreports the na
 
 <strong>Built in fields</strong>
 
+**Leads**
 `
 Human Name		API Name
 - - - - - - - - - - - - - - - - - - - - - - - -
@@ -91,7 +90,32 @@ Rating			rating
 Annual Rev. 	revenue
 Employees		employees
 `
-<strong>Other Fields</strong>
+**Cases**
+`
+Human Name		API Name
+- - - - - - - - - - - - - - - - - - - - - - - -
+Contact Name **	name
+
+Email			email
+Phone			phone
+
+Subject			subject
+Description		description
+Company			company
+
+Type *			type
+Status *		status 
+Case Reason *	reason
+
+Priority *		priority
+
+Case Origin		N/A (not settable via the WebToCase API)
+
+* = must use a value from the picklist defined in your install
+** = note that this will be auto prefixed as 'sf_name" in form output and POST data
+`
+
+<strong>Other Useful Fields</strong>
 `
 Lead Source 		lead_source
 Email Opt Out 		emailOptOut
@@ -1090,7 +1114,37 @@ function salesforce_w2l_after_submit_example( $post, $form_id, $form_type ){
 }
 `
 
+**salesforce_w2l_get_prefixed_inputs**
+
+Allows you to add to or change the list of fields that are auto prefixed by the plugin to avoid collisions with WP Query reserved request parameters
+
+`
+add_filter('salesforce_w2l_get_prefixed_inputs', 'salesforce_w2l_get_prefixed_inputs_example', 10, 1 );
+
+function salesforce_w2l_get_prefixed_inputs_example( $fields ){
+	$fields[] = 'new_field_name';
+	return $fields;
+}
+`
+
+**salesforce_w2l_input_name_prefix**
+
+Allows you to change the default field name prefix (`_sf`) used to avoid collisions with WP Query reserved request parameters.
+
+`
+add_filter('salesforce_w2l_input_name_prefix', 'salesforce_w2l_input_name_prefix_example', 10, 1 );
+
+function salesforce_w2l_input_name_prefix_example( $prefix ){
+	return 'sfwp2lprefix_';
+}
+`
+
 == Changelog ==
+
+= 2.7.3.5 =
+* Auto prefix field names known to conflict with WP_Query (like `name` in WebToCase). Does not alter other field names for backwards compatibility. Prefix and list of fields to be prefixed is configurable via filters.
+* Update tested up to version
+* Remove inactive contributors
 
 = 2.7.3.4 =
 * Restore missing assets in WordPress.org repository
