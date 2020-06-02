@@ -4,7 +4,7 @@ Tags: crm, contact form, contactform, web to lead, case to lead, salesforce.com,
 Requires at least: 4.0
 Requires PHP: 7.2
 Tested up to: 5.4.1
-Stable tag: 2.7.3.7
+Stable tag: 2.7.3.8
 License: GPLv2
 Donate link: https://donate.charitywater.org/donate
 
@@ -1140,6 +1140,12 @@ function salesforce_w2l_input_name_prefix_example( $prefix ){
 `
 
 == Changelog ==
+
+= 2.7.3.8 =
+* Fix WordPress.org assets to support new deploy process
+
+= 2.7.3.7 =
+* Fix broken assets folder
 
 = 2.7.3.6 =
 * Fix issues with GitHub auto deploy action
