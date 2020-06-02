@@ -4,7 +4,7 @@ Tags: crm, contact form, contactform, web to lead, case to lead, salesforce.com,
 Requires at least: 4.0
 Requires PHP: 7.2
 Tested up to: 5.4.1
-Stable tag: 2.7.3.6
+Stable tag: 2.7.3.7
 License: GPLv2
 Donate link: https://donate.charitywater.org/donate
 
