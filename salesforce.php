@@ -4,7 +4,7 @@ Plugin Name: Brilliant Web-to-Lead for Salesforce
 Plugin URI: http://wordpress.org/plugins/salesforce-wordpress-to-lead/
 Description: Easily embed a contact form into your posts, pages or your sidebar, and capture the entries straight into Salesforce CRM. Also supports Web to Case and Comments to leads.
 Author: BrilliantPlugins
-Version: 2.7.3.8
+Version: 2.7.3.9
 Author URI: https://brilliantplugins.com/
 License: GPL2
 */
@@ -54,10 +54,6 @@ function salesforce_default_settings() {
 	$options['email_sender']		= '';
 	$options['ccadmin']				= false;
 	$options['captcha']				= false;
-
-	$options['da_token']			= '';
-	$options['da_url']				= '';
-	$options['da_site']				= '';
 
 	$options['commentstoleads']    = false;
 	$options['commentsnamefields']  = false;
@@ -121,32 +117,6 @@ function w2l_sksort(&$array, $subkey="id", $sort_ascending=false) {
     if ($sort_ascending) $array = array_reverse($temp_array);
 
     else $array = $temp_array;
-}
-
-add_action('wp_footer','salesforce_da_js');
-
-// Add Daddy Analytics JS tracking to all pages
-function salesforce_da_js(  ){
-
-	$options = get_option("salesforce2");
-
-	if( isset( $options['da_token'] ) && $options['da_token'] && isset( $options['da_url'] ) && $options['da_url'] && isset( $options['da_site'] ) && $options['da_site'] ){
-
-		$da_token = $options['da_token'];
-		$da_url = $options['da_url'];
-		$da_site = $options['da_site'];
-
-		echo "\n\n".'<!-- Begin Daddy Analytics code provided by Salesforce to Lead Plugin-->
-		<script src="//cdn.daddyanalytics.com/w2/daddy.js" type="text/javascript"></script>
-		<script type="text/javascript">
-		var da_data = daddy_init(\'{ "da_token" : "'.esc_attr($da_token).'", "da_url" : "'.esc_attr($da_url).'" }\');
-		var clicky_custom = {session: {DaddyAnalytics: da_data}};
-		</script>
-		<script src="//hello.staticstuff.net/w/__stats.js" type="text/javascript"></script>
-		<script type="text/javascript">try{ clicky.init( "'.esc_attr($da_site).'" ); }catch(e){}</script>'."<!-- End Daddy Analytics code provided by Salesforce to Lead Plugin-->\n\n";
-
-	}
-
 }
 
 function salesforce_captcha(){
@@ -543,16 +513,6 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 	//form id
 	$content .= "\t".'<input type="hidden" name="form_id" class="w2linput" value="'.$form_id.'" />'."\n";
 
-	//daddy analytics
-	if( isset( $options['da_token'] ) && $options['da_token'] && isset( $options['da_url'] ) && $options['da_url'] ){
-
-		$da_token = $options['da_token'];
-		$da_url = $options['da_url'];
-
-		$content .= "\t".'<input type="hidden" id="Daddy_Analytics_Token" name="'.esc_attr($da_token).'" class="w2linput" value="" style="display: none;" />'."\n";
-		$content .= "\t".'<input type="hidden" id="Daddy_Analytics_WebForm_URL" name="'.esc_attr($da_url).'" class="w2linput" value="" style="display: none;" />'."\n";
-	}
-
 	$submit = stripslashes( salesforce_get_option( 'submitbutton', $form_id, $options ) );
 
 	if (empty($submit))
@@ -800,7 +760,7 @@ function salesforce_cc_user( $post, $options, $form_id = 1 ){
 		unset($post['lead_source']);
 	}
 
-	$remove_keys = apply_filters( 'salesforce_w2l_cc_user_suppress_fields', array('debug','debugEmail','oid','orgid',$options['da_token'],$options['da_url']) );
+	$remove_keys = apply_filters( 'salesforce_w2l_cc_user_suppress_fields', array('debug','debugEmail','oid','orgid') );
 
 	foreach( $remove_keys as $key ){
 		unset($post[$key]);
@@ -1058,20 +1018,6 @@ function salesforce_form_shortcode($atts) {
 			}
 		}
 
-		//pass daddy analytics fields
-		if( isset( $options['da_token'] ) && isset( $options['da_url'] ) ){
-
-			$da_token = $options['da_token'];
-			$da_url = $options['da_url'];
-
-			if( isset( $_POST[$da_token] ) )
-				$post[$da_token] = $_POST[$da_token];
-
-			if( isset( $_POST[$da_url] ) )
-				$post[$da_url] = $_POST[$da_url];
-
-		}
-
 		if( salesforce_has_captcha( $form_id, $options ) ){
 
 			if( salesforce_get_option('captcha_type', $form_id, $options ) == 'recaptcha' ){
@@ -1317,19 +1263,6 @@ function salesforce_add_settings_link( $links ) {
 }
 $plugin = plugin_basename( __FILE__ );
 add_filter( 'plugin_action_links_'.$plugin, 'salesforce_add_settings_link' );
-
-//Add try DA and support links
-function salesforce_add_plugin_meta( $plugin_meta, $plugin_file, $plugin_data, $status ){
-
-	if( $plugin_file == plugin_basename( __FILE__ ) ){
-	  	array_push( $plugin_meta, '<a href="http://wordpress.org/support/plugin/salesforce-wordpress-to-lead" target="_blank">Community Support</a>' );
-	  	array_push( $plugin_meta, '<a href="http://thoughtrefinery.com/plugins/support/?plugin=salesforce-wordpress-to-lead" target="_blank">Premium Support</a>' );
-	}
-
-	return $plugin_meta;
-}
-add_filter( 'plugin_row_meta', 'salesforce_add_plugin_meta', 10, 4);
-
 
 function salesforce_init() {
 	load_plugin_textdomain( 'salesforce', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
