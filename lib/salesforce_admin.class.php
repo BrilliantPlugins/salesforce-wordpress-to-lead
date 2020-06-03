@@ -881,7 +881,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 							$content = '<p>'.__('<b>Community</b><br>If you have any problems with this plugin, ideas for improvements, or  feature requests, please talk about them in the community support forum.<p><i>Be sure to read the <a target="_blank" href="http://wordpress.org/support/topic/support-guidelines/">support guidelines</a> before posting.</i></p>','ystplugin').'</p><p><a target="_blank" class="button-secondary" href="http://wordpress.org/support/plugin/'.$this->hook.'">'.__("Get Community Support",'ystplugin').'</a></p>';
 
-							$content .= '<p>'.__('<b>Premium</b><br>Need guaranteed support, customization help, or want to sponsor a feature addition?','ystplugin').'</p><p> <a target="_blank" class="button-secondary" href="http://thoughtrefinery.com/plugins/support/?plugin='.$this->hook.'">'.__("Request Premium Support",'ystplugin').'</a></p>';
+							$content .= '<p>'.__('<b>Premium</b><br>Need guaranteed support, customization help, or want to sponsor a feature addition?','ystplugin').'</p><p> <a target="_blank" class="button-secondary" href="https://luminfire.com/support/premium-plugin-support/?plugin='.$this->hook.'">'.__("Request Premium Support",'ystplugin').'</a></p>';
 
 
 							$this->postbox($this->hook.'support', 'Need support?', $content);
@@ -899,9 +899,9 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 							$this->postbox('usesalesforce',__('Want to contribute?','salesforce'),__('<p class="aligncenter">Pull requests welcome!<br><br>
 
-							<a class="button-secondary" href="https://github.com/nciske/salesforce-wordpress-to-lead" target="_blank">Fork me on GitHub</a><br><br>
+							<a class="button-secondary" href="https://github.com/BrilliantPlugins/salesforce-wordpress-to-lead" target="_blank">Fork me on GitHub</a><br><br>
 
-							<a class="button-secondary" href="https://github.com/nciske/salesforce-wordpress-to-lead/issues" target="_blank">Submit an issue</a>
+							<a class="button-secondary" href="https://github.com/BrilliantPlugins/salesforce-wordpress-to-lead/issues" target="_blank">Submit an issue</a>
 
 
 
