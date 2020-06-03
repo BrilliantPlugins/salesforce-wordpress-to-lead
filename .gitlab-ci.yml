@@ -1,0 +1,12 @@
+stages:
+  - deploy
+
+Deploy Documentation:
+  stage: deploy
+  only:
+    - master
+  environment:
+    name: docs
+    url: $DOCS_URL
+  script:
+    - curl $DEPLOY_DOCS

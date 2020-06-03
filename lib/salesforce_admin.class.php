@@ -40,11 +40,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 		$dform['form_name'] = 'My New Lead Form '.date('Y-m-d h:i:s');
 
-		if( self::using_da() ){
-			$dform['source'] = '';
-		}else{
-			$dform['source'] = __('Lead form on ','salesforce').get_bloginfo('name');
-		}
+		$dform['source'] = __('Lead form on ','salesforce').get_bloginfo('name');
 
 		$dform['labellocation'] = 'top-aligned';
 		$dform['labellocationsidebar'] = 'top-aligned';
@@ -75,12 +71,6 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	}
 
 	static function using_da(){
-
-		$options = get_option( 'salesforce2' );
-
-		if( isset( $options['da_token'] ) && isset( $options['da_url'] ) && isset( $options['da_site'] ) && $options['da_token'] && $options['da_url'] && $options['da_site'] )
-			return true;
-
 		return false;
 	}
 
@@ -118,28 +108,19 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		}elseif( defined( 'SFWP2L_HIDE_ADS' ) && SFWP2L_HIDE_ADS == false ){
 			// show ads anyways
 		}else{
-			if( $this->using_da() )
-				return; // hide ads as they've signed up
 		}
 
 		$ads = array(
 			'banner-side' => array(
-				array( 'id' => 'da1_1', 'url' => 'http://daddyanalytics.com', 'content' => 'assets/ads/side-analytics-track-form-submission-keyword.png' ),
-				array( 'id' => 'da1_2', 'url' => 'http://daddyanalytics.com', 'content' => 'assets/ads/side-analytics-marketing-roi-offer.png' ),
-				array( 'id' => 'da1_3', 'url' => 'http://daddyanalytics.com', 'content' => 'assets/ads/side-analytics-track-lead-location.png' ),
+				array( 'id' => 'ad1_1', 'url' => 'http://domain.com', 'content' => 'assets/ads/ad.png' ),
 			),
 
 			'banner-main' => array(
-				array( 'id' => 'da1_4', 'url' => 'https://breadwinnerhq.com/quickbooks-online-salesforce/', 'content' => 'assets/ads/QBO_SF_Banner_Images/Breadwinner-SF-Q-v1-connect-salesforce-QB.png' , "utm_source" => "wp_plugin", "utm_medium" => "banner" , "utm_content" => "connect", "utm_campaign" => "BW%20QBO%20Wordpress%20Banner"),
-				array( 'id' => 'da1_5', 'url' => 'https://breadwinnerhq.com/quickbooks-online-salesforce/', 'content' => 'assets/ads/QBO_SF_Banner_Images/Breadwinner-SF-Q-v1-create-invoices-in-QB.png', "utm_source" => "wp_plugin", "utm_medium" => "banner" , "utm_content" => "create", "utm_campaign" => "BW%20QBO%20Wordpress%20Banner" ),
-				array( 'id' => 'da1_7', 'url' => 'https://breadwinnerhq.com/xero-salesforce/', 'content' => 'assets/ads/Xero_SF_Banner_Images/Breadwinner-SF-X-v1-connect-salesforce-xero.png', "utm_source" => "wp_plugin", "utm_medium" => "banner" , "utm_content" => "connect", "utm_campaign" => "BW%20Xero%20Wordpress%20Banner"),
-				array( 'id' => 'da1_8', 'url' => 'https://breadwinnerhq.com/xero-salesforce/', 'content' => 'assets/ads/Xero_SF_Banner_Images/Breadwinner-SF-X-v1-create-invoices-in-xero.png',"utm_source" => "wp_plugin", "utm_medium" => "banner" , "utm_content" => "create", "utm_campaign" => "BW%20Xero%20Wordpress%20Banner" ),
-			),
+				array( 'id' => 'ad1_4', 'url' => 'http://domain.com', 'content' => 'assets/ads/ad.png' ),
+							),
 
 			'text' => array(
-				array( 'id' => 'da1_7', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a class="button-secondary" href="%link1%" target="_blank">Watch a video of Daddy Analytics</a>'),
-				array( 'id' => 'da1_8', 'cta' => 'Sign up Now', 'content' => 'Daddy Analytics allows you to track your leads from their original source, such as Adwords, Google Organic, Social Media, or other blogs. With that information you can get your true marketing ROI, as each Opportunity is attributed to the marketing activity that brought in the Lead. <a  class="button-secondary" href="%link2%" target="_blank">Sign up for a free trial of Daddy Analytics</a>'),
-				//array( 'id' => 'da09', 'cta' => 'Sign up Soon!', 'content' => 'Daddy Analytics allows you to... TODO3'),
+				array( 'id' => 'ad1_7', 'content' => 'TBD'),
 			),
 
 		);
@@ -334,10 +315,6 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 					'recaptcha_site_key',
 					'recaptcha_secret_key',
 
-		        	'da_token',
-		        	'da_url',
-		        	'da_site'
-
 		        	) as $option_name) {
 					if (isset($_POST[$option_name])) {
 						$options[$option_name] = $_POST[$option_name];
@@ -428,8 +405,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 							$loc = 'text';
 							$ad = $this->get_ad_code( $loc );
 							if( $ad ){
-								$link1 = $this->get_ad_link( $ad['id'], $loc, 'http://try.daddyanalytics.com/watch-a-video-wp2l/?utm_source=ThoughtRefinery&utm_medium=text&utm_campaign=WP2L_Plugin_01&utm_content=da1_7' );
-								$link2 = $this->get_ad_link( $ad['id'], $loc, 'http://try.daddyanalytics.com/start-free-trial-wp2l/?utm_source=ThoughtRefinery&utm_medium=text&utm_campaign=WP2L_Plugin_01&utm_content=da1_8' );
+								$link1 = $this->get_ad_link( $ad['id'], $loc, '#' );
+								$link2 = $this->get_ad_link( $ad['id'], $loc, '#' );
 
 								$ad['content'] = str_replace( array('%link1%','%link2%'), array($link1,$link2), $ad['content'] );
 
@@ -439,11 +416,6 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								//$class = 'closed';
 								$content = '';
 							}
-
-								$content .= $this->textinput('da_token',__('Daddy Analytics Token','salesforce'));
-								$content .= $this->textinput('da_url',__('Daddy Analytics Web to Lead URL ID','salesforce'));
-								$content .= $this->textinput('da_site',__('Daddy Analytics Site ID','salesforce'));
-								$this->postbox('sfsettings',__('Daddy Analytics Settings', 'salesforce'), $content);
 
 								$content = $this->textinput('successmsg',__('Success message after sending lead to SalesForce', 'salesforce') );
 								$content .= $this->textinput('errormsg',__('Error message shown when required fields are not filled out', 'salesforce') );
@@ -735,7 +707,6 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 									$content .= '<label>'.__('Form Type:','salesforce').'</label><br/>';
 									$content .= '<input type="radio" name="type" value="lead" '.checked($options['forms'][$form_id]['type'],'lead',false).'> Web to Lead <br>';
 									$content .= '<input type="radio" name="type" value="case"'.checked($options['forms'][$form_id]['type'],'case',false).'> Web to Case';
-									$content .= '<br/><small>'.__('<b>Note:</b> Daddy Analytics does not support cases at this time.').'</small>';
 									$content .= '</p>';
 
 
@@ -745,8 +716,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 									$content .= '<br/><small>'.__('Lead Source (up to 40 characters) to display in Salesforce.com, use %URL% to include the URL of the page containing the form (need more characters? See the <a href="https://wordpress.org/plugins/salesforce-wordpress-to-lead/faq/" target="_blank">FAQ</a>). You can also use a field above to set the lead source (this value will not be used if a field named lead_source exists).').'</small>';
 
-									if( !defined('SFWP2L_HIDE_ADS') )
-										$content .= '<br/><br/><small>'.__('<b>Daddy Analytics</b> will populate the Lead Source field with the web source of the Lead (such as Organic - Google, Paid - Bing, or Google Adwords). Daddy Analytics will also populate the Salesforce Address field with the estimated GeoLocation of your Leads. <br><i>Leave the Lead Source field blank if you have a subscription to <a href="'.$this->get_ad_link( 'da_ls', 'text' ).'">Daddy Analytics.</a></i>').'</small>';
+									// if( !defined('SFWP2L_HIDE_ADS') )
+									// 	$content .= '<br/><br/><small>'.__('<b>TBD</b> TBD').'</small>';
 
 									$content .= '</p>';
 
@@ -908,7 +879,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 							$content = '<p>'.__('<b>Community</b><br>If you have any problems with this plugin, ideas for improvements, or  feature requests, please talk about them in the community support forum.<p><i>Be sure to read the <a target="_blank" href="http://wordpress.org/support/topic/support-guidelines/">support guidelines</a> before posting.</i></p>','ystplugin').'</p><p><a target="_blank" class="button-secondary" href="http://wordpress.org/support/plugin/'.$this->hook.'">'.__("Get Community Support",'ystplugin').'</a></p>';
 
-							$content .= '<p>'.__('<b>Premium</b><br>Need guaranteed support, customization help, or want to sponsor a feature addition?','ystplugin').'</p><p> <a target="_blank" class="button-secondary" href="http://thoughtrefinery.com/plugins/support/?plugin='.$this->hook.'">'.__("Request Premium Support",'ystplugin').'</a></p>';
+							$content .= '<p>'.__('<b>Premium</b><br>Need guaranteed support, customization help, or want to sponsor a feature addition?','ystplugin').'</p><p> <a target="_blank" class="button-secondary" href="https://luminfire.com/support/premium-plugin-support/?plugin='.$this->hook.'">'.__("Request Premium Support",'ystplugin').'</a></p>';
 
 
 							$this->postbox($this->hook.'support', 'Need support?', $content);
@@ -921,14 +892,14 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 								$link =$this->get_ad_link( $ad['id'], $loc, $ad['url'] );
 
-								$this->postbox('usesalesforce',__('Plugin Sponsor: Daddy Analytics','salesforce'),__('<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>','salesforce'));
+								$this->postbox('usesalesforce',__('Plugin Sponsor: TBD','salesforce'),__('<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>','salesforce'));
 							}
 
 							$this->postbox('usesalesforce',__('Want to contribute?','salesforce'),__('<p class="aligncenter">Pull requests welcome!<br><br>
 
-							<a class="button-secondary" href="https://github.com/nciske/salesforce-wordpress-to-lead" target="_blank">Fork me on GitHub</a><br><br>
+							<a class="button-secondary" href="https://github.com/BrilliantPlugins/salesforce-wordpress-to-lead" target="_blank">Fork me on GitHub</a><br><br>
 
-							<a class="button-secondary" href="https://github.com/nciske/salesforce-wordpress-to-lead/issues" target="_blank">Submit an issue</a>
+							<a class="button-secondary" href="https://github.com/BrilliantPlugins/salesforce-wordpress-to-lead/issues" target="_blank">Submit an issue</a>
 
 
 
