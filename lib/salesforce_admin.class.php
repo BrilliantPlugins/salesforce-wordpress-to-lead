@@ -71,7 +71,6 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	}
 
 	static function using_da(){
-
 		return false;
 	}
 
@@ -708,7 +707,6 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 									$content .= '<label>'.__('Form Type:','salesforce').'</label><br/>';
 									$content .= '<input type="radio" name="type" value="lead" '.checked($options['forms'][$form_id]['type'],'lead',false).'> Web to Lead <br>';
 									$content .= '<input type="radio" name="type" value="case"'.checked($options['forms'][$form_id]['type'],'case',false).'> Web to Case';
-									$content .= '<br/><small>'.__('<b>Note:</b> Daddy Analytics does not support cases at this time.').'</small>';
 									$content .= '</p>';
 
 
@@ -894,7 +892,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 
 								$link =$this->get_ad_link( $ad['id'], $loc, $ad['url'] );
 
-								$this->postbox('usesalesforce',__('Plugin Sponsor: Daddy Analytics','salesforce'),__('<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>','salesforce'));
+								$this->postbox('usesalesforce',__('Plugin Sponsor: TBD','salesforce'),__('<p style="text-align: center;"><a href="'.$link.'" target="_blank"><img src="'.plugins_url( $ad['content'], dirname(__FILE__)).'"></a></p>','salesforce'));
 							}
 
 							$this->postbox('usesalesforce',__('Want to contribute?','salesforce'),__('<p class="aligncenter">Pull requests welcome!<br><br>
