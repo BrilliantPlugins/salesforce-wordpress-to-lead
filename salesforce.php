@@ -698,6 +698,7 @@ function submit_salesforce_form( $post, $options ) {
 		do_action( 'salesforce_w2l_error_submit', $result, $post, $form_id, $form_type );
 
 		$subject = __( 'Salesforce Web to %%type%% Error', 'salesforce' );
+		$subject = salesforce_populate_merge_tags( $subject, $form_id );
 		$append = print_r( $result, 1 );
 		salesforce_cc_admin( $post, $options, $form_id, $subject, $append );
 
@@ -781,9 +782,9 @@ function salesforce_cc_user( $post, $options, $form_id = 1 ){
 	$headers = 'From: '.$from_name.' <' . $from_email . ">\r\n";
 
 	if (!empty($options['forms'][$form_id]['cc_email_subject'])) {
-		$subject = str_replace('%BLOG_NAME%', get_bloginfo('name'), $options['forms'][$form_id]['cc_email_subject']);
+		$subject = salesforce_populate_merge_tags( $options['forms'][$form_id]['cc_email_subject'], $form_id);
 	} else {
-		$subject = str_replace('%BLOG_NAME%', get_bloginfo('name'), $options['subject']);
+		$subject = salesforce_populate_merge_tags( $options['subject'], $form_id );
 	}
 	if( empty($subject) ) $subject = __('Thank you for contacting','salesforce').' '.get_bloginfo('name');
 
@@ -841,18 +842,12 @@ function salesforce_maybe_implode( $delimiter, $data ){
 
 function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $append = '' ){
 
-	if( $options['forms'][$form_id]['type'] == 'case' ){
-		$form_type = __( 'Case', 'salesforce' );
-	}else{
-		$form_type = __( 'Lead', 'salesforce' );
-	}
+	$form_type_label = salesforce_get_form_type_label( $form_id );
 
 	if( !$subject )
 		$subject = '[' . __( 'Salesforce Web to %%type%% Submission', 'salesforce' ) . ']';
 
-	$subject = str_replace( '%%type%%', $form_type,  $subject );
-
-	$subject .= ' ' . $options['forms'][$form_id]['form_name'];
+	$subject .= ' %%form_name%%';
 
 	$from_name = salesforce_get_option( 'emailfromname', $form_id, $options );
 	if( !$from_name )
