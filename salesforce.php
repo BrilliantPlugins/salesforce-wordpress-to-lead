@@ -728,6 +728,43 @@ function submit_salesforce_form( $post, $options ) {
 	}
 }
 
+function salesforce_get_form_type_label( $form_id ){
+	if( salesforce_get_option( 'type', $form_id ) == 'case' ){
+		$form_type_label = __( 'Case', 'salesforce' );
+	}else{
+		$form_type_label = __( 'Lead', 'salesforce' );
+	}
+
+	return $form_type_label;
+}
+
+function salesforce_get_form_name( $form_id ){
+	return salesforce_get_option( 'form_name', $form_id );
+}
+
+function salesforce_populate_merge_tags( $content, $form_id, $context = null ){
+
+	if( ! empty($context) ){
+		$context = 'default';
+	}
+
+	$tags = array(
+		'%BLOG_NAME%' => get_bloginfo('name'),  // backward compatibility
+		'%%site_name%%' => get_bloginfo('name'),  // new standard
+		'%%type%%' => salesforce_get_form_type_label( $form_id ),
+		'%%form_id%%' => $form_id,
+		'%%form_name%%' => salesforce_get_form_name( $form_id ),
+	);
+
+	$tags = apply_filters( 'salesforce_w2l_merge_tags', $tags, $context );
+
+	$tags = apply_filters( 'salesforce_w2l_merge_tags_' . $context, $tags );
+
+	$content = str_replace( array_keys( $tags ), array_values( $tags ), $content );
+
+	return $content;
+}
+
 function salesforce_cc_user( $post, $options, $form_id = 1 ){
 
 	$from_name = salesforce_get_option( 'emailfromname', $form_id, $options );
