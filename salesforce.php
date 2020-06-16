@@ -13,7 +13,7 @@ License: GPL2
 require_once('lib/ov_plugin_tools.php');
 
 // Filter Examples
-if( defined('TR_DEVELOPMENT') && TR_DEVELOPMENT )
+if( defined('BP_DEVELOPMENT') && BP_DEVELOPMENT )
 	require_once('examples.php');
 
 // Admin Class
