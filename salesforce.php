@@ -60,14 +60,6 @@ function salesforce_default_settings() {
 
 	$options['usecss']				= true;
 	$options['wpcf7css']			= false;
-
-	$options['captcha_type']		= null;
-	$options['wpcf7jsfix']			= null;
-	$options['sslverify']		= null;
-
-	$options['layout']		= null;
-	$options['donotautoaddcolontolabels']		= null;
-
 	//$options['hide_salesforce_link']= true;
 
 	$options['forms'][1] = Salesforce_Admin::default_form();
@@ -768,6 +760,10 @@ function salesforce_cc_user( $post, $options, $form_id = 1 ){
 
 	$message = '';
 
+	if ( !empty($options['emailtext']) ) {
+		$message .= $options['emailtext']."\r\n";
+	}
+
 	//format message
 	foreach($post as $name => $value){
 
@@ -785,11 +781,19 @@ function salesforce_cc_user( $post, $options, $form_id = 1 ){
 
 	$message = apply_filters('salesforce_w2l_cc_user_email_content', $message );
 
+	
+	if ( !empty($options['attachments']) ) {
+		$attachments = array(WP_CONTENT_DIR . $options['attachment']);
+	}
+	else {
+		$attachments = '';
+	}
+
 	if( defined( WP_DEBUG )  && WP_DEBUG )
 		error_log( 'salesforce_cc_user:'.print_r( array($message),1 ) );
 
 	if( $message )
-		wp_mail( $_POST['email'], $subject, $message, $headers );
+		wp_mail( $_POST['email'], $subject, $message, $headers, $attachments );
 
 }
 

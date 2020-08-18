@@ -10,7 +10,7 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 	public $homepage;
 	public $ozhicon;
 
-	function __construct() {
+	function Salesforce_Admin() {
 
 		$this->optionname = 'salesforce2';
 
@@ -305,6 +305,8 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 		        	'org_id',
 		        	'submitbutton',
 		        	'subject',
+							'attachment',
+							'emailtext',
 		        	'ccusermsg',
 		        	'requiredfieldstext',
 		        	'ccothers',
@@ -430,6 +432,9 @@ class Salesforce_Admin extends OV_Plugin_Admin {
 								$content .= '<br/>';
 								$content .= $this->textinput('ccusermsg',__('Request a copy text', 'salesforce') );
 								$content .= $this->textinput('subject',__('Email subject', 'salesforce'), __('Use %BLOG_NAME% to auto-insert the blog title into the subject','salesforce') );
+
+								$content .= $this->textinput('attachment',__('Add attachement to email', 'salesforce'), __('Must be in /wp-content/. (/uploads/files/filename.pdf).','salesforce') );
+								$content .= $this->textbox('emailtext',__('Email message', 'salesforce'), __('Add a text before the copy.','salesforce') );
 
 								//$content .= $this->checkbox('email_sender',__('Use this sender', 'salesforce') );
 								$content .= $this->textinput('ccothers',__('Email new submissions to', 'salesforce'), __('Separate multiple addresses with commas.','salesforce') );
