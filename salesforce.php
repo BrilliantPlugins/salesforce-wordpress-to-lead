@@ -13,7 +13,7 @@ License: GPL2
 require_once('lib/ov_plugin_tools.php');
 
 // Filter Examples
-if( defined('TR_DEVELOPMENT') && TR_DEVELOPMENT )
+if( defined('BP_DEVELOPMENT') && BP_DEVELOPMENT )
 	require_once('examples.php');
 
 // Admin Class
@@ -698,6 +698,11 @@ function submit_salesforce_form( $post, $options ) {
 		do_action( 'salesforce_w2l_error_submit', $result, $post, $form_id, $form_type );
 
 		$subject = __( 'Salesforce Web to %%type%% Error', 'salesforce' );
+
+		$subject = apply_filters('salesforce_w2l_error_email_subject', $subject, $form_id, $post );
+
+		$subject = salesforce_populate_merge_tags( $subject, $form_id );
+
 		$append = print_r( $result, 1 );
 		salesforce_cc_admin( $post, $options, $form_id, $subject, $append );
 
@@ -728,6 +733,43 @@ function submit_salesforce_form( $post, $options ) {
 	}
 }
 
+function salesforce_get_form_type_label( $form_id ){
+	if( salesforce_get_option( 'type', $form_id ) == 'case' ){
+		$form_type_label = __( 'Case', 'salesforce' );
+	}else{
+		$form_type_label = __( 'Lead', 'salesforce' );
+	}
+
+	return $form_type_label;
+}
+
+function salesforce_get_form_name( $form_id ){
+	return salesforce_get_option( 'form_name', $form_id );
+}
+
+function salesforce_populate_merge_tags( $content, $form_id, $context = null ){
+
+	if( ! empty($context) ){
+		$context = 'default';
+	}
+
+	$tags = array(
+		'%BLOG_NAME%' => get_bloginfo('name'),  // backward compatibility
+		'%%site_name%%' => get_bloginfo('name'),  // new standard
+		'%%type%%' => salesforce_get_form_type_label( $form_id ),
+		'%%form_id%%' => $form_id,
+		'%%form_name%%' => salesforce_get_form_name( $form_id ),
+	);
+
+	$tags = apply_filters( 'salesforce_w2l_merge_tags', $tags, $context );
+
+	$tags = apply_filters( 'salesforce_w2l_merge_tags_' . $context, $tags );
+
+	$content = str_replace( array_keys( $tags ), array_values( $tags ), $content );
+
+	return $content;
+}
+
 function salesforce_cc_user( $post, $options, $form_id = 1 ){
 
 	$from_name = salesforce_get_option( 'emailfromname', $form_id, $options );
@@ -744,11 +786,16 @@ function salesforce_cc_user( $post, $options, $form_id = 1 ){
 	$headers = 'From: '.$from_name.' <' . $from_email . ">\r\n";
 
 	if (!empty($options['forms'][$form_id]['cc_email_subject'])) {
-		$subject = str_replace('%BLOG_NAME%', get_bloginfo('name'), $options['forms'][$form_id]['cc_email_subject']);
+		$subject = salesforce_populate_merge_tags( $options['forms'][$form_id]['cc_email_subject'], $form_id);
 	} else {
-		$subject = str_replace('%BLOG_NAME%', get_bloginfo('name'), $options['subject']);
+		$subject = salesforce_populate_merge_tags( $options['subject'], $form_id );
 	}
 	if( empty($subject) ) $subject = __('Thank you for contacting','salesforce').' '.get_bloginfo('name');
+
+	//Allow filtering of subject lines of all or specific forms
+	$subject = apply_filters('salesforce_w2l_cc_user_email_subject', $subject, $form_id, $post );
+	$subject = apply_filters('salesforce_w2l_cc_user_email_subject_'.$form_id, $subject, $form_id, $post );
+	$subject = salesforce_populate_merge_tags( $subject, $form_id );
 
 	//remove hidden fields
 	foreach ($options['forms'][$form_id]['inputs'] as $id => $input) {
@@ -783,9 +830,11 @@ function salesforce_cc_user( $post, $options, $form_id = 1 ){
 
 	}
 
-	$message = apply_filters('salesforce_w2l_cc_user_email_content', $message );
+	//Allow filtering of all messages or specific formds
+	$message = apply_filters('salesforce_w2l_cc_user_email_content_text', $message, $form_id, $post );
+	$message = apply_filters('salesforce_w2l_cc_user_email_content_text_'.$form_id, $message, $form_id, $post );
 
-	if( defined( WP_DEBUG )  && WP_DEBUG )
+	if( defined( WP_DEBUG ) && WP_DEBUG )
 		error_log( 'salesforce_cc_user:'.print_r( array($message),1 ) );
 
 	if( $message )
@@ -804,18 +853,12 @@ function salesforce_maybe_implode( $delimiter, $data ){
 
 function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $append = '' ){
 
-	if( $options['forms'][$form_id]['type'] == 'case' ){
-		$form_type = __( 'Case', 'salesforce' );
-	}else{
-		$form_type = __( 'Lead', 'salesforce' );
-	}
+	$form_type_label = salesforce_get_form_type_label( $form_id );
 
 	if( !$subject )
 		$subject = '[' . __( 'Salesforce Web to %%type%% Submission', 'salesforce' ) . ']';
 
-	$subject = str_replace( '%%type%%', $form_type,  $subject );
-
-	$subject .= ' ' . $options['forms'][$form_id]['form_name'];
+	$subject .= ' %%form_name%%';
 
 	$from_name = salesforce_get_option( 'emailfromname', $form_id, $options );
 	if( !$from_name )
@@ -892,12 +935,19 @@ function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $app
 	$emails = apply_filters( 'salesforce_w2l_cc_admin_email_list', $emails );
 
 	//print_r( $emails );
-
+	
+	// legacy filters
 	$message = apply_filters('salesforce_w2l_cc_admin_email_content', $message );
-	$subject = apply_filters('salesforce_w2l_cc_admin_email_subject', $subject, $form_type, $post );
+	$subject = apply_filters('salesforce_w2l_cc_admin_email_subject', $subject, $form_type_label, $post );
+
+	//Allow filtering of subject lines of all or specific forms
+	$subject = apply_filters('salesforce_w2l_cc_admin_email_subject_text', $subject, $form_id, $post );
+	$subject = apply_filters('salesforce_w2l_cc_admin_email_subject_text_'.$form_id, $subject, $form_id, $post );
+
+	$subject = salesforce_populate_merge_tags( $subject, $form_id );
 
 	if( WP_DEBUG )
-		error_log( 'salesforce_cc_admin:'.print_r( array($emails,$message,$subject),1 ) );
+		error_log( 'salesforce_cc_admin:'.print_r( array( $emails, $message, $subject ), 1 ) );
 
 	if( $message ){
 		foreach( $emails as $email ){
