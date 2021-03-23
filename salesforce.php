@@ -1327,10 +1327,10 @@ function salesforce_init() {
 }
 add_action('plugins_loaded', 'salesforce_init');
 
-function salesforce_web_to_lead_form() {
-	wp_enqueue_script( 'salesforce-web-to-lead-form', plugins_url('/assets/js/form.js', __FILE__) );
+function salesforce_web_to_lead_form_js() {
+	wp_enqueue_script( 'salesforce-web-to-lead-form', plugins_url('/assets/js/sfw2l_form.js', __FILE__) );
 }
 
-add_action('wp_enqueue_scripts', 'salesforce_web_to_lead_form');
+add_action('wp_enqueue_scripts', 'salesforce_web_to_lead_form_js');
 
 register_activation_hook( __FILE__, 'salesforce_activate' );
