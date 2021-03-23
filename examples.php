@@ -1,18 +1,20 @@
 <?php
 
-add_filter('salesforce_w2l_cc_user_email_subject','salesforce_w2l_cc_user_email_subject_example', 10, 3);
+
+
+//add_filter('salesforce_w2l_cc_user_email_subject','salesforce_w2l_cc_user_email_subject_example', 10, 3);
 
 function salesforce_w2l_cc_user_email_subject_example( $subject, $form_id, $post ){
 	return 'CC USER EMAIL SUBJECT LINE GOES HERE | %%type%% | %%site_name%% ';
 }
 
-add_filter('salesforce_w2l_cc_admin_email_subject','salesforce_w2l_cc_admin_email_subject_example', 10, 3);
+//add_filter('salesforce_w2l_cc_admin_email_subject','salesforce_w2l_cc_admin_email_subject_example', 10, 3);
 
 function salesforce_w2l_cc_admin_email_subject_example( $subject, $form_id, $post ){
 	return 'CC ADMIN EMAIL SUBJECT LINE GOES HERE | %%type%% | %%site_name%% ';
 }
 
-add_filter('salesforce_w2l_error_email_subject','salesforce_w2l_error_email_subject_example', 10, 3);
+//add_filter('salesforce_w2l_error_email_subject','salesforce_w2l_error_email_subject_example', 10, 3);
 
 function salesforce_w2l_error_email_subject_example( $subject, $form_id, $post ){
 	return 'ERROR EMAIL SUBJECT LINE GOES HERE | %%type%% | %%site_name%% ';
