@@ -2,9 +2,9 @@
 Contributors: brilliantplugins, nickciske
 Tags: crm, contact form, contactform, web to lead, case to lead, salesforce.com, salesforce, salesforce crm, contact form plugin, contact form builder
 Requires at least: 4.0
-Requires PHP: 7.2
-Tested up to: 5.4.1
-Stable tag: 2.7.3.9
+Requires PHP: 7.3
+Tested up to: 5.7
+Stable tag: 2.7.4
 License: GPLv2
 Donate link: https://donate.charitywater.org/donate
 
@@ -1140,6 +1140,12 @@ function salesforce_w2l_input_name_prefix_example( $prefix ){
 `
 
 == Changelog ==
+
+= 2.7.4 =
+* Add javascript to disable submit button when clicked (to avoid double/triple submits)
+* Add filters for email subject and body copy
+* Cleanup some legacy constants (development use only)
+* Bump tested up to version and PHP requirements (PHP 7.2 is deprecated)
 
 = 2.7.3.9 =
 * Remove Daddy Analytics settings and output (company no longer operating)

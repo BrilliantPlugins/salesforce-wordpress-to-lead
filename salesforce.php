@@ -408,7 +408,7 @@ function salesforce_form($options, $is_sidebar = false, $errors = null, $form_id
 					} else {
 						$k = $v = $opt;
 					}
-					$v = trim(esc_attr(strip_tags(stripslashes($v))));
+					$v = trim( esc_attr(strip_tags(stripslashes($v) ) ) );
 
 					if( $placeholder ){
 						$content .= '<option value="' . esc_attr($v) . '">' . trim( stripslashes( $k ) ) . '</option>' . "\n";
@@ -681,8 +681,16 @@ function submit_salesforce_form( $post, $options ) {
 		$url = 'https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8';
 	}
 
+	if( defined('WP_DEBUG') && WP_DEBUG ){
+		error_log( "\r\n" . 'FORM TYPE: ' . $form_type . "\r\n". 'API URL: ' . $url );
+	}
+
 	// Do we need to change the URL we're submitting to?
 	$url = apply_filters( 'salesforce_w2l_api_url', $url, $form_type, $post );
+
+	if( defined('WP_DEBUG') && WP_DEBUG ){
+		error_log( "\r\n" . 'FORM TYPE: ' . $form_type . "\r\n". 'API URL: ' . $url );
+	}
 
 	// Pre submit actions
 	do_action( 'salesforce_w2l_before_submit', $post, $form_id, $form_type );

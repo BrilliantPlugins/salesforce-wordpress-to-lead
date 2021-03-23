@@ -1,5 +1,23 @@
 <?php
 
+add_filter('salesforce_w2l_cc_user_email_subject','salesforce_w2l_cc_user_email_subject_example', 10, 3);
+
+function salesforce_w2l_cc_user_email_subject_example( $subject, $form_id, $post ){
+	return 'CC USER EMAIL SUBJECT LINE GOES HERE | %%type%% | %%site_name%% ';
+}
+
+add_filter('salesforce_w2l_cc_admin_email_subject','salesforce_w2l_cc_admin_email_subject_example', 10, 3);
+
+function salesforce_w2l_cc_admin_email_subject_example( $subject, $form_id, $post ){
+	return 'CC ADMIN EMAIL SUBJECT LINE GOES HERE | %%type%% | %%site_name%% ';
+}
+
+add_filter('salesforce_w2l_error_email_subject','salesforce_w2l_error_email_subject_example', 10, 3);
+
+function salesforce_w2l_error_email_subject_example( $subject, $form_id, $post ){
+	return 'ERROR EMAIL SUBJECT LINE GOES HERE | %%type%% | %%site_name%% ';
+}
+
 // Remove Form Action
 
 //add_filter( 'salesforce_w2l_form_action', 'salesforce_w2l_form_action_example', 10, 1 );
@@ -190,7 +208,7 @@ function example_salesforce_filter_admin_message( $message ){
 
 }
 
-add_filter('sfwp2l_validate_field','sf_phone_enforce_country_code', 10, 4);
+//add_filter('sfwp2l_validate_field','sf_phone_enforce_country_code', 10, 4);
 
 function sf_phone_enforce_country_code( $error, $name, $val, $field ){
 
