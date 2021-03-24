@@ -943,7 +943,7 @@ function salesforce_cc_admin( $post, $options, $form_id = 1, $subject = '', $app
 	$emails = apply_filters( 'salesforce_w2l_cc_admin_email_list', $emails );
 
 	//print_r( $emails );
-	
+
 	// legacy filters
 	$message = apply_filters('salesforce_w2l_cc_admin_email_content', $message );
 	$subject = apply_filters('salesforce_w2l_cc_admin_email_subject', $subject, $form_type_label, $post );
@@ -1329,6 +1329,12 @@ function salesforce_init() {
 }
 add_action('plugins_loaded', 'salesforce_init');
 
-wp_register_script( 'salesforce_web_to_lead_form_js', plugins_url('/assets/js/sfwp2l_form.js', __FILE__) );
+/**
+ * Register frontend JS.
+ */
+function salesforce_form_assets() {
+	wp_register_script( 'salesforce_web_to_lead_form_js', plugins_url('/assets/js/sfwp2l_form.js', __FILE__) );
+}
+add_action( 'wp_enqueue_scripts', 'salesforce_form_assets' );
 
 register_activation_hook( __FILE__, 'salesforce_activate' );
