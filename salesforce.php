@@ -1203,6 +1203,8 @@ function salesforce_form_shortcode($atts) {
 		$layout = 'sf_' . $layout;
 	}
 
+	wp_enqueue_script('salesforce_web_to_lead_form_js');
+
 	return '<div class="salesforce_w2l_lead ' . sanitize_html_class( $layout ) . '">'.$content.'</div>';
 
 }
@@ -1327,10 +1329,6 @@ function salesforce_init() {
 }
 add_action('plugins_loaded', 'salesforce_init');
 
-function salesforce_web_to_lead_form_js() {
-	wp_enqueue_script( 'salesforce-web-to-lead-form', plugins_url('/assets/js/sfw2l_form.js', __FILE__) );
-}
-
-add_action('wp_enqueue_scripts', 'salesforce_web_to_lead_form_js');
+wp_register_script( 'salesforce_web_to_lead_form_js', plugins_url('/assets/js/sfwp2l_form.js', __FILE__) );
 
 register_activation_hook( __FILE__, 'salesforce_activate' );
